@@ -1,0 +1,15 @@
+{
+  "name": "Jonathan Alvez — Estratega digital",
+  "short_name": "Jonathan Alvez",
+  "description": "Estratega digital y socio de crecimiento: Meta Ads, contenido y consultoría de marketing.",
+  "lang": "es",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#14070a",
+  "theme_color": "#14070a",
+  "icons": [
+    { "src": "/assets/img/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/img/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

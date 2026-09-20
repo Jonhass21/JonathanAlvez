@@ -1,53 +1,400 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Growth Partner</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #ffffff; /* Blanco */
-    color: #000000; /* Negro */
-    margin: 0;
-    padding: 0;
-  }
-  .container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  .title {
-    font-size: 24px;
-    color: #ff0000; /* Rojo */
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  .contact-info {
-    text-align: center;
-    margin-top: 20px;
-  }
-  .phone-number {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-  .whatsapp-logo {
-    width: 50px;
-    height: auto;
-  }
-</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Jonathan Alvez — Estratega digital | Meta Ads, contenido y consultoría</title>
+<meta name="description" content="Estratega digital y socio de crecimiento. Diagnóstico, estrategia, Meta Ads, contenido y medición: una sola dirección para tu negocio, sostenida con datos.">
+<meta name="author" content="Jonathan Alvez">
+<meta name="theme-color" content="#14070a">
+<link rel="canonical" href="https://jonathanalvez.netlify.app/">
+
+<!-- Open Graph / redes -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_AR">
+<meta property="og:site_name" content="Jonathan Alvez">
+<meta property="og:url" content="https://jonathanalvez.netlify.app/">
+<meta property="og:title" content="Jonathan Alvez — Estratega digital">
+<meta property="og:description" content="El problema no es el esfuerzo, es la falta de dirección. Me integro a tu negocio como socio estratégico: Meta Ads, contenido y consultoría con decisiones tomadas con datos.">
+<meta property="og:image" content="https://jonathanalvez.netlify.app/assets/img/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Jonathan Alvez — Estratega digital">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Jonathan Alvez — Estratega digital">
+<meta name="twitter:description" content="Socio estratégico para negocios en marcha: una sola dirección, decisiones con datos y una persona responsable de la estrategia de punta a punta.">
+<meta name="twitter:image" content="https://jonathanalvez.netlify.app/assets/img/og-image.jpg">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/styles.css">
+
+<script>document.documentElement.className += ' js';</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://jonathanalvez.netlify.app/#jonathan",
+      "name": "Jonathan Alvez",
+      "jobTitle": "Estratega digital",
+      "description": "Estratega digital especializado en Meta Ads, estrategia de contenido y consultoría de marketing.",
+      "image": "https://jonathanalvez.netlify.app/assets/img/jonathan-640.jpg",
+      "url": "https://jonathanalvez.netlify.app/",
+      "sameAs": ["https://instagram.com/jonathanalvez.mk"]
+    },
+    {
+      "@type": "ProfessionalService",
+      "name": "Jonathan Alvez — Estratega digital",
+      "url": "https://jonathanalvez.netlify.app/",
+      "image": "https://jonathanalvez.netlify.app/assets/img/og-image.jpg",
+      "founder": { "@id": "https://jonathanalvez.netlify.app/#jonathan" },
+      "areaServed": "AR",
+      "priceRange": "$$",
+      "serviceType": ["Gestión de Meta Ads", "Estrategia de contenido", "Consultoría de marketing"],
+      "sameAs": ["https://instagram.com/jonathanalvez.mk"]
+    }
+  ]
+}
+</script>
 </head>
+
 <body>
-<div class="container">
-  <h1 class="title">¡Hola! Soy tu Growth Partner</h1>
-  <div class="contact-info">
-    <div class="phone-number">Teléfono: +XX XXX XXX XXX</div>
-    <a href="https://api.whatsapp.com/send?phone=NUMERO_DE_TELEFONO" target="_blank">
-      <img class="whatsapp-logo" src="whatsapp-logo.png" alt="WhatsApp">
-    </a>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="#top">Jonathan <em>Alvez</em></a>
+
+    <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="nav-principal">
+      <span aria-hidden="true"></span>
+      <span class="visually-hidden" data-nav-label>Abrir menú</span>
+    </button>
+
+    <nav class="nav" id="nav-principal" aria-label="Navegación principal">
+      <a class="nav__link" href="#metodo">Método</a>
+      <a class="nav__link" href="#servicios">Servicios</a>
+      <a class="nav__link" href="#sobre-mi">Sobre mí</a>
+      <a class="btn btn--primary btn--compact" href="#contacto">Agendar diagnóstico</a>
+    </nav>
   </div>
-</div>
+  <div class="progress" data-progress aria-hidden="true"></div>
+</header>
+
+<main id="contenido">
+  <div id="top"></div>
+
+  <!-- Hero -->
+  <section class="section section--hero section--relative hero" data-pointer>
+    <div class="glow hero__glow" data-glow aria-hidden="true"></div>
+    <div class="hero__grid-lines" aria-hidden="true"></div>
+
+    <div class="wrap hero__grid">
+      <div>
+        <p class="eyebrow hero__eyebrow mask" data-reveal-line><span>Estratega digital · Socio de crecimiento</span></p>
+        <h1 class="hero__title">
+          <span class="mask" data-reveal-line><span>El problema no es el esfuerzo.</span></span>
+          <span class="mask hero__title-soft" data-reveal-line><span>Es la falta de dirección.</span></span>
+        </h1>
+        <p class="hero__lead" data-reveal>Me integro a tu negocio como socio estratégico, no como un proveedor más. Una sola dirección, decisiones tomadas con datos y una persona responsable de la estrategia de punta a punta.</p>
+        <div class="actions" data-reveal>
+          <a class="btn btn--primary" href="#contacto">Agendar diagnóstico</a>
+          <a class="btn btn--secondary" href="#metodo">Conocer el método</a>
+        </div>
+      </div>
+
+      <div class="hero__art">
+        <div class="hero__art-frame" aria-hidden="true"></div>
+        <svg class="hero__funnel" viewBox="0 0 420 380" width="420" height="380" aria-hidden="true" data-parallax="-0.08">
+          <g fill="none" stroke="#c9a24a" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+            <path class="draw draw--1" d="M90,110 L330,110 L266,196 L154,196 Z"></path>
+            <path class="draw draw--2" d="M143,212 L277,212 L232,272 L188,272 Z"></path>
+            <path class="draw draw--3" d="M180,288 L240,288 L210,338 Z"></path>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <p class="scroll-cue" aria-hidden="true"><span>↓</span> Seguí bajando</p>
+  </section>
+
+  <!-- Marquee -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <div class="marquee__row">
+        <span>Diagnóstico</span><b>•</b><span>Estrategia</span><b>•</b><span>Meta Ads</span><b>•</b><span>Contenido</span><b>•</b><span>Medición</span><b>•</b><span>Datos, no intuición</span><b>•</b>
+      </div>
+      <div class="marquee__row">
+        <span>Diagnóstico</span><b>•</b><span>Estrategia</span><b>•</b><span>Meta Ads</span><b>•</b><span>Contenido</span><b>•</b><span>Medición</span><b>•</b><span>Datos, no intuición</span><b>•</b>
+      </div>
+    </div>
+  </div>
+
+  <!-- El problema -->
+  <section class="section problem" aria-label="El problema">
+    <div class="wrap problem__grid">
+      <p class="problem__claim" data-reveal>Las ideas nunca faltan. Lo que falta es un criterio para decidir cuáles sostener.</p>
+      <ul>
+        <li class="problem__item" data-reveal>
+          <span class="rule rule--top growline" data-reveal-line aria-hidden="true"></span>
+          <strong>Ya pasaron varios proveedores</strong> por el negocio: agencia, freelancer, alguien del equipo. Cada uno ejecutó bien su parte y ninguno se hizo cargo del conjunto.
+        </li>
+        <li class="problem__item" data-reveal>
+          <span class="rule rule--top growline" data-reveal-line aria-hidden="true"></span>
+          <strong>Hay presencia digital</strong>, pero no hay una hipótesis detrás: se publica y se paga porque hay que hacerlo, no porque los números lo indiquen.
+        </li>
+        <li class="problem__item" data-reveal>
+          <span class="rule rule--top growline" data-reveal-line aria-hidden="true"></span>
+          <strong>Las decisiones se toman por intuición</strong>. Hay datos en las plataformas, pero nadie los está leyendo para decidir con ellos.
+        </li>
+        <li class="problem__item" data-reveal>
+          <span class="rule rule--top growline" data-reveal-line aria-hidden="true"></span>
+          <span class="rule rule--bottom growline" data-reveal-line aria-hidden="true"></span>
+          <strong>Cada mes se arranca de cero</strong>, en lugar de construir sobre lo que ya demostró funcionar con evidencia.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Método -->
+  <section class="section section--surface method" id="metodo" aria-labelledby="metodo-titulo">
+    <div class="wrap method__grid">
+      <div class="method__head">
+        <h2 class="method__title" id="metodo-titulo" data-reveal>Cómo trabajamos juntos</h2>
+        <p class="method__lead" data-reveal>Cuatro etapas, siempre en el mismo orden. Cada una define la siguiente, y ninguna se saltea.</p>
+        <div class="method__meter" aria-hidden="true">
+          <div class="method__meter-fill" data-method-bar></div>
+        </div>
+        <p class="method__count" aria-hidden="true"><span data-method-count>01</span> / 04</p>
+      </div>
+
+      <div class="method__steps">
+        <article class="step" data-step data-active="0">
+          <div class="step__marker" aria-hidden="true">
+            <span class="step__num">01</span>
+            <span class="step__dot"></span>
+          </div>
+          <div>
+            <h3>Diagnóstico</h3>
+            <p>Leo los números que ya tenés — cuentas, pauta, ventas — y definimos dónde está parado el negocio hoy. Sin este punto de partida, cualquier estrategia es una apuesta.</p>
+          </div>
+        </article>
+
+        <article class="step" data-step data-active="0">
+          <div class="step__marker" aria-hidden="true">
+            <span class="step__num">02</span>
+            <span class="step__dot"></span>
+          </div>
+          <div>
+            <h3>Estrategia</h3>
+            <p>Acordamos una sola dirección, con prioridades explícitas y métricas que digan si vamos bien. No diez ideas sueltas compitiendo por el mismo presupuesto.</p>
+          </div>
+        </article>
+
+        <article class="step" data-step data-active="0">
+          <div class="step__marker" aria-hidden="true">
+            <span class="step__num">03</span>
+            <span class="step__dot"></span>
+          </div>
+          <div>
+            <h3>Ejecución</h3>
+            <p>Pauta, contenido y mensajes se ejecutan alineados a esa dirección. Yo respondo por la ejecución; vos sabés en qué se está trabajando y por qué.</p>
+          </div>
+        </article>
+
+        <article class="step" data-step data-active="0">
+          <div class="step__marker" aria-hidden="true">
+            <span class="step__num">04</span>
+            <span class="step__dot"></span>
+          </div>
+          <div>
+            <h3>Medición</h3>
+            <p>Revisamos resultados en períodos fijos y ajustamos con lo que muestran los datos. Lo que no se puede medir, no se sostiene.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Servicios -->
+  <section class="section section--wide section--relative services" id="servicios" aria-labelledby="servicios-titulo">
+    <div class="services__drift-a" aria-hidden="true"></div>
+    <div class="services__drift-b" aria-hidden="true"></div>
+
+    <div class="wrap services__grid">
+      <div>
+        <h2 class="services__title" id="servicios-titulo" data-reveal>En qué te acompaño</h2>
+        <p class="lead services__lead" data-reveal>Tres frentes que funcionan como un solo sistema: pauta, contenido y dirección estratégica apuntando al mismo objetivo comercial.</p>
+
+        <div class="scene" data-parallax="-0.05" aria-hidden="true">
+          <div class="scene__halo"></div>
+          <div class="scene__stack">
+            <div class="fnl fnl--1" data-reveal></div>
+            <div class="fnl fnl--2" data-reveal></div>
+            <div class="fnl fnl--3" data-reveal></div>
+            <div class="fnl fnl--4" data-reveal></div>
+            <div class="fnl-out fnl-out--line" data-reveal></div>
+            <div class="fnl-out fnl-out--dot" data-reveal></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="services__cards">
+        <article class="fcard" data-reveal-x>
+          <div class="fcard__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5"></circle>
+              <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"></circle>
+              <circle cx="12" cy="12" r="1.2" fill="currentColor"></circle>
+            </svg>
+          </div>
+          <div class="fcard__body">
+            <div class="fcard__head">
+              <h3>Gestión de Meta Ads</h3>
+              <span class="fcard__num" aria-hidden="true">01</span>
+            </div>
+            <p>Estructura, públicos y creativos armados como un sistema medible. Cada campaña responde a una hipótesis y se evalúa con los números de la cuenta.</p>
+            <span class="tag tag--outline">Pauta</span>
+          </div>
+        </article>
+
+        <article class="fcard" data-reveal-x>
+          <div class="fcard__icon fcard__icon--2" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"></circle>
+              <path d="M15.5 8.5L13 13l-4.5 2.5L11 11l4.5-2.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+          <div class="fcard__body">
+            <div class="fcard__head">
+              <h3>Estrategia de contenido</h3>
+              <span class="fcard__num" aria-hidden="true">02</span>
+            </div>
+            <p>Una línea editorial clara, alineada al momento comercial del negocio. Lo que se publica tiene un rol, y ese rol se revisa con datos.</p>
+            <span class="tag tag--accent-2">Redes</span>
+          </div>
+        </article>
+
+        <article class="fcard" data-reveal-x>
+          <div class="fcard__icon fcard__icon--3" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.5"></circle>
+              <path d="M15.3 15.3L20 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+              <path d="M8 10.5h5M10.5 8v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path>
+            </svg>
+          </div>
+          <div class="fcard__body">
+            <div class="fcard__head">
+              <h3>Consultoría de marketing</h3>
+              <span class="fcard__num" aria-hidden="true">03</span>
+            </div>
+            <p>Dirección estratégica y criterio de decisión para dueños que necesitan un socio con quien pensar el negocio, no un ejecutor más en la lista.</p>
+            <span class="tag tag--neutral">Estrategia</span>
+          </div>
+        </article>
+
+        <div class="actions" data-reveal>
+          <a class="btn btn--primary" href="#contacto">Agendar diagnóstico</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cita -->
+  <section class="section--relative quote-section" aria-label="Posicionamiento">
+    <div class="quote-section__glow" aria-hidden="true"></div>
+    <div class="quote-section__wrap">
+      <blockquote class="quote">
+        <span class="mask" data-reveal-line><span>No vengo a ejecutar tareas.</span></span>
+        <span class="mask" data-reveal-line><span>Vengo a definir la dirección</span></span>
+        <span class="mask" data-reveal-line><span>y a sostenerla con datos.</span></span>
+      </blockquote>
+      <p class="quote-section__note" data-reveal>No soy una agencia con diez cuentas en simultáneo ni un freelancer que solo corre pauta. Soy la persona que piensa la estrategia, la ejecuta y se sienta a explicarte los números cada mes.</p>
+    </div>
+  </section>
+
+  <!-- Para quién es -->
+  <section class="section fit" aria-labelledby="fit-titulo">
+    <div class="wrap">
+      <h2 class="fit__title" id="fit-titulo" data-reveal>Para quién es esto</h2>
+      <div class="fit__grid">
+        <div class="fit__col" data-reveal>
+          <h3>Es para vos si</h3>
+          <ul>
+            <li class="fit__item">Tenés un negocio en marcha, con algo de equipo, y la parte digital todavía funciona sin un criterio común.</li>
+            <li class="fit__item">Ya trabajaste con agencias o freelancers que ejecutaban sin hacerse cargo de la estrategia.</li>
+            <li class="fit__item">Sos vos quien decide, y querés discutir la estrategia directamente con quien la piensa.</li>
+          </ul>
+        </div>
+        <div class="fit__col fit__col--no" data-reveal>
+          <h3>No es para vos si</h3>
+          <ul>
+            <li class="fit__item">Buscás la agencia más barata del mercado.</li>
+            <li class="fit__item">Necesitás resultados inmediatos, sin definir primero una dirección ni cómo se va a medir.</li>
+            <li class="fit__item">Preferís repartir el trabajo entre varios proveedores sueltos antes que tener un socio estratégico único.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sobre mí -->
+  <section class="section section--surface about" id="sobre-mi" aria-labelledby="sobre-mi-titulo">
+    <div class="wrap about__grid">
+      <div class="about__portrait" data-parallax="-0.05">
+        <picture>
+          <source
+            type="image/webp"
+            srcset="/assets/img/jonathan-320.webp 320w, /assets/img/jonathan-480.webp 480w, /assets/img/jonathan-640.webp 640w"
+            sizes="(max-width: 760px) 90vw, 320px">
+          <img src="/assets/img/jonathan-640.jpg" width="640" height="685" loading="lazy" decoding="async"
+               alt="Retrato de Jonathan Alvez trabajando con una tablet">
+        </picture>
+      </div>
+      <div>
+        <h2 class="about__title" id="sobre-mi-titulo" data-reveal>Sobre mí</h2>
+        <p data-reveal>Soy Jonathan Alvez, estratega digital. Trabajo en Meta Ads, estrategia de contenido y consultoría de marketing, y en algún momento decidí reducir la cantidad de clientes que atiendo.</p>
+        <p data-reveal>Prefiero pensar pocas estrategias en profundidad antes que repartirme entre muchas cuentas. Con quien trabajo, trabajo como socio: mismo objetivo, mismos números a la vista.</p>
+        <a class="about__link" href="https://instagram.com/jonathanalvez.mk" target="_blank" rel="noopener" data-reveal>@jonathanalvez.mk</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section class="section--relative contact" id="contacto" data-pointer aria-labelledby="contacto-titulo">
+    <div class="glow contact__glow" data-glow aria-hidden="true"></div>
+    <div class="wrap contact__wrap">
+      <h2 class="contact__title" id="contacto-titulo">
+        <span class="mask" data-reveal-line><span>Empecemos por el diagnóstico.</span></span>
+      </h2>
+      <p class="contact__lead" data-reveal>Una primera conversación para mirar juntos los números de tu negocio y definir si tiene sentido trabajar. Sin compromiso y sin presentación de ventas.</p>
+      <div class="actions" data-reveal>
+        <!-- TODO: reemplazar por el número real de WhatsApp (formato internacional, sin + ni espacios) -->
+        <a class="btn btn--primary" href="https://wa.me/5490000000000?text=Hola%20Jonathan%2C%20quiero%20agendar%20un%20diagn%C3%B3stico." target="_blank" rel="noopener">Escribime por WhatsApp</a>
+        <a class="btn btn--secondary" href="https://instagram.com/jonathanalvez.mk" target="_blank" rel="noopener">@jonathanalvez.mk</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <a class="brand" href="#top">Jonathan <em>Alvez</em></a>
+    <div class="site-footer__links">
+      <a href="https://instagram.com/jonathanalvez.mk" target="_blank" rel="noopener">Instagram</a>
+      <!-- TODO: mismo número de WhatsApp que arriba -->
+      <a href="https://wa.me/5490000000000" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+    <span class="site-footer__copy">© <span id="anio">2026</span> Jonathan Alvez — Estratega digital</span>
+  </div>
+</footer>
+
+<script src="/js/main.js" defer></script>
 </body>
 </html>
-
-
