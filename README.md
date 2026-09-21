@@ -70,15 +70,19 @@ Actualizá también `<lastmod>` en `sitemap.xml` cuando cambies el contenido.
 
 ## Ver el sitio en local
 
-No hace falta ningún build; alcanza con cualquier servidor estático:
+Doble clic en `index.html` y listo: las rutas son relativas, así que la página
+se ve completa desde el disco. La única diferencia es que Chrome bloquea las
+fuentes con `file://` y puede mostrar la tipografía de respaldo del sistema en
+vez de Inter; servido por HTTP (Netlify o el comando de abajo) se ve con Inter.
 
 ```bash
 python3 -m http.server 8080
 # luego abrí http://localhost:8080
 ```
 
-(Conviene servirlo así y no abrir el archivo con doble clic: las rutas
-absolutas `/css/...` no funcionan con el protocolo `file://`.)
+`404.html` es la excepción: usa rutas absolutas a propósito, porque Netlify lo
+sirve desde cualquier dirección del sitio (incluso `/una/ruta/larga`). Abierto
+con doble clic se ve sin estilos; publicado se ve bien.
 
 ## Qué se optimizó respecto del export original
 
