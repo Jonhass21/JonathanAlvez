@@ -37,27 +37,36 @@ netlify.toml          Configuración de Netlify (headers, caché, seguridad)
 **Dominio propio:** *Site configuration → Domain management → Add a domain*.
 Netlify emite el certificado HTTPS automáticamente.
 
-## Antes de publicar: lo que hay que reemplazar
+## Datos de contacto configurados
 
-1. **Número de WhatsApp.** Hoy figura el placeholder `5490000000000`, que viene
-   del diseño original. Está en dos lugares de `index.html` (botón de contacto y
-   pie), ambos marcados con un comentario `TODO`. Formato: código de país + área
-   + número, sin `+`, espacios ni guiones (ej. Argentina: `5493512345678`).
+- **WhatsApp:** `5493764637951` (+54 376 463 7951). En los links de WhatsApp los
+  celulares argentinos llevan el **9** después del 54: `549` + característica sin
+  el 0 + número sin el 15. Sin ese 9, el link abre un chat con un número
+  inexistente.
+- **Mensaje predeterminado:** el link incluye `?text=` con el mensaje ya escrito,
+  así el cliente solo tiene que apretar enviar:
 
-   ```bash
-   # reemplazo rápido de los dos enlaces
-   sed -i 's/5490000000000/TU_NUMERO/g' index.html
-   ```
+  > Hola Jonathan, vengo de tu web. Quiero agendar el diagnóstico para revisar
+  > los números de mi negocio.
 
-2. **Dominio.** Las URLs absolutas (canonical, Open Graph, JSON-LD, sitemap y
-   robots) usan `https://jonathanalvez.netlify.app`. Cuando tengas el dominio
-   definitivo, cambialo en `index.html`, `sitemap.xml` y `robots.txt`:
+  Para cambiarlo hay que escribirlo codificado para URL (espacio = `%20`,
+  coma = `%2C`, á = `%C3%A1`, é = `%C3%A9`, í = `%C3%AD`, ó = `%C3%B3`,
+  ú = `%C3%BA`, ñ = `%C3%B1`). Está en dos lugares de `index.html`: el botón de
+  contacto y el pie.
 
-   ```bash
-   sed -i 's|https://jonathanalvez.netlify.app|https://tudominio.com|g' index.html sitemap.xml robots.txt
-   ```
+- **Instagram:** <https://www.instagram.com/jonathanalvez.mk/>
 
-3. **Fecha del sitemap.** Actualizá `<lastmod>` cuando cambies el contenido.
+## Lo único pendiente: el dominio
+
+Las URLs absolutas (canonical, Open Graph, JSON-LD, sitemap y robots) usan
+`https://jonathanalvez.netlify.app`. Cuando tengas el dominio definitivo,
+cambialo en `index.html`, `sitemap.xml` y `robots.txt`:
+
+```bash
+sed -i 's|https://jonathanalvez.netlify.app|https://tudominio.com|g' index.html sitemap.xml robots.txt
+```
+
+Actualizá también `<lastmod>` en `sitemap.xml` cuando cambies el contenido.
 
 ## Ver el sitio en local
 
