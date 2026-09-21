@@ -56,17 +56,41 @@ Netlify emite el certificado HTTPS automáticamente.
 
 - **Instagram:** <https://www.instagram.com/jonathanalvez.mk/>
 
-## Lo único pendiente: el dominio
+## Dominio
 
-Las URLs absolutas (canonical, Open Graph, JSON-LD, sitemap y robots) usan
-`https://jonathanalvez.netlify.app`. Cuando tengas el dominio definitivo,
-cambialo en `index.html`, `sitemap.xml` y `robots.txt`:
+Todas las URLs absolutas (canonical, Open Graph, JSON-LD, sitemap y robots)
+apuntan a `https://jonathanalvez.com`. En Netlify hay que agregar el dominio en
+*Site configuration → Domain management* y apuntar los DNS; el certificado HTTPS
+lo emite Netlify solo.
 
-```bash
-sed -i 's|https://jonathanalvez.netlify.app|https://tudominio.com|g' index.html sitemap.xml robots.txt
-```
+Actualizá `<lastmod>` en `sitemap.xml` cuando cambies el contenido.
 
-Actualizá también `<lastmod>` en `sitemap.xml` cuando cambies el contenido.
+## SEO
+
+Señales trabajadas en el sitio:
+
+- **Geográficas:** Misiones como región de trabajo (provincia, no una sola
+  ciudad), mencionada en title, description, hero, sección "Sobre mí", contacto,
+  pie y datos estructurados. Las ciudades (Posadas, Oberá, Eldorado, Puerto
+  Iguazú) aparecen en las FAQ, sin cerrar la puerta a clientes del resto del país.
+- **Datos estructurados:** `WebSite`, `Person`, `ProfessionalService` (con
+  `areaServed` provincial, teléfono y catálogo de los tres servicios) y
+  `FAQPage`. Validalos en <https://validator.schema.org>.
+- **FAQ:** seis preguntas con texto visible en la página — el schema `FAQPage`
+  solo cuenta si la respuesta está en el HTML, no únicamente en el JSON-LD.
+- **Términos de búsqueda:** "marketing digital", "publicidad en Facebook e
+  Instagram" y "campañas" incorporados al texto de servicios.
+
+Lo que **no** depende del sitio y define el ranking local:
+
+1. **Google Business Profile** — ficha de área de servicio (sin publicar
+   dirección). Es la palanca más grande para búsquedas locales.
+2. **Reseñas** en esa ficha.
+3. **Enlaces y menciones** desde otros sitios.
+4. **Google Search Console** — dar de alta el dominio y enviar el sitemap.
+
+Pendientes de mayor impacto en el sitio: páginas propias por servicio (hoy todo
+vive en una sola URL) y contenido nuevo de forma sostenida.
 
 ## Ver el sitio en local
 

@@ -12,7 +12,7 @@
     X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "geolocation=(), microphone=(), camera=(), interest-cohort=()"
-    Content-Security-Policy = "default-src 'self'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'self' 'sha256-DamCoPgB/VkDCPsu0R6X4sJsz1c66vGlUGBXLu04Yxg=' 'sha256-sEVa0UkUdiLOiBEO2mzECNCd+Ta2rjN8tRkt8V9cnB8='; frame-ancestors 'self'; base-uri 'self'; form-action 'self'"
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'self' 'sha256-DamCoPgB/VkDCPsu0R6X4sJsz1c66vGlUGBXLu04Yxg=' 'sha256-GgQTMXMgU+F4EhUUnP9mibDi3BEB9KOEFfXLdkmdYw8='; frame-ancestors 'self'; base-uri 'self'; form-action 'self'"
 
 # El HTML se revalida siempre; los estáticos versionables van con caché larga.
 [[headers]]
