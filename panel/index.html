@@ -1,0 +1,3049 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Panel · Jonathan Alvez</title>
+<meta name="description" content="Clientes, tareas, calendario e informes. Sincronizado entre dispositivos." />
+<meta name="theme-color" content="#faf7f2" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#14100f" media="(prefers-color-scheme: dark)" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Panel" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+<link rel="apple-touch-icon" href="icon-180.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500&display=swap"
+/>
+
+<style>
+  /* ============================================================
+     Paleta de marca: borgoña y dorado sobre crema. El tratamiento
+     es el nuevo — vidrio translúcido, auras difusas, esquinas
+     squircle — pero los colores son los de siempre.
+     Los semánticos (alta/media/baja, vencido) son otra familia y
+     nunca hacen de acento.
+     ============================================================ */
+  :root {
+    --canvas: #faf7f2;
+    --canvas-2: #f3eee5;
+
+    --wine: #5c1a2e;
+    --wine-hover: #4a1425;
+    --wine-deep: #38101c;
+    --wine-ink: #7a2338;
+    --wine-wash: #f7ecef;
+    --wine-fg: #fdf8f4;
+
+    --gold: #b8862f;
+    --gold-bright: #d4a853;
+    --gold-wash: #fbf3e4;
+
+    --ink: #1c1810;
+    --ink-body: #2a231a;
+    --ink-soft: #6b6050;
+    --ink-faint: #a0968a;
+
+    --glass-a: rgba(255, 253, 250, 0.78);
+    --glass-b: rgba(255, 253, 250, 0.46);
+    --glass-edge: rgba(255, 255, 255, 0.72);
+    /* Reemplazo opaco del vidrio donde backdrop-filter sale demasiado caro. */
+    --glass-solid: #fffdfa;
+    --glass-inset: inset 0 2.5px 4px rgba(255, 255, 255, 0.85);
+    --ring: rgba(60, 40, 25, 0.06);
+    --hairline: rgba(60, 40, 25, 0.12);
+    --tint: rgba(60, 40, 25, 0.05);
+    --tint-strong: rgba(60, 40, 25, 0.1);
+
+    --aura-1: rgba(92, 26, 46, 0.2);
+    --aura-2: rgba(212, 168, 83, 0.3);
+
+    --alta: #9b2222;
+    --alta-wash: #fbeeec;
+    --media: #8a6012;
+    --media-wash: #fdf5e6;
+    --baja: #35662d;
+    --baja-wash: #eef5ec;
+
+    --shadow-sm: 0 1px 2px rgba(40, 30, 10, 0.05);
+    --shadow-card: 0 12px 32px -6px rgba(92, 26, 46, 0.12);
+    --shadow-lift: 0 18px 50px -12px rgba(40, 30, 10, 0.22);
+    --wine-glow: 0 10px 25px -6px rgba(92, 26, 46, 0.35);
+    --gold-glow: 0 8px 22px -6px rgba(184, 134, 47, 0.35);
+
+    --r-sm: 12px;
+    --r-md: 16px;
+    --r-lg: 20px;
+    --r-xl: 24px;
+
+    --robo-a: #fffdfa;
+    --robo-b: #f2e8dd;
+    --robo-borde: rgba(92, 26, 46, 0.16);
+    --robo-panel: #e6d6c4;
+    --robo-linea: #c9b49e;
+
+    --font-display: "DM Serif Display", Georgia, serif;
+    --font-sans: "Inter", "DM Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --canvas: #14100f;
+      --canvas-2: #1c1715;
+      --wine: #8c2f44;
+      --wine-hover: #a03a51;
+      --wine-deep: #6d2235;
+      --wine-ink: #eaa8b6;
+      --wine-wash: #2a161c;
+      --wine-fg: #fff6f8;
+      --gold: #d4a853;
+      --gold-bright: #e3bd76;
+      --gold-wash: #2a2114;
+      --ink: #f7f1e8;
+      --ink-body: #ece4d8;
+      --ink-soft: #a79a8e;
+      --ink-faint: #6f6558;
+      --glass-a: rgba(255, 245, 235, 0.08);
+      --glass-b: rgba(255, 245, 235, 0.035);
+      --glass-edge: rgba(255, 240, 225, 0.13);
+      --glass-solid: #221c19;
+      --glass-inset: inset 0 1.5px 2px rgba(255, 245, 235, 0.1);
+      --ring: rgba(255, 240, 225, 0.06);
+      --hairline: rgba(255, 240, 225, 0.11);
+      --tint: rgba(255, 240, 225, 0.06);
+      --tint-strong: rgba(255, 240, 225, 0.12);
+      --aura-1: rgba(140, 47, 68, 0.28);
+      --aura-2: rgba(180, 140, 70, 0.2);
+      --alta: #f0908c;
+      --alta-wash: #2e1817;
+      --media: #e0b263;
+      --media-wash: #2b2214;
+      --baja: #86c07a;
+      --baja-wash: #1a2618;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45);
+      --shadow-card: 0 12px 32px -6px rgba(0, 0, 0, 0.55);
+      --shadow-lift: 0 18px 50px -12px rgba(0, 0, 0, 0.7);
+      --robo-a: #2a2220;
+      --robo-b: #1d1716;
+      --robo-borde: rgba(255, 240, 225, 0.15);
+      --robo-panel: #3a2e2a;
+      --robo-linea: #574641;
+      --robo-a: #2a2220;
+    --robo-b: #1d1716;
+    --robo-borde: rgba(255, 240, 225, 0.15);
+    --robo-panel: #3a2e2a;
+    --robo-linea: #574641;
+    --wine-glow: 0 10px 25px -6px rgba(140, 47, 68, 0.5);
+      --gold-glow: 0 8px 22px -6px rgba(212, 168, 83, 0.35);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --canvas: #14100f;
+    --canvas-2: #1c1715;
+    --wine: #8c2f44;
+    --wine-hover: #a03a51;
+    --wine-deep: #6d2235;
+    --wine-ink: #eaa8b6;
+    --wine-wash: #2a161c;
+    --wine-fg: #fff6f8;
+    --gold: #d4a853;
+    --gold-bright: #e3bd76;
+    --gold-wash: #2a2114;
+    --ink: #f7f1e8;
+    --ink-body: #ece4d8;
+    --ink-soft: #a79a8e;
+    --ink-faint: #6f6558;
+    --glass-a: rgba(255, 245, 235, 0.08);
+    --glass-b: rgba(255, 245, 235, 0.035);
+    --glass-edge: rgba(255, 240, 225, 0.13);
+    --glass-solid: #221c19;
+    --glass-inset: inset 0 1.5px 2px rgba(255, 245, 235, 0.1);
+    --ring: rgba(255, 240, 225, 0.06);
+    --hairline: rgba(255, 240, 225, 0.11);
+    --tint: rgba(255, 240, 225, 0.06);
+    --tint-strong: rgba(255, 240, 225, 0.12);
+    --aura-1: rgba(140, 47, 68, 0.28);
+    --aura-2: rgba(180, 140, 70, 0.2);
+    --alta: #f0908c;
+    --alta-wash: #2e1817;
+    --media: #e0b263;
+    --media-wash: #2b2214;
+    --baja: #86c07a;
+    --baja-wash: #1a2618;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45);
+    --shadow-card: 0 12px 32px -6px rgba(0, 0, 0, 0.55);
+    --shadow-lift: 0 18px 50px -12px rgba(0, 0, 0, 0.7);
+    --wine-glow: 0 10px 25px -6px rgba(140, 47, 68, 0.5);
+    --gold-glow: 0 8px 22px -6px rgba(212, 168, 83, 0.35);
+  }
+
+  /* ---------- base ---------- */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--canvas);
+    color: var(--ink-body);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: -0.2px;
+    -webkit-font-smoothing: antialiased;
+  }
+  button, input, select, textarea { font: inherit; color: inherit; letter-spacing: inherit; }
+  button { cursor: pointer; background: none; border: 0; }
+  :focus-visible { outline: 2px solid var(--wine); outline-offset: 2px; border-radius: 8px; }
+  .num, time { font-variant-numeric: tabular-nums; }
+  ::selection { background: rgba(92, 26, 46, 0.16); }
+  [hidden] { display: none !important; }
+
+  /* ---------- aura ---------- */
+  .aura { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+  .aura i { position: absolute; display: block; border-radius: 50%; }
+  .aura .a1 { top: -24%; right: -12%; width: 540px; height: 540px; background: var(--aura-1); filter: blur(120px); }
+  .aura .a2 { bottom: -28%; left: -16%; width: 480px; height: 480px; background: var(--aura-2); filter: blur(120px); }
+  .aura .a3 { bottom: -6%; right: 18%; width: 380px; height: 380px; background: var(--aura-2); filter: blur(120px); opacity: .55; }
+
+  /* ---------- vidrio ---------- */
+  .glass {
+    background: linear-gradient(to bottom right, var(--glass-a), var(--glass-b));
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid var(--glass-edge);
+    box-shadow: var(--glass-inset), 0 0 0 1px var(--ring), var(--shadow-card);
+  }
+  .glass-deep {
+    background: linear-gradient(to bottom right, var(--glass-a), var(--glass-b));
+    backdrop-filter: blur(50px) saturate(1.6);
+    -webkit-backdrop-filter: blur(50px) saturate(1.6);
+    border: 1px solid var(--glass-edge);
+    box-shadow: var(--glass-inset), 0 0 0 1px var(--ring), var(--shadow-lift);
+  }
+
+  /* ---------- candado ---------- */
+  .lock {
+    position: fixed; inset: 0; z-index: 200;
+    display: grid; place-items: center; padding: 20px;
+    background: var(--canvas);
+  }
+  .lock-box {
+    position: relative; z-index: 1;
+    width: min(360px, 100%); padding: 30px 26px;
+    border-radius: var(--r-xl); text-align: center;
+  }
+  .lock-mark {
+    width: 54px; height: 54px; margin: 0 auto 16px; border-radius: 16px;
+    display: grid; place-items: center; color: var(--gold-bright);
+    background: linear-gradient(to bottom right, var(--wine), var(--wine-deep));
+    box-shadow: var(--wine-glow);
+  }
+  .lock-mark .ic { width: 26px; height: 26px; }
+  .lock-title { font-family: var(--font-display); font-size: 26px; color: var(--ink); line-height: 1.1; }
+  .lock-sub { margin-top: 6px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); }
+  .lock-field { margin-top: 12px; }
+  .lock-field:first-of-type { margin-top: 22px; }
+  .lock-field input {
+    width: 100%; height: 46px; padding: 0 14px; text-align: center;
+    border-radius: var(--r-sm); border: 1px solid var(--hairline);
+    background: var(--canvas); font-size: 16px; color: var(--ink);
+  }
+  .lock-field input[type="password"] { letter-spacing: .18em; }
+  .lock-field input[type="password"]::placeholder { letter-spacing: 0; }
+  .lock-field input:focus { outline: none; border-color: var(--wine); box-shadow: 0 0 0 3px var(--wine-wash); }
+  .lock-error { margin-top: 12px; min-height: 18px; font-size: 12.5px; line-height: 1.5; color: var(--alta); }
+  .lock-pie { margin-top: 14px; font-size: 11.5px; line-height: 1.55; color: var(--ink-faint); }
+  .lock-pie button { font-size: 11.5px; font-weight: 700; color: var(--wine-ink); text-decoration: underline; text-underline-offset: 2px; }
+
+  /* ---------- estructura ---------- */
+  .app { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; }
+
+  .navbar {
+    position: fixed; top: 14px; left: 0; right: 0; z-index: 50;
+    display: flex; justify-content: center; padding-inline: 16px; pointer-events: none;
+    animation: drop-in .6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .navbar-inner {
+    pointer-events: auto; width: 100%; max-width: 1220px;
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px 8px 16px; border-radius: var(--r-md);
+  }
+  .brand { display: flex; align-items: center; gap: 9px; white-space: nowrap; }
+  .brand-mark {
+    width: 30px; height: 30px; border-radius: 9px; flex: none;
+    display: grid; place-items: center; color: var(--gold-bright);
+    background: linear-gradient(to bottom right, var(--wine), var(--wine-deep));
+    box-shadow: var(--shadow-sm);
+  }
+  .brand-mark .ic { width: 16px; height: 16px; }
+  .brand-txt { display: flex; flex-direction: column; line-height: 1.05; }
+  .brand-txt b { font-family: var(--font-display); font-weight: 400; font-size: 17px; color: var(--ink); }
+  .brand-txt span { font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-faint); }
+
+  .navlinks { display: none; align-items: center; gap: 2px; margin-inline: auto; }
+  .navlinks button {
+    padding: 7px 13px; border-radius: 10px;
+    font-size: 13.5px; font-weight: 500; color: var(--ink-soft);
+    transition: color .18s, background .18s;
+  }
+  .navlinks button:hover { color: var(--ink); background: var(--tint); }
+  .navlinks button[aria-current="page"] { color: var(--wine-ink); background: var(--wine-wash); font-weight: 600; }
+
+  .navtools { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  .search { position: relative; width: 150px; }
+  .search .ic { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: var(--ink-faint); pointer-events: none; }
+  .search input {
+    width: 100%; height: 36px; padding: 0 12px 0 33px;
+    border-radius: var(--r-sm); border: 1px solid var(--tint-strong);
+    background: var(--tint); font-size: 13.5px; color: var(--ink-body);
+    transition: border-color .18s, background .18s;
+  }
+  .search input::placeholder { color: var(--ink-faint); }
+  .search input:focus { outline: none; border-color: var(--wine); background: var(--canvas); }
+
+  .sync {
+    display: none; align-items: center; gap: 6px; flex: none;
+    padding: 0 10px; height: 30px; border-radius: 999px;
+    font-size: 11.5px; font-weight: 600; color: var(--ink-faint); background: var(--tint);
+  }
+  .sync i { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-faint); flex: none; }
+  .sync[data-estado="online"] { color: var(--baja); background: var(--baja-wash); }
+  .sync[data-estado="online"] i { background: var(--baja); animation: latido 2.4s ease-in-out infinite; }
+  .sync[data-estado="local"] { color: var(--media); background: var(--media-wash); }
+  .sync[data-estado="local"] i { background: var(--media); }
+
+  .scroll { flex: 1; overflow-y: auto; overflow-x: hidden; }
+  .page {
+    width: 100%; max-width: 1220px; margin: 0 auto;
+    padding: 86px 20px 120px; display: flex; flex-direction: column; gap: 26px;
+  }
+  .page.narrow { max-width: 900px; }
+
+  .tabbar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+    display: flex; justify-content: center;
+    padding: 0 12px calc(12px + env(safe-area-inset-bottom, 0px)); pointer-events: none;
+  }
+  .tabbar-inner { pointer-events: auto; display: flex; width: 100%; max-width: 480px; padding: 6px; border-radius: var(--r-lg); }
+  .tabbar-inner button {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 7px 2px; border-radius: 14px;
+    font-size: 10px; font-weight: 600; color: var(--ink-soft);
+    transition: color .18s, background .18s;
+  }
+  .tabbar-inner button[aria-current="page"] { color: var(--wine-ink); background: var(--wine-wash); }
+  .tabbar-inner .ic { width: 19px; height: 19px; }
+
+  @media (min-width: 960px) {
+    .navlinks { display: flex; }
+    .search { width: 210px; }
+    .sync { display: flex; }
+    .tabbar { display: none; }
+    .page { padding: 96px 28px 64px; }
+  }
+
+  /* ---------- tipografía ---------- */
+  h1 { font-family: var(--font-display); font-weight: 400; font-size: 27px; line-height: 1.15; letter-spacing: -0.5px; color: var(--ink); }
+  .display { font-family: var(--font-display); font-weight: 400; font-size: clamp(32px, 5.2vw, 50px); line-height: 1.06; letter-spacing: -1.2px; color: var(--ink); text-wrap: balance; }
+  h2 { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
+  .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); }
+  .lead { margin-top: 14px; font-size: 16.5px; line-height: 1.6; letter-spacing: -0.3px; color: var(--ink-soft); max-width: 46ch; }
+  .frase { margin-top: 10px; font-size: 13px; font-style: italic; color: var(--ink-faint); max-width: 46ch; }
+  .sub { margin-top: 5px; font-size: 13.5px; color: var(--ink-soft); }
+  .muted { color: var(--ink-soft); }
+  .faint { color: var(--ink-faint); }
+  section { display: flex; flex-direction: column; gap: 10px; }
+
+  .hero-grid { display: grid; grid-template-columns: 1fr; gap: 26px; }
+  @media (min-width: 1040px) {
+    .hero-grid { grid-template-columns: 5fr 7fr; gap: 42px; align-items: start; }
+    .hero-left { position: sticky; top: 96px; }
+  }
+  .hero-left, .hero-right { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+
+  /* ---------- botones ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    height: 38px; padding: 0 15px; border-radius: var(--r-sm);
+    font-size: 13.5px; font-weight: 600; letter-spacing: -0.2px;
+    border: 1px solid transparent; white-space: nowrap;
+    transition: transform .15s cubic-bezier(0.16, 1, 0.3, 1), background .18s, box-shadow .18s, color .18s, border-color .18s;
+  }
+  .btn:active { transform: scale(.975); }
+  .btn .ic { width: 15px; height: 15px; }
+  .btn-primary { background: var(--wine); color: var(--wine-fg); font-weight: 700; box-shadow: inset 0 4px 4px rgba(255,255,255,0.12), var(--wine-glow); }
+  .btn-primary:hover { background: var(--wine-hover); transform: scale(1.02); }
+  .btn-gold { background: linear-gradient(to bottom right, var(--gold-bright), var(--gold)); color: #2a1e08; font-weight: 700; box-shadow: var(--gold-glow); }
+  .btn-gold:hover { filter: brightness(1.05); transform: scale(1.02); }
+  .btn-soft { background: var(--tint); border-color: var(--tint-strong); color: var(--ink); }
+  .btn-soft:hover { background: var(--tint-strong); box-shadow: var(--shadow-sm); }
+  .btn-quiet { color: var(--ink-soft); font-weight: 500; }
+  .btn-quiet:hover { background: var(--tint); color: var(--ink); }
+  .btn-danger { color: var(--ink-faint); font-weight: 500; }
+  .btn-danger:hover { background: var(--alta-wash); color: var(--alta); }
+  .btn-sm { height: 32px; padding: 0 11px; font-size: 12.5px; }
+  .btn-block { width: 100%; }
+
+  .btn-bead { height: 44px; padding: 0 6px 0 20px; border-radius: var(--r-md); gap: 14px; font-size: 14px; }
+  .btn-bead .bead {
+    width: 32px; height: 32px; border-radius: 50%; flex: none;
+    background: var(--gold-bright); color: var(--wine-deep);
+    display: grid; place-items: center;
+    transition: transform .2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-bead:hover .bead { transform: translateX(3px); }
+  .btn-bead .bead .ic { width: 16px; height: 16px; }
+
+  .icon-btn {
+    width: 32px; height: 32px; border-radius: 10px; flex: none;
+    display: grid; place-items: center; color: var(--ink-faint);
+    transition: background .18s, color .18s;
+  }
+  .icon-btn:hover { background: var(--tint); color: var(--ink); }
+  .icon-btn.danger:hover { background: var(--alta-wash); color: var(--alta); }
+  .icon-btn .ic { width: 16px; height: 16px; }
+
+  /* ---------- captura ---------- */
+  .capture-row { position: relative; }
+  .capture-row input {
+    width: 100%; height: 58px; padding: 0 60px 0 18px;
+    font-size: 16px; letter-spacing: -0.3px; border-radius: var(--r-lg);
+    background: linear-gradient(to bottom right, var(--glass-a), var(--glass-b));
+    backdrop-filter: blur(20px) saturate(1.4); -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid var(--glass-edge);
+    box-shadow: var(--glass-inset), 0 0 0 1px var(--ring), var(--shadow-card);
+    color: var(--ink-body);
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .capture-row input::placeholder { color: var(--ink-faint); }
+  .capture-row input:focus {
+    outline: none; border-color: rgba(92, 26, 46, .45);
+    box-shadow: var(--glass-inset), 0 0 0 4px rgba(92, 26, 46, .1), var(--shadow-card);
+  }
+  .capture-send {
+    position: absolute; right: 9px; top: 50%; transform: translateY(-50%);
+    width: 40px; height: 40px; border-radius: var(--r-sm);
+    display: grid; place-items: center; background: var(--wine); color: var(--wine-fg);
+    box-shadow: inset 0 3px 4px rgba(255,255,255,.14), var(--wine-glow);
+    transition: opacity .18s, background .18s;
+  }
+  .capture-send:hover { background: var(--wine-hover); }
+  .capture-send[disabled] { opacity: .28; cursor: default; box-shadow: none; }
+  .capture-send .ic { width: 17px; height: 17px; }
+  .hint { margin-top: 10px; padding-inline: 2px; font-size: 12px; color: var(--ink-faint); }
+
+  .confirm { border-radius: var(--r-xl); padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+  .confirm-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .confirm-head strong { font-family: var(--font-display); font-weight: 400; font-size: 17px; color: var(--ink); }
+
+  /* ---------- campos ---------- */
+  .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+  .field > label, .field > .label {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+    color: var(--ink-faint); display: flex; align-items: center; gap: 6px;
+  }
+  .guessed { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex: none; }
+  .field input, .field select, .field textarea {
+    width: 100%; padding: 9px 11px; border: 1px solid var(--hairline); border-radius: 11px;
+    background: var(--canvas); font-size: 14px; color: var(--ink-body);
+    transition: border-color .18s, box-shadow .18s;
+  }
+  .field textarea { resize: vertical; min-height: 58px; font-family: inherit; }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none; border-color: var(--wine); box-shadow: 0 0 0 3px var(--wine-wash);
+  }
+  .seg { display: flex; gap: 6px; }
+  .seg button {
+    flex: 1; padding: 8px 10px; border-radius: 11px;
+    border: 1px solid var(--hairline); background: var(--canvas);
+    font-size: 13px; font-weight: 600; color: var(--ink-soft); transition: all .18s;
+  }
+  .seg button:hover { background: var(--tint); }
+  .seg button[aria-pressed="true"] { border-color: transparent; background: var(--wine); color: var(--wine-fg); box-shadow: var(--wine-glow); }
+  .actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; align-items: center; }
+
+  /* ---------- perlas y tarjetas flotantes ---------- */
+  .bead-icon { width: 34px; height: 34px; border-radius: 11px; flex: none; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 15px; }
+  .bead-icon .ic { width: 17px; height: 17px; }
+  .bead-wine  { background: linear-gradient(to bottom right, #7a2338, #4a1425); box-shadow: 0 4px 12px rgba(92,26,46,.32); }
+  .bead-gold  { background: linear-gradient(to bottom right, #d4a853, #a8761f); color: #2a1e08; box-shadow: 0 4px 12px rgba(184,134,47,.32); }
+  .bead-olive { background: linear-gradient(to bottom right, #5d7a3a, #3d5424); box-shadow: 0 4px 12px rgba(93,122,58,.3); }
+  .bead-clay  { background: linear-gradient(to bottom right, #b5653c, #8a4527); box-shadow: 0 4px 12px rgba(181,101,60,.3); }
+  .bead-slate { background: linear-gradient(to bottom right, #4a5a6e, #2f3c4c); box-shadow: 0 4px 12px rgba(74,90,110,.3); }
+  .bead-plum  { background: linear-gradient(to bottom right, #6b4478, #47294f); box-shadow: 0 4px 12px rgba(107,68,120,.3); }
+
+  .float-card {
+    display: flex; align-items: center; gap: 12px; text-align: left;
+    padding: 11px 16px; border-radius: var(--r-lg);
+    transition: transform .25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .float-card:hover { transform: scale(1.02) rotate(.4deg); }
+  .float-card:hover, .float-card:focus-visible { animation-play-state: paused; }
+  .float-card .fc-text { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; flex: 1; }
+  .float-card .fc-1 { font-size: 13.5px; font-weight: 800; letter-spacing: -0.3px; color: var(--ink-body); }
+  .float-card .fc-2 { font-size: 11px; font-weight: 600; color: var(--ink-soft); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .float-card.fc-wrap { flex-wrap: wrap; }
+  .float-card.fc-wrap .fc-text { flex: 1 1 150px; }
+  .float-card.fc-wrap .fc-2 { white-space: normal; overflow: visible; }
+  .float-card .fc-acciones { display: flex; align-items: center; gap: 6px; margin-left: auto; flex: none; }
+  .float-a { animation: float-a 5s ease-in-out infinite; }
+  .float-b { animation: float-b 5.5s ease-in-out infinite; }
+  .float-c { animation: float-c 4.8s ease-in-out infinite; }
+
+  /* ---------- tareas ---------- */
+  .list { display: flex; flex-direction: column; gap: 8px; }
+  .task {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 13px 14px; border-radius: var(--r-lg);
+    background: linear-gradient(to bottom right, var(--glass-a), var(--glass-b));
+    backdrop-filter: blur(20px) saturate(1.4); -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid var(--glass-edge);
+    box-shadow: var(--glass-inset), 0 0 0 1px var(--ring), 0 6px 18px -8px rgba(40,30,10,.12);
+    transition: transform .18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .18s;
+  }
+  .task:hover { transform: translateY(-2px); box-shadow: var(--glass-inset), 0 0 0 1px var(--ring), var(--shadow-card); }
+  .check {
+    margin-top: 1px; width: 20px; height: 20px; flex: none;
+    border: 1.5px solid var(--tint-strong); border-radius: 50%;
+    display: grid; place-items: center;
+    transition: border-color .18s, background .18s, transform .15s;
+  }
+  .check:hover { border-color: var(--wine); transform: scale(1.08); }
+  .check[data-done="1"] { background: var(--wine); border-color: var(--wine); color: var(--wine-fg); box-shadow: 0 3px 9px rgba(92,26,46,.3); }
+  .check .ic { width: 11px; height: 11px; }
+  .task-body { flex: 1; min-width: 0; text-align: left; }
+  .task-title { font-size: 14px; font-weight: 600; letter-spacing: -0.3px; color: var(--ink-body); }
+  .task[data-done="1"] .task-title { color: var(--ink-faint); text-decoration: line-through; }
+  .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 8px; margin-top: 7px; font-size: 11.5px; color: var(--ink-soft); }
+  .meta .cli { display: inline-flex; align-items: center; gap: 4px; font-weight: 700; color: var(--wine-ink); }
+  .tag { border: 1px solid var(--hairline); border-radius: 999px; padding: 1px 8px; font-size: 10.5px; font-weight: 600; color: var(--ink-soft); }
+  .when.vencida { color: var(--alta); font-weight: 700; }
+  .when.hoy { color: var(--wine-ink); font-weight: 700; }
+  .prio { border-radius: 999px; padding: 1.5px 8px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+  .prio.alta { background: var(--alta-wash); color: var(--alta); }
+  .prio.media { background: var(--media-wash); color: var(--media); }
+  .prio.baja { background: var(--baja-wash); color: var(--baja); }
+  .task-side { display: flex; align-items: center; gap: 1px; flex: none; }
+  @media (min-width: 960px) {
+    .task-side .icon-btn { opacity: 0; transition: opacity .18s, background .18s, color .18s; }
+    .task:hover .task-side .icon-btn, .task:focus-within .task-side .icon-btn { opacity: 1; }
+  }
+
+  /* ---------- superficies ---------- */
+  .card { border-radius: var(--r-xl); padding: 18px; }
+  .empty {
+    border: 1.5px dashed var(--tint-strong); border-radius: var(--r-xl);
+    padding: 30px 20px; text-align: center; color: var(--ink-soft); font-size: 14px; font-weight: 500;
+  }
+  .empty p { margin-top: 5px; font-size: 12.5px; font-weight: 400; color: var(--ink-faint); }
+  .empty-robo { padding: 14px 20px 26px; }
+  .empty-robo .empty-t { margin-top: 6px; font-family: var(--font-display); font-size: 17px; font-weight: 400; color: var(--ink); }
+  .empty-robo p { max-width: 34ch; margin-inline: auto; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 10px; }
+  .stat { border-radius: var(--r-lg); padding: 13px 15px; }
+  .stat b { display: block; font-family: var(--font-display); font-weight: 400; font-size: 28px; line-height: 1.1; color: var(--ink); }
+  .stat span { display: block; margin-top: 3px; font-size: 11.5px; font-weight: 600; color: var(--ink-soft); }
+  .stat.acento b { color: var(--wine-ink); }
+  .stat.alerta b { color: var(--alta); }
+
+  .barra { height: 5px; border-radius: 99px; background: var(--tint-strong); overflow: hidden; }
+  .barra i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(to right, var(--wine), var(--gold)); transition: width .45s cubic-bezier(0.16, 1, 0.3, 1); }
+
+  /* ---------- clientes ---------- */
+  .cli-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .cli-card {
+    display: flex; flex-direction: column; gap: 12px; text-align: left; width: 100%;
+    padding: 16px; border-radius: var(--r-xl);
+    background: linear-gradient(to bottom right, var(--glass-a), var(--glass-b));
+    backdrop-filter: blur(20px) saturate(1.4); -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid var(--glass-edge);
+    box-shadow: var(--glass-inset), 0 0 0 1px var(--ring), 0 6px 18px -8px rgba(40,30,10,.12);
+    transition: transform .18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .18s;
+  }
+  .cli-card:hover { transform: translateY(-3px); box-shadow: var(--glass-inset), 0 0 0 1px var(--ring), var(--shadow-card); }
+  .cli-top { display: flex; align-items: center; gap: 11px; }
+  .cli-emoji { width: 40px; height: 40px; border-radius: 13px; flex: none; display: grid; place-items: center; font-size: 20px; background: var(--tint); }
+  .cli-nombre { font-family: var(--font-display); font-weight: 400; font-size: 18px; color: var(--ink); line-height: 1.2; }
+  .cli-sub { margin-top: 2px; font-size: 11.5px; color: var(--ink-soft); }
+  .cli-next { font-size: 12.5px; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .badge { border-radius: 999px; padding: 3px 9px; font-size: 11px; font-weight: 700; white-space: nowrap; background: var(--alta-wash); color: var(--alta); }
+  .badge.ok { background: var(--baja-wash); color: var(--baja); }
+  .badge.gold { background: var(--gold-wash); color: var(--gold); }
+
+  .tabs { display: flex; gap: 4px; padding: 5px; border-radius: 14px; background: var(--tint); width: fit-content; max-width: 100%; overflow-x: auto; }
+  .tabs button {
+    padding: 7px 13px; border-radius: 10px; white-space: nowrap;
+    font-size: 13px; font-weight: 600; color: var(--ink-soft);
+    transition: background .18s, color .18s, box-shadow .18s;
+  }
+  .tabs button[aria-selected="true"] { background: var(--canvas); color: var(--ink); box-shadow: var(--shadow-sm); }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip {
+    border: 1px solid var(--hairline); border-radius: 999px;
+    padding: 5px 12px; font-size: 12px; font-weight: 600; color: var(--ink-soft); transition: all .18s;
+  }
+  .chip:hover { background: var(--tint); color: var(--ink); }
+  .chip[aria-pressed="true"] { border-color: transparent; background: var(--wine); color: var(--wine-fg); box-shadow: var(--wine-glow); }
+
+  .emoji-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; max-height: 190px; overflow-y: auto; padding: 4px; border: 1px solid var(--hairline); border-radius: 11px; background: var(--canvas); }
+  @media (max-width: 520px) { .emoji-grid { grid-template-columns: repeat(8, 1fr); } }
+  .emoji-grid button { aspect-ratio: 1; border-radius: 8px; font-size: 17px; display: grid; place-items: center; transition: background .15s, transform .15s; }
+  .emoji-grid button:hover { background: var(--tint); transform: scale(1.12); }
+  .emoji-grid button[aria-pressed="true"] { background: var(--wine-wash); box-shadow: inset 0 0 0 1.5px var(--wine); }
+
+  /* ---------- calendario ---------- */
+  .cal-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .cal-mes { font-family: var(--font-display); font-size: 19px; color: var(--ink); text-transform: capitalize; }
+  .week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 7px; }
+  .day {
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    padding: 10px 2px; border-radius: 14px;
+    border: 1px solid var(--ring); background: var(--tint);
+    transition: transform .18s cubic-bezier(0.16, 1, 0.3, 1), background .18s;
+  }
+  .day:hover { transform: translateY(-2px); background: var(--tint-strong); }
+  .day[aria-pressed="true"] { border-color: transparent; background: var(--wine); color: var(--wine-fg); box-shadow: var(--wine-glow); }
+  .day .dow { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-faint); }
+  .day[aria-pressed="true"] .dow { color: rgba(255,255,255,.75); }
+  .day .n { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 700; color: var(--ink-body); }
+  .day.es-hoy .n { background: var(--gold-wash); color: var(--gold); }
+  .day[aria-pressed="true"] .n { background: rgba(255,255,255,.2); color: var(--wine-fg); }
+  .day .marks { height: 5px; display: flex; gap: 3px; align-items: center; }
+  .day .marks i { width: 5px; height: 5px; border-radius: 50%; background: var(--wine); }
+  .day .marks i.cli { background: var(--gold); }
+  .day[aria-pressed="true"] .marks i { background: rgba(255,255,255,.85); }
+  .month-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+  .month-grid .dow-head { text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-faint); padding-bottom: 5px; }
+  .month-grid .day { border-color: transparent; background: transparent; padding: 7px 2px; }
+  .month-grid .day:hover { background: var(--tint); }
+  .month-grid .day[aria-pressed="true"] { background: var(--wine); }
+  .month-grid .day.fuera { opacity: .3; }
+  .month-grid .day .n { width: 23px; height: 23px; font-size: 12px; }
+
+  /* ---------- informes ---------- */
+  .inf-layout { display: grid; grid-template-columns: 1fr; gap: 20px; }
+  @media (min-width: 1040px) { .inf-layout { grid-template-columns: 380px 1fr; align-items: start; } }
+  .inf-editor { display: flex; flex-direction: column; gap: 14px; border-radius: var(--r-xl); padding: 18px; }
+  .inf-lista { display: flex; flex-direction: column; gap: 4px; max-height: 240px; overflow-y: auto; padding: 5px; border: 1px solid var(--hairline); border-radius: 11px; background: var(--canvas); }
+  .inf-fila { display: flex; align-items: flex-start; gap: 9px; padding: 8px 9px; border-radius: 9px; text-align: left; width: 100%; transition: background .15s; }
+  .inf-fila:hover { background: var(--tint); }
+  .inf-fila[aria-pressed="true"] { background: var(--wine-wash); }
+  .inf-fila .caja { width: 17px; height: 17px; flex: none; margin-top: 1px; border-radius: 5px; border: 1.5px solid var(--tint-strong); display: grid; place-items: center; }
+  .inf-fila[aria-pressed="true"] .caja { background: var(--wine); border-color: var(--wine); color: var(--wine-fg); }
+  .inf-fila .caja .ic { width: 10px; height: 10px; }
+  .inf-fila-txt { flex: 1; min-width: 0; }
+  .inf-fila-txt b { display: block; font-size: 13px; font-weight: 600; color: var(--ink-body); }
+  .inf-fila-txt span { display: block; margin-top: 1px; font-size: 11px; color: var(--ink-faint); }
+  .inf-vista { border-radius: var(--r-xl); padding: 18px; }
+  .inf-marco { border-radius: var(--r-lg); overflow: hidden; }
+
+  /* El informe se exporta como imagen: colores fijos, sin variables,
+     porque html2canvas rasteriza lo que ve y no resuelve el tema. */
+  .doc { width: 100%; max-width: 640px; margin: 0 auto; background: #5c1a2e; color: #f7ece6; padding: 34px 32px 28px; font-family: "Inter", sans-serif; }
+  .doc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding-bottom: 20px; border-bottom: 1px solid rgba(212,168,83,.3); }
+  .doc-emoji { font-size: 30px; line-height: 1; }
+  .doc-cli { margin-top: 10px; font-family: "DM Serif Display", Georgia, serif; font-size: 30px; line-height: 1.1; color: #f7ece6; }
+  .doc-periodo { margin-top: 5px; font-size: 12.5px; color: rgba(212,168,83,.9); }
+  .doc-logo { text-align: right; font-size: 11px; line-height: 1.5; color: rgba(247,236,230,.55); letter-spacing: .06em; text-transform: uppercase; }
+  .doc-logo b { display: block; font-family: "DM Serif Display", Georgia, serif; font-size: 15px; text-transform: none; letter-spacing: 0; color: #d4a853; }
+  .doc-sec { margin-top: 22px; }
+  .doc-lbl { font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(212,168,83,.85); margin-bottom: 9px; }
+  .doc-texto { font-size: 14px; line-height: 1.65; color: rgba(247,236,230,.92); white-space: pre-line; }
+  .doc-tarea { display: flex; align-items: flex-start; gap: 11px; padding: 9px 0; border-bottom: 1px solid rgba(247,236,230,.08); }
+  .doc-tarea:last-child { border-bottom: 0; }
+  .doc-caja { width: 16px; height: 16px; flex: none; margin-top: 2px; border-radius: 5px; border: 1.5px solid rgba(212,168,83,.5); }
+  .doc-caja.done { background: #d4a853; border-color: #d4a853; }
+  .doc-tarea-txt { flex: 1; min-width: 0; font-size: 13.5px; color: #f7ece6; }
+  .doc-tarea-txt.done { color: rgba(247,236,230,.6); }
+  .doc-tarea-fecha { margin-top: 2px; font-size: 11px; color: rgba(212,168,83,.75); }
+  .doc-pie { margin-top: 24px; padding-top: 14px; border-top: 1px solid rgba(212,168,83,.25); font-size: 10.5px; color: rgba(247,236,230,.45); display: flex; justify-content: space-between; gap: 10px; }
+
+  /* ---------- ajustes ---------- */
+  .rows { border-radius: var(--r-xl); overflow: hidden; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px; }
+  .row + .row { border-top: 1px solid var(--ring); }
+  .row-label { font-size: 14px; font-weight: 600; letter-spacing: -0.2px; color: var(--ink-body); }
+  .row-desc { margin-top: 3px; font-size: 12.5px; color: var(--ink-soft); max-width: 46ch; }
+  .nota { border-radius: var(--r-lg); padding: 14px 16px; font-size: 13px; line-height: 1.6; color: var(--ink-soft); border: 1px solid var(--gold); background: var(--gold-wash); }
+  .nota b { color: var(--ink-body); }
+  .nota code { font-family: ui-monospace, Menlo, monospace; font-size: 12px; background: var(--tint); padding: 1px 5px; border-radius: 5px; }
+  .backup-area { width: 100%; min-height: 130px; resize: vertical; padding: 11px; border: 1px solid var(--hairline); border-radius: 11px; background: var(--canvas); color: var(--ink-body); font-family: ui-monospace, Menlo, monospace; font-size: 11.5px; }
+
+  /* ---------- diálogo ---------- */
+  dialog {
+    width: min(500px, calc(100% - 24px)); max-height: 88dvh; padding: 0;
+    border: 1px solid var(--glass-edge); border-radius: var(--r-xl);
+    background: linear-gradient(to bottom right, var(--glass-a), var(--glass-b));
+    backdrop-filter: blur(50px) saturate(1.6); -webkit-backdrop-filter: blur(50px) saturate(1.6);
+    box-shadow: var(--glass-inset), 0 0 0 1px var(--ring), var(--shadow-lift);
+    color: var(--ink-body); overflow: auto;
+    animation: pop-in .28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  dialog::backdrop { background: rgba(30, 18, 14, .35); backdrop-filter: blur(3px); }
+  .dlg-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding: 18px 18px 0; }
+  .dlg-title { font-family: var(--font-display); font-size: 20px; font-weight: 400; color: var(--ink); line-height: 1.2; }
+  .dlg-desc { margin-top: 5px; font-size: 13px; color: var(--ink-soft); }
+  .dlg-body { padding: 16px 18px; display: flex; flex-direction: column; gap: 13px; }
+  .dlg-foot { display: flex; gap: 8px; justify-content: flex-end; align-items: center; padding: 0 18px 18px; flex-wrap: wrap; }
+  .dlg-foot .spacer { margin-right: auto; }
+
+  /* ---------- Taski ---------- */
+  .taski-fab {
+    position: fixed; right: 18px; z-index: 55;
+    bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+    width: 54px; height: 54px; border-radius: 50%;
+    display: grid; place-items: center; color: var(--gold-bright);
+    background: linear-gradient(to bottom right, var(--wine), var(--wine-deep));
+    box-shadow: inset 0 3px 5px rgba(255,255,255,.14), 0 14px 30px -6px rgba(92,26,46,.5);
+    transition: transform .2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .taski-fab:hover { transform: scale(1.06); }
+  .taski-fab:active { transform: scale(.96); }
+  .taski-fab .ic { width: 24px; height: 24px; }
+  @media (min-width: 960px) { .taski-fab { bottom: 24px; right: 24px; } }
+
+  .taski-panel {
+    position: fixed; z-index: 56; left: 12px; right: 12px;
+    bottom: calc(148px + env(safe-area-inset-bottom, 0px));
+    max-height: min(70dvh, 560px); display: flex; flex-direction: column; overflow: hidden;
+    border-radius: var(--r-xl); animation: pop-in .28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @media (min-width: 960px) { .taski-panel { left: auto; right: 24px; bottom: 90px; width: 420px; } }
+  .taski-head { display: flex; align-items: center; gap: 11px; padding: 14px 16px; border-bottom: 1px solid var(--ring); }
+  .taski-name { font-family: var(--font-display); font-size: 19px; color: var(--ink); line-height: 1.1; }
+  .taski-sub { margin-top: 1px; font-size: 11.5px; color: var(--ink-soft); }
+  .taski-log { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+  .msg { max-width: 88%; padding: 10px 13px; border-radius: 16px; font-size: 13px; line-height: 1.55; white-space: pre-line; }
+  .msg.me { margin-left: auto; background: var(--wine); color: var(--wine-fg); border-bottom-right-radius: 6px; box-shadow: var(--wine-glow); }
+  .msg.it { background: var(--tint); color: var(--ink-body); border-bottom-left-radius: 6px; }
+  .taski-form { position: relative; padding: 11px; border-top: 1px solid var(--ring); }
+  .taski-form input { width: 100%; height: 40px; padding: 0 44px 0 14px; border-radius: var(--r-sm); border: 1px solid var(--hairline); background: var(--canvas); font-size: 13.5px; color: var(--ink-body); }
+  .taski-form input:focus { outline: none; border-color: var(--wine); box-shadow: 0 0 0 3px var(--wine-wash); }
+  .taski-send { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--wine); color: var(--wine-fg); box-shadow: var(--wine-glow); }
+  .taski-send[disabled] { opacity: .3; cursor: default; box-shadow: none; }
+  .taski-send .ic { width: 14px; height: 14px; }
+
+  .escena { position: relative; padding: 4px 0 10px; }
+  .escena .robo-wrap { display: flex; justify-content: center; }
+  .escena .float-card { position: absolute; padding: 9px 13px; border-radius: 18px; gap: 10px; max-width: 58%; }
+  .escena .float-card .fc-1 { font-size: 12px; }
+  .escena .float-card .fc-2 { font-size: 10px; }
+  .escena .float-card .bead-icon { width: 28px; height: 28px; border-radius: 9px; }
+  .escena .float-card .bead-icon .ic { width: 14px; height: 14px; }
+  .escena .c1 { top: 4%; right: 6px; }
+  .escena .c2 { top: 46%; left: 6px; }
+  .escena .c3 { bottom: 0; right: 14px; }
+
+  /* ---------- Taski dibujado ---------- */
+  .robo { display: block; max-width: 100%; overflow: visible; }
+  .robo-flota { animation: robo-flota 4.5s ease-in-out infinite; transform-origin: 130px 120px; }
+  .robo-sombra { animation: robo-sombra 4.5s ease-in-out infinite; }
+  .robo-ojos { animation: robo-parpadeo 5.2s ease-in-out infinite; }
+  .robo-luz { animation: robo-luz 2.4s ease-in-out infinite; }
+  .robo-punto { animation: robo-punto 1.8s ease-in-out infinite; }
+  .robo-punto-2 { animation-delay: .25s; }
+  .robo-punto-3 { animation-delay: .5s; }
+  .robo-brazo-i { animation: robo-brazo-i 4.5s ease-in-out infinite; }
+  .robo-brazo-d { animation: robo-brazo-d 4.5s ease-in-out infinite; }
+  .robo-orbita { animation: robo-gira 26s linear infinite; }
+  .robo-orbita-2 { animation: robo-gira-inv 34s linear infinite; }
+
+  /* ---------- avisos ---------- */
+  .toasts {
+    position: fixed; z-index: 70; left: 12px; right: 12px;
+    bottom: calc(152px + env(safe-area-inset-bottom, 0px));
+    display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none;
+  }
+  @media (min-width: 960px) { .toasts { bottom: 24px; left: 24px; right: auto; align-items: flex-start; } }
+  .toast {
+    pointer-events: auto; width: 100%; max-width: 400px;
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px; border-radius: var(--r-md);
+    animation: pop-in .22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .toast-body { flex: 1; min-width: 0; }
+  .toast-title { font-size: 13.5px; font-weight: 600; letter-spacing: -0.2px; color: var(--ink-body); }
+  .toast-desc { margin-top: 2px; font-size: 12px; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .toast .undo { font-size: 12.5px; font-weight: 700; color: var(--wine-ink); padding: 5px 9px; border-radius: 9px; }
+  .toast .undo:hover { background: var(--wine-wash); }
+
+  /* ---------- animaciones ---------- */
+  @keyframes drop-in { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: none; } }
+  @keyframes rise-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  @keyframes pop-in { from { opacity: 0; transform: translateY(8px) scale(.985); } to { opacity: 1; transform: none; } }
+  @keyframes float-a { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(2px, -8px); } }
+  @keyframes float-b { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-2px, 8px); } }
+  @keyframes float-c { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-1px, -10px); } }
+  @keyframes latido { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+  @keyframes robo-flota { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  @keyframes robo-sombra { 0%, 100% { transform: scaleX(1); opacity: .1; } 50% { transform: scaleX(.9); opacity: .07; } }
+  @keyframes robo-parpadeo { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.08); } }
+  @keyframes robo-luz { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+  @keyframes robo-punto { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+  @keyframes robo-brazo-i { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-7deg); } }
+  @keyframes robo-brazo-d { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(7deg); } }
+  @keyframes robo-gira { to { transform: rotate(360deg); } }
+  @keyframes robo-gira-inv { to { transform: rotate(-360deg); } }
+
+  /* Solo en la primera pintada: si se repitiera en cada cambio de estado,
+     la pantalla temblaría cada vez que marcás una tarea. */
+  .enter > * { animation: rise-in .9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .enter > *:nth-child(1) { animation-delay: .05s; }
+  .enter > *:nth-child(2) { animation-delay: .12s; }
+  .enter > *:nth-child(3) { animation-delay: .19s; }
+  .enter > *:nth-child(n + 4) { animation-delay: .26s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  }
+  /* ============================================================
+     Celular: el vidrio y las auras cuestan más de lo que rinden.
+     En la pantalla de entrada se apilan cinco capas de blur(120px)
+     —las tres del fondo más las dos del candado— debajo de un
+     backdrop-filter de blur(50px). En una compu no se nota; en un
+     teléfono de gama media el compositor se traba y la página deja
+     de responder: parece colgada. Mismo diseño, mucho más barato.
+     ============================================================ */
+  @media (max-width: 700px) {
+    .lock .aura { display: none; }
+    .aura .a1, .aura .a2, .aura .a3 { filter: blur(45px); }
+    .aura .a1 { width: 300px; height: 300px; }
+    .aura .a2 { width: 270px; height: 270px; }
+    .aura .a3 { width: 220px; height: 220px; }
+
+    .glass, .glass-deep, dialog {
+      background: var(--glass-solid);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+    dialog::backdrop { backdrop-filter: none; -webkit-backdrop-filter: none; }
+
+    /* Con la caja centrada dentro de un contenedor fijo, el teclado del
+       teléfono tapa el botón «Entrar» y no hay forma de llegar a él.
+       Centrada mientras sobra lugar, desplazable cuando no. */
+    .lock {
+      place-items: start center;
+      overflow-y: auto;
+      padding: max(20px, env(safe-area-inset-top, 0px)) 20px
+               max(20px, env(safe-area-inset-bottom, 0px));
+    }
+    .lock-box { margin-block: auto; }
+  }
+
+</style>
+</head>
+<body>
+<div class="aura" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
+
+<div class="lock" id="lock">
+  <div class="aura" aria-hidden="true"><i class="a1"></i><i class="a2"></i></div>
+  <form class="lock-box glass-deep" id="lock-form">
+    <div class="lock-mark" id="lock-mark"></div>
+    <div class="lock-title">Jonathan Alvez</div>
+    <div class="lock-sub">Panel de trabajo</div>
+
+    <div class="lock-field" id="campo-mail">
+      <input id="lock-mail" type="email" placeholder="tu@mail.com" aria-label="Correo" autocomplete="username" inputmode="email" />
+    </div>
+    <div class="lock-field">
+      <input id="lock-pass" type="password" placeholder="Contraseña" aria-label="Contraseña" autocomplete="current-password" />
+    </div>
+
+    <div class="lock-error" id="lock-error" role="alert"></div>
+    <button type="submit" class="btn btn-primary btn-block" id="lock-btn" style="margin-top:4px">Entrar</button>
+    <p class="lock-pie" id="lock-pie"></p>
+  </form>
+</div>
+
+<div class="app" id="app" hidden>
+  <header class="navbar">
+    <div class="navbar-inner glass">
+      <span class="brand">
+        <span class="brand-mark" id="brand-mark"></span>
+        <span class="brand-txt"><b>Jonathan Alvez</b><span>Panel</span></span>
+      </span>
+      <nav class="navlinks" id="nav-desktop" aria-label="Secciones"></nav>
+      <div class="navtools">
+        <span class="sync" id="sync" data-estado="cargando" title="Estado de la sincronización"><i></i><span id="sync-txt">Conectando</span></span>
+        <div class="search">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" /><path d="m20 20-3.2-3.2" />
+          </svg>
+          <input id="search" type="search" placeholder="Buscar" aria-label="Buscar tarea o cliente" autocomplete="off" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="scroll" id="scroll">
+    <main class="page" id="view"></main>
+  </div>
+
+  <nav class="tabbar" aria-label="Secciones">
+    <div class="tabbar-inner glass" id="nav-mobile"></div>
+  </nav>
+</div>
+
+<button type="button" class="taski-fab" id="taski-fab" data-a="taski" aria-label="Abrir a Taski" aria-expanded="false" hidden></button>
+<div class="taski-panel glass-deep" id="taski-panel" hidden></div>
+
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<dialog id="dialog" aria-labelledby="dialog-title"></dialog>
+
+<script>
+/* Red de seguridad, en JavaScript de toda la vida y fuera del módulo: si el
+   módulo principal no llega a ejecutarse (un import que no baja, sintaxis que
+   el navegador del teléfono no entiende, almacenamiento bloqueado), sin esto
+   la pantalla de entrada queda muerta y sin una sola pista de por qué. */
+(function () {
+  var avisado = false;
+  function avisar(texto) {
+    if (avisado) return;
+    avisado = true;
+    var caja = document.getElementById("lock-error");
+    if (caja) caja.textContent = "No cargó del todo: " + texto;
+    var btn = document.getElementById("lock-btn");
+    if (btn) { btn.disabled = false; btn.textContent = "Entrar"; }
+  }
+  window.addEventListener("error", function (e) {
+    // Los fallos de recursos (una fuente, un icono) no traen mensaje y no
+    // rompen nada: esos se ignoran.
+    if (e && e.message) avisar(e.message);
+  });
+  window.addEventListener("unhandledrejection", function (e) {
+    var r = e && e.reason;
+    avisar((r && r.message) || String(r));
+  });
+})();
+</script>
+
+<script type="module">
+"use strict";
+
+/* ============================================================
+   Panel de Jonathan Alvez — clientes, tareas, calendario e informes.
+   Un solo archivo. Los datos viven en Firebase (sincronizados entre
+   dispositivos) y, si Firebase no está disponible, en el navegador.
+   ============================================================ */
+
+/* ---------- iconos ---------- */
+const ICONS = {
+  home: '<path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>',
+  users: '<circle cx="9" cy="8" r="3.2"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/><path d="M16 5.3a3.2 3.2 0 0 1 0 5.4M17.5 14.4a5.5 5.5 0 0 1 3 5.6"/>',
+  calendar: '<rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 9.5h17M8 3.5v3M16 3.5v3"/>',
+  report: '<path d="M6 3h8.5L19 7.5V21H6z"/><path d="M14 3v5h5M9.5 17v-3M12 17v-6M14.5 17v-4"/>',
+  settings: '<path d="M4 7h10M18.5 7H20M4 12h2.5M10.5 12H20M4 17h8.5M17 17H20"/><circle cx="16" cy="7" r="2.1"/><circle cx="8.5" cy="12" r="2.1"/><circle cx="14.8" cy="17" r="2.1"/>',
+  bot: '<rect x="4" y="8" width="16" height="12" rx="4"/><path d="M12 8V4.5M9.2 13.4v1.2M14.8 13.4v1.2M2.8 13v2.4M21.2 13v2.4"/><circle cx="12" cy="3.6" r="1.1"/>',
+  check: '<path d="m5 12.5 4.5 4.5L19 6.5" stroke-width="3"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  trash: '<path d="M4 7h16M9.5 7V4.8h5V7M6.5 7l.9 12.4a1.6 1.6 0 0 0 1.6 1.5h6a1.6 1.6 0 0 0 1.6-1.5L17.5 7"/>',
+  pencil: '<path d="M4 20h4L20 8l-4-4L4 16z"/><path d="M14.5 5.5 18.5 9.5"/>',
+  clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 1.8"/>',
+  alert: '<path d="M12 4.5 2.8 20h18.4z"/><path d="M12 10v4M12 17.2v.2"/>',
+  left: '<path d="m14.5 5-7 7 7 7"/>',
+  right: '<path d="m9.5 5 7 7-7 7"/>',
+  back: '<path d="M19 12H5M11 6l-6 6 6 6"/>',
+  x: '<path d="M6 6l12 12M18 6 6 18"/>',
+  up: '<path d="M12 19V5M6 11l6-6 6 6"/>',
+  down: '<path d="M12 5v14M6 13l6 6 6-6"/>',
+  chevron: '<path d="m9.5 5 7 7-7 7"/>',
+  spark: '<path d="M12 3.5 13.7 9 19 10.7 13.7 12.4 12 18 10.3 12.4 5 10.7 10.3 9z"/><path d="M18.5 16.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/>',
+  list: '<path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1.2 1.2L7 5M3.5 12l1.2 1.2L7 11M3.5 18l1.2 1.2L7 17"/>',
+  doc: '<path d="M6 3h7.5L19 8.5V21H6z"/><path d="M13.5 3v5.5H19M9 13h6M9 16.5h4"/>',
+  lock: '<rect x="4.5" y="10" width="15" height="10.5" rx="3"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10"/>',
+  play: '<path d="M8 5.5v13l10-6.5z"/>',
+  copy: '<rect x="8.5" y="8.5" width="12" height="12" rx="3"/><path d="M15.5 5.5h-8a3 3 0 0 0-3 3v8"/>',
+};
+
+function icon(name, cls) {
+  return (
+    '<svg class="ic ' + (cls || "") + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+    'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    (ICONS[name] || "") + "</svg>"
+  );
+}
+
+const esc = (v) =>
+  String(v == null ? "" : v).replace(/[&<>"']/g, (c) => (
+    { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+  ));
+
+const plural = (n, uno, varios) => n + " " + (n === 1 ? uno : varios);
+
+/* ---------- fechas ----------
+   Se guardan como "AAAA-MM-DD" y se parsean por partes. Pasar un ISO
+   directo a new Date() lo lee como UTC y puede correr el día según la
+   zona horaria: acá eso no pasa nunca. */
+const DIAS = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+const DIAS_CORTO = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+const MESES_CORTO = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+
+function parseDay(s) {
+  const [y, m, d] = s.split("-").map(Number);
+  return new Date(y, m - 1, d);
+}
+function toDay(d) {
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+}
+const today = () => toDay(new Date());
+function addDays(s, n) { const d = parseDay(s); d.setDate(d.getDate() + n); return toDay(d); }
+/** Suma meses de verdad: sumar 30 días saltea febrero y desfasa la grilla. */
+function addMonths(s, n) {
+  const d = parseDay(s); const day = d.getDate();
+  d.setDate(1); d.setMonth(d.getMonth() + n);
+  const last = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+  d.setDate(Math.min(day, last));
+  return toDay(d);
+}
+const dow = (s) => parseDay(s).getDay();
+const isPast = (s) => s < today();
+const isToday = (s) => s === today();
+const diffDays = (a, b) => Math.round((parseDay(b) - parseDay(a)) / 86400000);
+
+function friendlyDate(s) {
+  if (!s) return "Sin fecha";
+  if (isToday(s)) return "Hoy";
+  if (s === addDays(today(), 1)) return "Mañana";
+  if (s === addDays(today(), -1)) return "Ayer";
+  const d = parseDay(s);
+  if (isPast(s)) return DIAS_CORTO[d.getDay()] + " " + d.getDate() + " " + MESES_CORTO[d.getMonth()];
+  const diff = diffDays(today(), s);
+  if (diff > 1 && diff < 7) return DIAS[d.getDay()];
+  return d.getDate() + " " + MESES_CORTO[d.getMonth()];
+}
+const longDate = (s) => { const d = parseDay(s); return DIAS[d.getDay()] + " " + d.getDate() + " de " + MESES[d.getMonth()]; };
+const fechaLegible = (s) => {
+  if (!s) return "";
+  const d = parseDay(s);
+  return d.getDate() + " de " + MESES[d.getMonth()] + (d.getFullYear() !== new Date().getFullYear() ? " de " + d.getFullYear() : "");
+};
+const monthLabel = (s) => { const d = parseDay(s); return MESES[d.getMonth()] + " " + d.getFullYear(); };
+
+function weekOf(s) {
+  const i = dow(s);
+  const lunes = addDays(s, i === 0 ? -6 : 1 - i);
+  return Array.from({ length: 7 }, (_, k) => addDays(lunes, k));
+}
+function monthGrid(s) {
+  const d = parseDay(s);
+  const primero = toDay(new Date(d.getFullYear(), d.getMonth(), 1));
+  const ultimo = toDay(new Date(d.getFullYear(), d.getMonth() + 1, 0));
+  const ini = weekOf(primero)[0];
+  const fin = weekOf(ultimo)[6];
+  const dias = []; let cur = ini;
+  while (cur <= fin) { dias.push(cur); cur = addDays(cur, 1); }
+  return dias;
+}
+function minutesUntil(day, time) {
+  const [h, m] = time.split(":").map(Number);
+  const t = parseDay(day); t.setHours(h, m, 0, 0);
+  return Math.round((t - Date.now()) / 60000);
+}
+function minutesLabel(min) {
+  if (min <= 0) return "Ahora";
+  if (min < 60) return "En " + min + " min";
+  const h = Math.floor(min / 60), r = min % 60;
+  return r === 0 ? "En " + h + " h" : "En " + h + " h " + r + " min";
+}
+/** Días hasta la entrega: negativo si ya pasó. */
+const diasPara = (f) => (f ? diffDays(today(), f) : null);
+
+/* ---------- interpretación del texto ----------
+   No es inteligencia artificial: son patrones de cómo escribe uno.
+   Lo que no reconoce queda vacío y se corrige en el paso de confirmación. */
+const SECCIONES = [
+  { id: "trabajo", label: "Trabajo" },
+  { id: "personal", label: "Personal" },
+  { id: "otro", label: "Otro" },
+];
+const PRIORIDADES = [
+  { value: "baja", label: "Baja" },
+  { value: "media", label: "Media" },
+  { value: "alta", label: "Alta" },
+];
+const PRIO_ORD = { alta: 0, media: 1, baja: 2 };
+
+const SEMANA = [["domingo", 0], ["lunes", 1], ["martes", 2], ["miercoles", 3], ["jueves", 4], ["viernes", 5], ["sabado", 6]];
+const MES_NUM = { enero: 0, febrero: 1, marzo: 2, abril: 3, mayo: 4, junio: 5, julio: 6, agosto: 7, septiembre: 8, setiembre: 8, octubre: 9, noviembre: 10, diciembre: 11 };
+const SEC_CLAVES = [
+  ["personal", ["medico", "dentista", "gimnasio", "banco", "familia", "casa", "personal", "cumple", "regalo", "vacaciones"]],
+  ["trabajo", ["reel", "carrusel", "historia", "historias", "post", "contenido", "campana", "pauta", "ads", "publicidad", "factura", "facturar", "cobrar", "informe", "reporte", "presupuesto", "propuesta", "reunion", "llamada", "disen", "pieza", "piezas", "arte", "copy", "grilla", "cliente"]],
+];
+const MULETILLAS = ["tengo que ", "tenemos que ", "hay que ", "necesito ", "necesitamos ", "debo ", "quiero ", "acordate de ", "acordarme de ", "recordar ", "recordarme ", "me toca "];
+const COLGANTES = ["de", "del", "para", "a", "al", "con", "en", "el", "la", "los", "las", "que", "y"];
+
+/** Minúsculas y sin tildes carácter por carácter: así las posiciones siguen
+    coincidiendo con el texto original y se puede recortar por índice. */
+function fold(s) {
+  return s.toLowerCase()
+    .replace(/[áàä]/g, "a").replace(/[éèë]/g, "e").replace(/[íìï]/g, "i")
+    .replace(/[óòö]/g, "o").replace(/[úùü]/g, "u").replace(/ñ/g, "n");
+}
+
+function widenLeft(folded, span) {
+  const antes = folded.slice(0, span.start).replace(/\s+$/, "");
+  for (const w of COLGANTES) {
+    if (antes.endsWith(" " + w) || antes === w) return { start: antes.length - w.length, end: span.end };
+  }
+  return span;
+}
+function matchSpan(folded, re) {
+  const m = folded.match(re);
+  if (!m || m.index === undefined) return null;
+  return { m, span: { start: m.index, end: m.index + m[0].length } };
+}
+
+function findCliente(folded, clientes) {
+  const orden = clientes.slice().sort((a, b) => b.nombre.length - a.nombre.length);
+  for (const c of orden) {
+    const aguja = fold(c.nombre);
+    if (aguja.length < 3) continue;
+    const i = folded.indexOf(aguja);
+    if (i !== -1) return { id: c.id, span: { start: i, end: i + aguja.length } };
+  }
+  return null;
+}
+
+function findFecha(folded) {
+  const hoy = today();
+  // El orden importa: "pasado mañana" va antes que "mañana", si no
+  // \bmanana\b coincide adentro y la tarea cae un día antes.
+  const simples = [
+    [/\bpasado manana\b/, () => addDays(hoy, 2)],
+    [/\bhoy\b/, () => hoy],
+    [/\bmanana\b/, () => addDays(hoy, 1)],
+    [/\b(la semana que viene|la proxima semana|la semana proxima)\b/, () => addDays(hoy, 7)],
+    [/\b(el mes que viene|el proximo mes)\b/, () => addMonths(hoy, 1)],
+    [/\b(este finde|el finde|fin de semana)\b/, () => addDays(hoy, (6 - dow(hoy) + 7) % 7)],
+  ];
+  for (const [re, resolver] of simples) {
+    const hit = matchSpan(folded, re);
+    if (hit) return { fecha: resolver(), span: hit.span };
+  }
+  const enDias = matchSpan(folded, /\ben (\d{1,2}) dias?\b/);
+  if (enDias) return { fecha: addDays(hoy, Number(enDias.m[1])), span: enDias.span };
+
+  const conMes = matchSpan(folded, new RegExp("\\b(\\d{1,2}) de (" + Object.keys(MES_NUM).join("|") + ")\\b"));
+  if (conMes) {
+    const base = parseDay(hoy);
+    let cand = toDay(new Date(base.getFullYear(), MES_NUM[conMes.m[2]], Number(conMes.m[1])));
+    if (cand < hoy) cand = toDay(new Date(base.getFullYear() + 1, MES_NUM[conMes.m[2]], Number(conMes.m[1])));
+    return { fecha: cand, span: conMes.span };
+  }
+  const num = matchSpan(folded, /\b(\d{1,2})[/-](\d{1,2})(?:[/-](\d{2,4}))?\b/);
+  if (num) {
+    const d = Number(num.m[1]), mo = Number(num.m[2]) - 1;
+    const base = parseDay(hoy);
+    let y = num.m[3] ? Number(num.m[3]) : base.getFullYear();
+    if (y < 100) y += 2000;
+    if (mo >= 0 && mo <= 11 && d >= 1 && d <= 31) {
+      let cand = toDay(new Date(y, mo, d));
+      if (!num.m[3] && cand < hoy) cand = toDay(new Date(y + 1, mo, d));
+      return { fecha: cand, span: num.span };
+    }
+  }
+  for (const [nombre, idx] of SEMANA) {
+    const hit = matchSpan(folded, new RegExp("\\b(el |este |proximo |el proximo )?" + nombre + "( que viene)?\\b"));
+    if (!hit) continue;
+    const forzar = Boolean(hit.m[2]) || /proximo/.test(hit.m[1] || "");
+    let delta = idx - dow(hoy);
+    if (delta < 0) delta += 7;
+    if (delta === 0 && forzar) delta = 7;
+    return { fecha: addDays(hoy, delta), span: hit.span };
+  }
+  return null;
+}
+
+function findHora(folded) {
+  const armar = (h, m) => String(Math.min(h, 23)).padStart(2, "0") + ":" + String(Math.min(m, 59)).padStart(2, "0");
+  const ajustar = (h, suf) => {
+    if (suf === "pm" && h < 12) return h + 12;
+    if (suf === "am" && h === 12) return 0;
+    if (!suf && h >= 1 && h <= 7 && /\b(tarde|de la tarde|a la tarde)\b/.test(folded)) return h + 12;
+    return h;
+  };
+  const mediodia = matchSpan(folded, /\b(al |a la |el )?mediodia\b/);
+  if (mediodia) return { hora: "12:00", span: mediodia.span };
+  const una = matchSpan(folded, /\ba la una\b/);
+  if (una) return { hora: "13:00", span: una.span };
+  const media = matchSpan(folded, /\ba las (\d{1,2}) y (media|cuarto)\b/);
+  if (media) return { hora: armar(ajustar(Number(media.m[1])), media.m[2] === "media" ? 30 : 15), span: media.span };
+  const alas = matchSpan(folded, /\ba las (\d{1,2})(?::(\d{2}))?\s?(am|pm|hs|h)?\b/);
+  if (alas) return { hora: armar(ajustar(Number(alas.m[1]), alas.m[3]), Number(alas.m[2] || 0)), span: alas.span };
+  const conHs = matchSpan(folded, /\b(\d{1,2})(?::(\d{2}))?\s?(hs|h|am|pm)\b/);
+  if (conHs) return { hora: armar(ajustar(Number(conHs.m[1]), conHs.m[3]), Number(conHs.m[2] || 0)), span: conHs.span };
+  const reloj = matchSpan(folded, /\b([01]?\d|2[0-3]):([0-5]\d)\b/);
+  if (reloj) return { hora: armar(Number(reloj.m[1]), Number(reloj.m[2])), span: reloj.span };
+  return null;
+}
+
+function findSeccion(folded) {
+  for (const [sec, claves] of SEC_CLAVES) {
+    if (claves.some((k) => folded.includes(k))) return { seccion: sec, matched: true };
+  }
+  return { seccion: "trabajo", matched: false };
+}
+function findPrioridad(folded) {
+  const alta = matchSpan(folded, /\b(urgentisimo|urgente|prioridad alta|ya mismo|cuanto antes|si o si)\b/);
+  if (alta) return { prio: "alta", matched: true, span: alta.span };
+  const baja = matchSpan(folded, /\b(sin apuro|cuando puedas|cuando pueda|no es urgente|prioridad baja|algun dia)\b/);
+  if (baja) return { prio: "baja", matched: true, span: baja.span };
+  return { prio: "media", matched: false, span: null };
+}
+
+function armarTexto(original, spans) {
+  const unidos = [];
+  spans.slice().sort((a, b) => a.start - b.start).forEach((s) => {
+    const last = unidos[unidos.length - 1];
+    if (last && s.start <= last.end) last.end = Math.max(last.end, s.end);
+    else unidos.push({ start: s.start, end: s.end });
+  });
+  let txt = original;
+  unidos.slice().reverse().forEach((s) => { txt = txt.slice(0, s.start) + " " + txt.slice(s.end); });
+  let out = txt.replace(/\s{2,}/g, " ").trim();
+  let cambio = true;
+  while (cambio) {
+    cambio = false;
+    const low = fold(out);
+    for (const p of MULETILLAS) {
+      if (low.startsWith(p)) { out = out.slice(p.length).trim(); cambio = true; break; }
+    }
+  }
+  out = out.replace(/^[,:;.\-–—\s]+/, "").replace(/[,:;\-–—\s]+$/, "").replace(/\s{2,}/g, " ").trim();
+  const palabras = out.split(" ");
+  while (palabras.length > 1 && COLGANTES.includes(fold(palabras[palabras.length - 1]))) palabras.pop();
+  out = palabras.join(" ");
+  if (!out) return "Nueva tarea";
+  return out.charAt(0).toUpperCase() + out.slice(1);
+}
+
+function interpretar(texto, clientes) {
+  const original = texto.trim();
+  const folded = fold(original);
+  const cli = findCliente(folded, clientes);
+  const fec = findFecha(folded);
+  const hor = findHora(folded);
+  const sec = findSeccion(folded);
+  const pri = findPrioridad(folded);
+
+  const spans = [];
+  if (cli) spans.push(widenLeft(folded, cli.span));
+  if (fec) spans.push(widenLeft(folded, fec.span));
+  if (hor) spans.push(widenLeft(folded, hor.span));
+  // La palabra de urgencia ya quedó guardada en la prioridad: repetirla en
+  // el título ("Urgente pagar el monotributo") sobra.
+  if (pri.span) spans.push(pri.span);
+
+  return {
+    draft: {
+      texto: armarTexto(original, spans),
+      clienteId: cli ? cli.id : null,
+      seccion: cli ? "trabajo" : sec.seccion,
+      prio: pri.prio,
+      fecha: fec ? fec.fecha : today(),
+      hora: hor ? hor.hora : null,
+    },
+    deducido: {
+      cliente: Boolean(cli),
+      fecha: Boolean(fec),
+      hora: Boolean(hor),
+      seccion: sec.matched,
+      prio: pri.matched,
+    },
+  };
+}
+
+/* ---------- datos ----------
+   El esquema es el mismo de siempre: { tareas, nextId, clientes,
+   tareasCliente, nextCliId }. Los campos nuevos (hora, prio en tareas de
+   cliente, notas) son opcionales, así lo que ya está guardado sigue
+   funcionando sin migrar nada. */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyDqs3ZIBEEOG8vXmhPuq1U6nK38Jicopos",
+  authDomain: "mi-panel-diario.firebaseapp.com",
+  databaseURL: "https://mi-panel-diario-default-rtdb.firebaseio.com",
+  projectId: "mi-panel-diario",
+  storageBucket: "mi-panel-diario.firebasestorage.app",
+  messagingSenderId: "1027792002045",
+  appId: "1:1027792002045:web:325fecff0fa34a055a1794",
+};
+const SDK = "https://www.gstatic.com/firebasejs/12.15.0/";
+const CLAVE_LOCAL = "panel.jalvez.v1";
+const CLAVE_TEMA = "panel.tema.v1";
+
+/* Cuánto se espera antes de dar por perdido algo que salió a la red. */
+const ESPERA_SDK = 12000;
+const ESPERA_LOGIN = 25000;
+
+/** Un await sin límite es un cuelgue esperando su turno: con señal pobre el
+    import del SDK puede no resolver nunca —no falla, simplemente no vuelve—
+    y la pantalla de entrada se queda congelada. Todo lo que sale a la red
+    lleva reloj. */
+function conLimite(promesa, ms, mensaje) {
+  return new Promise((resolve, reject) => {
+    const reloj = setTimeout(() => reject(new Error(mensaje)), ms);
+    promesa.then(
+      (v) => { clearTimeout(reloj); resolve(v); },
+      (e) => { clearTimeout(reloj); reject(e); }
+    );
+  });
+}
+
+let datos = { tareas: [], nextId: 10, clientes: [], tareasCliente: [], nextCliId: 100 };
+let modo = "cargando"; // cargando | online | local
+let escribirRemoto = null;
+
+function normalizar(bruto) {
+  const b = bruto || {};
+  return {
+    tareas: Array.isArray(b.tareas) ? b.tareas.filter(Boolean) : [],
+    nextId: Number(b.nextId) || 10,
+    clientes: Array.isArray(b.clientes) ? b.clientes.filter(Boolean) : [],
+    tareasCliente: Array.isArray(b.tareasCliente) ? b.tareasCliente.filter(Boolean) : [],
+    nextCliId: Number(b.nextCliId) || 100,
+  };
+}
+
+function leerLocal() {
+  try {
+    const raw = localStorage.getItem(CLAVE_LOCAL);
+    return raw ? normalizar(JSON.parse(raw)) : null;
+  } catch (e) {
+    return null;
+  }
+}
+function escribirLocal() {
+  try {
+    localStorage.setItem(CLAVE_LOCAL, JSON.stringify(datos));
+  } catch (e) {
+    /* sin espacio o almacenamiento bloqueado */
+  }
+}
+
+let temporizador = null;
+function guardar() {
+  escribirLocal(); // copia local siempre: si se corta internet, no se pierde
+  clearTimeout(temporizador);
+  temporizador = setTimeout(() => {
+    if (escribirRemoto) {
+      try {
+        escribirRemoto(datos);
+        marcarSync("online", "Guardado");
+      } catch (e) {
+        marcarSync("local", "Sin conexión");
+      }
+    }
+  }, 400);
+}
+
+function marcarSync(estado, txt) {
+  modo = estado === "cargando" ? "cargando" : estado;
+  const el = document.getElementById("sync");
+  if (!el) return;
+  el.dataset.estado = estado;
+  document.getElementById("sync-txt").textContent = txt;
+  el.title =
+    estado === "online"
+      ? "Sincronizado con la nube: lo ves igual en cualquier dispositivo."
+      : estado === "local"
+        ? "Guardando solo en este navegador. Los cambios no viajan a otros dispositivos."
+        : "Conectando…";
+}
+
+/** Firebase se carga por import dinámico y una sola vez. Si no llega a
+    cargar (sin internet, red bloqueada), la app puede seguir contra la copia
+    local en vez de quedarse en blanco. */
+let fb = null;
+
+async function cargarFirebase() {
+  if (fb) return fb;
+  const [appMod, authMod, dbMod] = await conLimite(
+    Promise.all([
+      import(SDK + "firebase-app.js"),
+      import(SDK + "firebase-auth.js"),
+      import(SDK + "firebase-database.js"),
+    ]),
+    ESPERA_SDK,
+    "El SDK de Firebase tardó demasiado en bajar."
+  );
+  const app = appMod.initializeApp(FIREBASE_CONFIG);
+  const auth = authMod.getAuth(app);
+  // La sesión queda guardada en este navegador: no hay que entrar cada vez.
+  try { await authMod.setPersistence(auth, authMod.browserLocalPersistence); } catch (e) { /* queda en memoria */ }
+  fb = { authMod, dbMod, app, auth };
+  return fb;
+}
+
+let desuscribir = null;
+
+/** Se suscribe a la base ya con el usuario autenticado. Las reglas exigen
+    sesión, así que esto solo funciona después del login. */
+function escucharDatos(alCargar) {
+  if (!fb || desuscribir) return;
+  const { dbMod } = fb;
+  const nodo = dbMod.ref(dbMod.getDatabase(fb.app), "panel");
+  escribirRemoto = (d) => dbMod.set(nodo, d);
+
+  let primera = true;
+  desuscribir = dbMod.onValue(
+    nodo,
+    (snap) => {
+      const remoto = snap.val();
+      if (remoto) datos = normalizar(remoto);
+      escribirLocal();
+      marcarSync("online", "En la nube");
+      if (primera) { primera = false; alCargar(); }
+      else alCargar(true);
+    },
+    (err) => {
+      // Si las reglas rechazan la lectura conviene decirlo, no disimularlo.
+      escribirRemoto = null;
+      marcarSync("local", "Sin permiso");
+      const cod = err && err.code ? String(err.code) : "";
+      toast(
+        "La base rechazó la lectura",
+        /permission/i.test(cod) ? "Revisá las reglas de Realtime Database." : "Trabajando con la copia de este equipo."
+      );
+      if (primera) { primera = false; alCargar(); }
+    }
+  );
+}
+
+function dejarDeEscuchar() {
+  if (typeof desuscribir === "function") desuscribir();
+  desuscribir = null;
+  escribirRemoto = null;
+}
+
+/* ---------- consultas ---------- */
+const clientePorId = (id) => datos.clientes.find((c) => c.id === id) || null;
+const nombreCliente = (id) => { const c = clientePorId(id); return c ? c.nombre : ""; };
+const emojiCliente = (id) => { const c = clientePorId(id); return c && c.emoji ? c.emoji : "🏢"; };
+
+/** Las dos listas se muestran juntas, así que se normalizan a una forma
+    común. La clave lleva el tipo porque los ids de cada lista son
+    independientes y podrían repetirse. */
+function todas() {
+  const generales = datos.tareas.map((t) => ({
+    key: "g:" + t.id, tipo: "general", id: t.id,
+    texto: t.texto, done: Boolean(t.done), fecha: t.fecha || null, hora: t.hora || null,
+    prio: t.prio || "media", seccion: t.seccion || "otro", clienteId: null,
+  }));
+  const deClientes = datos.tareasCliente.map((t) => ({
+    key: "c:" + t.id, tipo: "cliente", id: t.id,
+    texto: t.texto, done: Boolean(t.done), fecha: t.fecha || null, hora: t.hora || null,
+    prio: t.prio || "media", seccion: "trabajo", clienteId: t.clienteId,
+  }));
+  return generales.concat(deClientes);
+}
+
+function ordenar(lista) {
+  return lista.slice().sort((a, b) => {
+    if (a.done !== b.done) return a.done ? 1 : -1;
+    if (a.fecha && b.fecha) {
+      if (a.fecha !== b.fecha) return a.fecha < b.fecha ? -1 : 1;
+      if (a.hora && b.hora && a.hora !== b.hora) return a.hora < b.hora ? -1 : 1;
+      if (a.hora && !b.hora) return -1;
+      if (!a.hora && b.hora) return 1;
+    } else if (a.fecha) return -1;
+    else if (b.fecha) return 1;
+    return PRIO_ORD[a.prio] - PRIO_ORD[b.prio];
+  });
+}
+
+const abiertas = () => todas().filter((t) => !t.done);
+const vencidas = () => ordenar(abiertas().filter((t) => t.fecha && isPast(t.fecha)));
+const deHoy = () => ordenar(abiertas().filter((t) => t.fecha && isToday(t.fecha)));
+const proximas = () => ordenar(abiertas().filter((t) => t.fecha && !isPast(t.fecha) && !isToday(t.fecha)));
+const delDia = (d) => ordenar(todas().filter((t) => t.fecha === d));
+const delCliente = (id) => ordenar(todas().filter((t) => t.clienteId === id));
+
+function recordatorios() {
+  return deHoy()
+    .filter((t) => t.hora)
+    .map((t) => ({ t, min: minutesUntil(t.fecha, t.hora) }))
+    .filter((x) => x.min >= 0 && x.min <= 60)
+    .sort((a, b) => a.min - b.min);
+}
+
+const sinTildes = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+function buscar(q) {
+  const term = sinTildes(q.trim());
+  if (!term) return { tareas: [], clientes: [] };
+  const palabras = term.split(/\s+/);
+  const tareas = ordenar(todas().filter((t) => {
+    const heno = sinTildes([t.texto, t.seccion, nombreCliente(t.clienteId)].join(" "));
+    return palabras.every((w) => heno.includes(w));
+  }));
+  const clientes = datos.clientes.filter((c) => sinTildes(c.nombre).includes(term));
+  return { tareas, clientes };
+}
+
+/* ---------- mutaciones ---------- */
+function nuevaTarea(d) {
+  if (d.clienteId) {
+    const t = {
+      id: datos.nextCliId++, clienteId: d.clienteId, texto: d.texto.trim(),
+      done: false, fecha: d.fecha || null, hora: d.hora || null, prio: d.prio || "media",
+    };
+    datos.tareasCliente.push(t);
+  } else {
+    const t = {
+      id: datos.nextId++, texto: d.texto.trim(), seccion: d.seccion || "otro",
+      done: false, prio: d.prio || "media", fecha: d.fecha || today(), hora: d.hora || null,
+    };
+    datos.tareas.push(t);
+  }
+  guardar();
+}
+
+const bruta = (item) =>
+  item.tipo === "cliente"
+    ? datos.tareasCliente.find((t) => t.id === item.id)
+    : datos.tareas.find((t) => t.id === item.id);
+
+function marcar(item) {
+  const t = bruta(item);
+  if (!t) return false;
+  t.done = !t.done;
+  t.doneAt = t.done ? new Date().toISOString() : null;
+  guardar();
+  return t.done;
+}
+
+function editar(item, d) {
+  const t = bruta(item);
+  if (!t) return;
+  const cambiaDeLista = (item.tipo === "cliente") !== Boolean(d.clienteId);
+  if (cambiaDeLista) {
+    // Mover entre listas: se borra de una y se crea en la otra, conservando
+    // el estado de completada.
+    quitar(item);
+    if (d.clienteId) {
+      datos.tareasCliente.push({
+        id: datos.nextCliId++, clienteId: d.clienteId, texto: d.texto.trim(),
+        done: t.done, fecha: d.fecha || null, hora: d.hora || null, prio: d.prio || "media",
+      });
+    } else {
+      datos.tareas.push({
+        id: datos.nextId++, texto: d.texto.trim(), seccion: d.seccion || "otro",
+        done: t.done, prio: d.prio || "media", fecha: d.fecha || today(), hora: d.hora || null,
+      });
+    }
+    guardar();
+    return;
+  }
+  t.texto = d.texto.trim();
+  t.fecha = d.fecha || null;
+  t.hora = d.hora || null;
+  t.prio = d.prio || "media";
+  if (item.tipo === "cliente") t.clienteId = d.clienteId;
+  else t.seccion = d.seccion || "otro";
+  guardar();
+}
+
+function quitar(item) {
+  if (item.tipo === "cliente") datos.tareasCliente = datos.tareasCliente.filter((t) => t.id !== item.id);
+  else datos.tareas = datos.tareas.filter((t) => t.id !== item.id);
+  guardar();
+}
+
+function restaurar(item, crudo) {
+  if (item.tipo === "cliente") datos.tareasCliente.push(crudo);
+  else datos.tareas.push(crudo);
+  guardar();
+}
+
+/* ---------- estado de pantalla ---------- */
+const estado = {
+  vista: "hoy",
+  clienteId: null,
+  pestana: "pendientes",
+  calVista: "semana",
+  ancla: today(),
+  elegido: today(),
+  consulta: "",
+  captura: "",
+  borrador: null,
+  deducido: null,
+  infCliente: null,
+  infDesde: "",
+  infHasta: "",
+  infTexto: "",
+  infSelec: [],
+};
+
+/* ---------- avisos ---------- */
+function toast(titulo, detalle, deshacer) {
+  const cont = document.getElementById("toasts");
+  const el = document.createElement("div");
+  el.className = "toast glass";
+  el.innerHTML =
+    '<div class="toast-body"><p class="toast-title">' + esc(titulo) + "</p>" +
+    (detalle ? '<p class="toast-desc">' + esc(detalle) + "</p>" : "") + "</div>" +
+    (deshacer ? '<button type="button" class="undo">Deshacer</button>' : "") +
+    '<button type="button" class="icon-btn" aria-label="Cerrar aviso">' + icon("x") + "</button>";
+  const cerrar = () => { clearTimeout(reloj); el.remove(); };
+  if (deshacer) el.querySelector(".undo").addEventListener("click", () => { cerrar(); deshacer(); });
+  el.querySelector(".icon-btn").addEventListener("click", cerrar);
+  const reloj = setTimeout(cerrar, 5200);
+  cont.appendChild(el);
+  while (cont.children.length > 3) cont.firstElementChild.remove();
+}
+
+/* ---------- tema ---------- */
+function temaGuardado() {
+  try {
+    const v = localStorage.getItem(CLAVE_TEMA);
+    if (v === "claro" || v === "oscuro" || v === "sistema") return v;
+  } catch (e) { /* sin acceso */ }
+  return "sistema";
+}
+function aplicarTema(pref) {
+  if (pref === "sistema") document.documentElement.removeAttribute("data-theme");
+  else document.documentElement.setAttribute("data-theme", pref === "oscuro" ? "dark" : "light");
+}
+function elegirTema(pref) {
+  try { localStorage.setItem(CLAVE_TEMA, pref); } catch (e) { /* no se recuerda */ }
+  aplicarTema(pref);
+  render();
+}
+
+/* ---------- Taski dibujado ----------
+   En borgoña y dorado, no en azul: es el asistente de esta marca. */
+function roboSVG(alto) {
+  return (
+    '<svg class="robo" viewBox="0 0 260 230" width="100%" height="' + alto + '" role="img" aria-label="Taski">' +
+      "<defs>" +
+        '<linearGradient id="rCuerpo" x1="0" y1="0" x2="1" y2="1">' +
+          '<stop offset="0%" stop-color="var(--robo-a)"/><stop offset="100%" stop-color="var(--robo-b)"/></linearGradient>' +
+        '<linearGradient id="rVisor" x1="0" y1="0" x2="1" y2="1">' +
+          '<stop offset="0%" stop-color="#7a2338"/><stop offset="100%" stop-color="#3d0f1d"/></linearGradient>' +
+        '<linearGradient id="rAro" x1="0" y1="0" x2="1" y2="1">' +
+          '<stop offset="0%" stop-color="#d4a853"/><stop offset="55%" stop-color="#b8862f"/>' +
+          '<stop offset="100%" stop-color="#d4a853" stop-opacity="0"/></linearGradient>' +
+        '<radialGradient id="rHalo" cx="50%" cy="50%" r="50%">' +
+          '<stop offset="0%" stop-color="#b8862f" stop-opacity=".3"/><stop offset="100%" stop-color="#b8862f" stop-opacity="0"/></radialGradient>' +
+      "</defs>" +
+      '<circle cx="130" cy="104" r="86" fill="url(#rHalo)"/>' +
+      '<g class="robo-orbita" transform-origin="130 104">' +
+        '<ellipse cx="130" cy="104" rx="112" ry="46" fill="none" stroke="url(#rAro)" stroke-width="1.4" stroke-dasharray="7 9" opacity=".85"/></g>' +
+      '<g class="robo-orbita-2" transform-origin="130 104">' +
+        '<ellipse cx="130" cy="104" rx="92" ry="92" fill="none" stroke="url(#rAro)" stroke-width="1.2" stroke-dasharray="3 12" opacity=".55"/></g>' +
+      '<ellipse class="robo-sombra" cx="130" cy="207" rx="44" ry="7" fill="#3a2a18" opacity=".1"/>' +
+      '<g class="robo-flota">' +
+        '<path d="M130 40v-13" stroke="var(--robo-linea)" stroke-width="3" stroke-linecap="round"/>' +
+        '<circle class="robo-luz" cx="130" cy="22" r="5" fill="#d4a853"/>' +
+        '<rect class="robo-brazo-i" x="52" y="118" width="17" height="46" rx="8.5" fill="url(#rCuerpo)" stroke="var(--robo-borde)" stroke-width="1.5" transform-origin="60 124"/>' +
+        '<rect class="robo-brazo-d" x="191" y="118" width="17" height="46" rx="8.5" fill="url(#rCuerpo)" stroke="var(--robo-borde)" stroke-width="1.5" transform-origin="199 124"/>' +
+        '<rect x="74" y="122" width="112" height="76" rx="30" fill="url(#rCuerpo)" stroke="var(--robo-borde)" stroke-width="1.5"/>' +
+        '<rect x="106" y="146" width="48" height="26" rx="13" fill="var(--robo-panel)"/>' +
+        '<circle class="robo-punto" cx="120" cy="159" r="3.4" fill="#7a2338"/>' +
+        '<circle class="robo-punto robo-punto-2" cx="130" cy="159" r="3.4" fill="#b8862f"/>' +
+        '<circle class="robo-punto robo-punto-3" cx="140" cy="159" r="3.4" fill="#5d7a3a"/>' +
+        '<rect x="62" y="40" width="136" height="88" rx="34" fill="url(#rCuerpo)" stroke="var(--robo-borde)" stroke-width="1.5"/>' +
+        '<rect x="78" y="56" width="104" height="56" rx="26" fill="url(#rVisor)"/>' +
+        '<path d="M86 70c8-8 22-11 34-9" stroke="#d4a853" stroke-opacity=".38" stroke-width="4" stroke-linecap="round" fill="none"/>' +
+        '<g class="robo-ojos" transform-origin="130 84">' +
+          '<rect x="103" y="76" width="9" height="17" rx="4.5" fill="#f0d9a8"/>' +
+          '<rect x="148" y="76" width="9" height="17" rx="4.5" fill="#f0d9a8"/></g>' +
+        '<rect x="54" y="72" width="9" height="24" rx="4.5" fill="var(--robo-panel)"/>' +
+        '<rect x="197" y="72" width="9" height="24" rx="4.5" fill="var(--robo-panel)"/>' +
+      "</g>" +
+    "</svg>"
+  );
+}
+
+/* ---------- Taski responde ----------
+   Con lo que hay guardado acá: no hay modelo ni conexión externa. */
+function lineaTarea(t, conCliente) {
+  const nombre = conCliente === false ? "" : nombreCliente(t.clienteId);
+  const cuando = t.fecha ? friendlyDate(t.fecha) + (t.hora ? " " + t.hora : "") : "sin fecha";
+  return "• " + t.texto + (nombre ? " (" + nombre + ")" : "") + " — " + cuando;
+}
+const listar = (l, conCliente) => l.map((t) => lineaTarea(t, conCliente)).join("\n");
+
+function taskiResponde(pregunta) {
+  const q = fold(pregunta);
+  const sueltas = abiertas();
+
+  const c = datos.clientes.slice().sort((a, b) => b.nombre.length - a.nombre.length)
+    .find((x) => fold(x.nombre).length >= 3 && q.includes(fold(x.nombre)));
+
+  if (c) {
+    const suyas = sueltas.filter((t) => t.clienteId === c.id);
+    if (/vencid|atrasad/.test(q)) {
+      const v = suyas.filter((t) => t.fecha && isPast(t.fecha));
+      return v.length
+        ? "De " + c.nombre + " tenés " + plural(v.length, "tarea vencida", "tareas vencidas") + ":\n\n" + listar(ordenar(v), false)
+        : "No tenés nada vencido de " + c.nombre + ".";
+    }
+    if (/\bhoy\b/.test(q)) {
+      const h = suyas.filter((t) => t.fecha && isToday(t.fecha));
+      return h.length
+        ? "Hoy tenés " + plural(h.length, "tarea", "tareas") + " de " + c.nombre + ":\n\n" + listar(ordenar(h), false)
+        : "Hoy no tenés nada de " + c.nombre + ".";
+    }
+    return suyas.length
+      ? "Tenés " + plural(suyas.length, "tarea pendiente", "tareas pendientes") + " de " + c.nombre + ":\n\n" + listar(ordenar(suyas), false)
+      : "No tenés tareas pendientes de " + c.nombre + ".";
+  }
+
+  if (/vencid|atrasad/.test(q)) {
+    const v = vencidas();
+    return v.length ? "Tenés " + plural(v.length, "tarea vencida", "tareas vencidas") + ":\n\n" + listar(v) : "No tenés nada vencido. Vas al día.";
+  }
+  if (/hice|complet|termin|cerre/.test(q)) {
+    const semana = weekOf(today());
+    const hechas = todas().filter((t) => {
+      if (!t.done) return false;
+      const cruda = bruta(t);
+      const cuando = cruda && cruda.doneAt ? cruda.doneAt.slice(0, 10) : t.fecha;
+      return cuando && semana.indexOf(cuando) !== -1;
+    });
+    return hechas.length
+      ? "Esta semana cerraste " + plural(hechas.length, "tarea", "tareas") + ":\n\n" + listar(hechas)
+      : "Todavía no marcaste ninguna tarea como completada esta semana.";
+  }
+  if (/\bmanana\b/.test(q)) {
+    const m = delDia(addDays(today(), 1)).filter((t) => !t.done);
+    return m.length ? "Mañana tenés " + plural(m.length, "tarea", "tareas") + ":\n\n" + listar(m) : "Mañana no tenés nada agendado.";
+  }
+  if (/\bhoy\b/.test(q)) {
+    const h = deHoy();
+    return h.length ? "Hoy tenés " + plural(h.length, "tarea", "tareas") + ":\n\n" + listar(h) : "Hoy no tenés tareas. Buen momento para adelantar algo.";
+  }
+  if (/semana/.test(q)) {
+    const semana = weekOf(today());
+    const dela = ordenar(sueltas.filter((t) => t.fecha && semana.indexOf(t.fecha) !== -1));
+    return dela.length ? "Esta semana tenés " + plural(dela.length, "tarea", "tareas") + ":\n\n" + listar(dela) : "No tenés nada agendado para esta semana.";
+  }
+  if (/client/.test(q)) {
+    if (!datos.clientes.length) return "Todavía no cargaste ningún cliente. Agregalos desde la pestaña Clientes.";
+    const resumen = datos.clientes.map((cl) => {
+      const p = sueltas.filter((t) => t.clienteId === cl.id).length;
+      return "• " + (cl.emoji || "🏢") + " " + cl.nombre + " — " + plural(p, "pendiente", "pendientes");
+    }).join("\n");
+    return "Tenés " + plural(datos.clientes.length, "cliente", "clientes") + ":\n\n" + resumen;
+  }
+  if (/pendient|que tengo|falta|proxim|sigue/.test(q)) {
+    const p = ordenar(sueltas).slice(0, 8);
+    return p.length ? "Tus próximas tareas:\n\n" + listar(p) : "No tenés tareas pendientes. Estás al día.";
+  }
+  return [
+    "Esa no la entendí. Probá con algo así:",
+    "",
+    "• ¿Qué tengo hoy?",
+    "• ¿Qué tengo pendiente de <cliente>?",
+    "• ¿Qué está vencido?",
+    "• ¿Qué hice esta semana?",
+  ].join("\n");
+}
+
+const taski = {
+  abierto: false,
+  mensajes: [{ de: "it", texto: "Hola Jona. Preguntame qué tenés pendiente de un cliente, qué se venció o qué cerraste esta semana." }],
+};
+
+/* ---------- piezas comunes ---------- */
+const BEADS = ["bead-wine", "bead-gold", "bead-olive", "bead-clay", "bead-slate", "bead-plum"];
+const beadDe = (id) => BEADS[Math.abs(Number(id) || 0) % BEADS.length];
+
+const vacio = (titulo, detalle) =>
+  '<div class="empty">' + esc(titulo) + (detalle ? "<p>" + esc(detalle) + "</p>" : "") + "</div>";
+
+function filaTarea(t, opts) {
+  const o = opts || {};
+  const vencida = !t.done && t.fecha && isPast(t.fecha);
+  const esHoy = !t.done && t.fecha && isToday(t.fecha);
+  const cli = !o.ocultarCliente && t.clienteId ? clientePorId(t.clienteId) : null;
+  const cuando = t.fecha
+    ? '<span class="when ' + (vencida ? "vencida" : esHoy ? "hoy" : "") + '">' +
+      esc(friendlyDate(t.fecha)) + (t.hora ? " · " + esc(t.hora) : "") + (vencida ? " · vencida" : "") + "</span>"
+    : "";
+  return (
+    '<div class="task" data-done="' + (t.done ? 1 : 0) + '">' +
+      '<button type="button" class="check" data-done="' + (t.done ? 1 : 0) + '" data-a="marcar" data-k="' + t.key + '" ' +
+        'aria-label="' + (t.done ? "Marcar como pendiente" : "Completar") + ': ' + esc(t.texto) + '">' +
+        (t.done ? icon("check") : "") + "</button>" +
+      '<button type="button" class="task-body" data-a="editar" data-k="' + t.key + '" aria-label="Editar: ' + esc(t.texto) + '">' +
+        '<p class="task-title">' + esc(t.texto) + "</p>" +
+        '<div class="meta">' +
+          (cli ? '<span class="cli">' + esc(cli.emoji || "🏢") + " " + esc(cli.nombre) + "</span>" : "") +
+          (t.tipo === "general" && !o.ocultarSeccion ? '<span class="tag">' + esc((SECCIONES.find((s) => s.id === t.seccion) || { label: "Otro" }).label) + "</span>" : "") +
+          cuando +
+          '<span class="prio ' + t.prio + '">' + t.prio + "</span>" +
+        "</div>" +
+      "</button>" +
+      '<div class="task-side">' +
+        '<button type="button" class="icon-btn danger" data-a="borrar" data-k="' + t.key + '" title="Eliminar" aria-label="Eliminar: ' + esc(t.texto) + '">' +
+          icon("trash") + "</button>" +
+      "</div>" +
+    "</div>"
+  );
+}
+
+const listaTareas = (l, o) =>
+  l.length ? '<div class="list">' + l.map((t) => filaTarea(t, o)).join("") + "</div>"
+           : vacio((o && o.vacio) || "No hay tareas acá", o && o.vacioDetalle);
+
+function tarjetaFlotante(tono, ico, arriba, abajo, flote, extra) {
+  return (
+    '<div class="float-card glass ' + (flote || "") + '">' +
+      '<span class="bead-icon bead-' + tono + '">' + icon(ico) + "</span>" +
+      '<span class="fc-text"><span class="fc-1">' + esc(arriba) + "</span>" +
+        '<span class="fc-2">' + esc(abajo) + "</span></span>" +
+      (extra || "") + "</div>"
+  );
+}
+
+function camposTarea(d, deducido, destino) {
+  const g = deducido || {};
+  const marca = (k) => (g[k] ? '<span class="guessed" title="Lo deduje del texto"></span>' : "");
+  const p = destino + "-";
+  const opcCli = ['<option value=""' + (d.clienteId ? "" : " selected") + ">Sin cliente (tarea propia)</option>"]
+    .concat(datos.clientes.map((c) =>
+      '<option value="' + c.id + '"' + (d.clienteId === c.id ? " selected" : "") + ">" + esc((c.emoji || "🏢") + " " + c.nombre) + "</option>"))
+    .join("");
+  const opcSec = SECCIONES.map((s) =>
+    '<option value="' + s.id + '"' + (d.seccion === s.id ? " selected" : "") + ">" + s.label + "</option>").join("");
+  return (
+    '<div class="field"><label for="' + p + 'texto">Tarea</label>' +
+      '<input id="' + p + 'texto" data-f="texto" data-target="' + destino + '" value="' + esc(d.texto) + '" placeholder="¿Qué hay que hacer?" /></div>' +
+    '<div class="grid2">' +
+      '<div class="field"><label for="' + p + 'cli">Cliente' + marca("cliente") + "</label>" +
+        '<select id="' + p + 'cli" data-f="clienteId" data-target="' + destino + '">' + opcCli + "</select></div>" +
+      '<div class="field"><label for="' + p + 'sec">Área' + marca("seccion") + "</label>" +
+        '<select id="' + p + 'sec" data-f="seccion" data-target="' + destino + '"' + (d.clienteId ? " disabled" : "") + ">" + opcSec + "</select></div>" +
+    "</div>" +
+    '<div class="grid2">' +
+      '<div class="field"><label for="' + p + 'fecha">Fecha' + marca("fecha") + "</label>" +
+        '<input id="' + p + 'fecha" type="date" data-f="fecha" data-target="' + destino + '" value="' + esc(d.fecha || "") + '" /></div>' +
+      '<div class="field"><label for="' + p + 'hora">Hora' + marca("hora") + "</label>" +
+        '<input id="' + p + 'hora" type="time" data-f="hora" data-target="' + destino + '" value="' + esc(d.hora || "") + '" /></div>' +
+    "</div>" +
+    '<div class="field"><span class="label">Prioridad' + marca("prio") + "</span>" +
+      '<div class="seg" data-target="' + destino + '">' +
+        PRIORIDADES.map((x) =>
+          '<button type="button" data-a="prioridad" data-target="' + destino + '" data-v="' + x.value + '" aria-pressed="' +
+          (d.prio === x.value) + '">' + x.label + "</button>").join("") +
+    "</div></div>"
+  );
+}
+
+/* ---------- Hoy ---------- */
+const FRANJAS = [
+  { hasta: 5, saludo: "Buenas noches", frases: [
+    "A esta hora no interrumpe nadie.",
+    "Silencio total: buen momento para lo que pide cabeza.",
+    "Si estás despierto, que valga la pena.",
+  ] },
+  { hasta: 12, saludo: "Buenos días", frases: [
+    "La primera hora rinde como tres.",
+    "Empezá por la que más pesa y el resto se hace solo.",
+    "Arrancar ya es la mitad del trabajo.",
+    "Hoy se gana temprano.",
+  ] },
+  { hasta: 14, saludo: "Buen mediodía", frases: [
+    "Media jornada: mirá qué quedó abierto.",
+    "Buen momento para cerrar lo de la mañana.",
+    "Comé tranquilo, que la tarde rinde.",
+  ] },
+  { hasta: 19, saludo: "Buenas tardes", frases: [
+    "Cerrá lo que empezaste antes de que se enfríe.",
+    "El envión de la tarde es corto: aprovechalo.",
+    "Una menos es una menos.",
+    "Lo que despachás ahora no te espera mañana.",
+  ] },
+  { hasta: 24, saludo: "Buenas noches", frases: [
+    "Dejá listo lo de mañana y soltá.",
+    "Lo que no cerró hoy, cierra mañana.",
+    "Día terminado. Anotá lo que quedó y descansá.",
+  ] },
+];
+
+/* La frase se elige por día del año, no al azar: si cambiara en cada
+   render, parpadearía cada vez que marcás una tarea. */
+function saludoDelMomento() {
+  const ahora = new Date();
+  const f = FRANJAS.find((x) => ahora.getHours() < x.hasta) || FRANJAS[FRANJAS.length - 1];
+  const dia = Math.floor((ahora - new Date(ahora.getFullYear(), 0, 0)) / 86400000);
+  return { saludo: f.saludo, frase: f.frases[dia % f.frases.length] };
+}
+
+function vistaHoy() {
+  const m = saludoDelMomento();
+  const v = vencidas();
+  const h = deHoy();
+  const sig = proximas()[0] || null;
+  const recs = recordatorios();
+  const sueltas = abiertas();
+  const hechasHoy = todas().filter((t) => t.done && t.fecha === today()).length;
+  const totalHoy = h.length + hechasHoy;
+  const pct = totalHoy ? Math.round((hechasHoy / totalHoy) * 100) : 0;
+
+  const pilas = datos.clientes.slice(0, 4).map((c) =>
+    '<span class="cli-emoji" style="width:26px;height:26px;border-radius:9px;font-size:13px;margin-left:-6px;border:1.5px solid var(--canvas)" title="' +
+    esc(c.nombre) + '">' + esc(c.emoji || "🏢") + "</span>").join("");
+
+  let izq = "";
+
+  izq +=
+    "<header>" +
+      (datos.clientes.length
+        ? '<div class="float-card glass" style="padding:6px 14px 6px 10px;width:fit-content;border-radius:999px;gap:9px">' +
+          '<span style="display:flex;padding-left:6px">' + pilas + "</span>" +
+          '<span class="fc-2" style="font-size:12px;white-space:nowrap"><b style="color:var(--ink-body)">' +
+          plural(datos.clientes.length, "cliente", "clientes") + "</b> · " + plural(sueltas.length, "tarea abierta", "tareas abiertas") + "</span></div>"
+        : "") +
+      '<h1 class="display" style="margin-top:14px">' + m.saludo + ",<br />Jona</h1>" +
+      '<p class="lead">' +
+        (totalHoy === 0 ? "Hoy no tenés tareas agendadas." : "Hoy tenés " + plural(h.length, "tarea", "tareas") + " por delante.") +
+        (v.length ? " Quedaron " + v.length + " sin completar de días anteriores." : "") +
+      "</p>" +
+      '<p class="frase">' + esc(m.frase) + "</p>" +
+    "</header>";
+
+  izq +=
+    "<div>" +
+      '<div class="capture-row">' +
+        '<input id="captura" autocomplete="off" placeholder="¿Qué necesitás hacer?" aria-label="¿Qué necesitás hacer?" value="' + esc(estado.captura) + '" />' +
+        '<button type="button" class="capture-send" id="captura-enviar" data-a="interpretar" aria-label="Interpretar y crear tarea"' +
+        (estado.captura.trim() ? "" : " disabled") + ">" + icon("up") + "</button>" +
+      "</div>" +
+      (estado.borrador ? "" : '<p class="hint">Escribilo como lo dirías. Si nombrás un cliente, la tarea va sola a su panel.</p>') +
+    "</div>";
+
+  if (estado.borrador) {
+    izq +=
+      '<div class="confirm glass">' +
+        '<div class="confirm-head"><strong>Entendí esto</strong>' +
+          '<span class="faint" style="font-size:11.5px">Corregí lo que haga falta</span></div>' +
+        camposTarea(estado.borrador, estado.deducido, "inline") +
+        '<div class="actions">' +
+          '<button type="button" class="btn btn-quiet" data-a="cancelar-borrador">Cancelar</button>' +
+          '<button type="button" class="btn btn-primary btn-bead" data-a="crear-borrador">Crear tarea<span class="bead">' + icon("chevron") + "</span></button>" +
+        "</div>" +
+      "</div>";
+  }
+
+  const flotes = ["float-a", "float-b", "float-c"];
+  recs.forEach((r, i) => {
+    izq += tarjetaFlotante("gold", "clock", minutesLabel(r.min),
+      r.t.texto + (r.t.clienteId ? " · " + nombreCliente(r.t.clienteId) : ""), flotes[i % 3]);
+  });
+  if (v.length) {
+    izq += tarjetaFlotante("wine", "alert", plural(v.length, "tarea vencida", "tareas vencidas"),
+      "Sin completar de días anteriores", "float-b");
+  }
+
+  if (totalHoy) {
+    izq +=
+      '<div class="card glass" style="gap:10px;display:flex;flex-direction:column">' +
+        '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">' +
+          '<span class="eyebrow">Progreso de hoy</span>' +
+          '<span class="num" style="font-size:12.5px;font-weight:700;color:var(--ink-body)">' + hechasHoy + " de " + totalHoy + "</span></div>" +
+        '<div class="barra"><i style="width:' + pct + '%"></i></div>' +
+      "</div>";
+  }
+
+  let der = "";
+  if (v.length) der += "<section><h2>Vencidas</h2>" + listaTareas(v) + "</section>";
+  der += "<section><h2>Hoy</h2>" +
+    (h.length
+      ? listaTareas(h)
+      : '<div class="empty empty-robo">' + roboSVG(150) +
+        '<p class="empty-t">Nada para hoy</p>' +
+        "<p>Aprovechá para adelantar algo, o contale a Taski lo que tengas en la cabeza.</p></div>") +
+    "</section>";
+  if (sig) der += "<section><h2>Lo siguiente</h2>" + listaTareas([sig]) + "</section>";
+
+  return '<div class="hero-grid"><div class="hero-left">' + izq + "</div><div class=\"hero-right\">" + der + "</div></div>";
+}
+
+/* ---------- Clientes ---------- */
+function vistaClientes() {
+  const tarjetas = datos.clientes.map((c) => {
+    const suyas = delCliente(c.id);
+    const pend = suyas.filter((t) => !t.done);
+    const venc = pend.filter((t) => t.fecha && isPast(t.fecha)).length;
+    const prox = pend.find((t) => t.fecha && !isPast(t.fecha)) || pend[0] || null;
+    const pct = suyas.length ? Math.round(((suyas.length - pend.length) / suyas.length) * 100) : 0;
+    return (
+      '<button type="button" class="cli-card" data-a="abrir-cliente" data-id="' + c.id + '">' +
+        '<div class="cli-top">' +
+          '<span class="cli-emoji">' + esc(c.emoji || "🏢") + "</span>" +
+          '<span style="flex:1;min-width:0"><span class="cli-nombre" style="display:block">' + esc(c.nombre) + "</span>" +
+            '<span class="cli-sub" style="display:block">' + plural(pend.length, "pendiente", "pendientes") +
+            (suyas.length ? " · " + pct + "% listo" : "") + "</span></span>" +
+          (venc ? '<span class="badge">' + venc + "</span>" : "") +
+        "</div>" +
+        '<div class="barra"><i style="width:' + pct + '%"></i></div>' +
+        '<span class="cli-next">' + (prox ? esc(prox.texto) + " · " + esc(friendlyDate(prox.fecha)) : "Sin tareas pendientes") + "</span>" +
+      "</button>"
+    );
+  }).join("");
+
+  return (
+    '<header style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap">' +
+      "<div><h1>Clientes</h1>" +
+        '<p class="sub">' + (datos.clientes.length ? plural(datos.clientes.length, "cliente", "clientes") + " en cartera" : "Todavía no cargaste ninguno") + "</p></div>" +
+      '<button type="button" class="btn btn-primary btn-bead" data-a="nuevo-cliente">Nuevo cliente<span class="bead">' + icon("plus") + "</span></button>" +
+    "</header>" +
+    (datos.clientes.length
+      ? '<div class="cli-grid">' + tarjetas + "</div>"
+      : '<div class="empty empty-robo">' + roboSVG(160) +
+        '<p class="empty-t">Empecemos por el primero</p>' +
+        "<p>Cada cliente va a tener su propio panel: tareas, entregas, progreso e informes.</p>" +
+        '<div style="margin-top:16px"><button type="button" class="btn btn-primary" data-a="nuevo-cliente">' + icon("plus") + "Agregar cliente</button></div></div>")
+  );
+}
+
+/* ---------- Panel del cliente ---------- */
+function vistaCliente() {
+  const c = clientePorId(estado.clienteId);
+  if (!c) {
+    return '<button type="button" class="btn btn-quiet" data-a="ir" data-v="clientes">' + icon("back") + "Clientes</button>" +
+      vacio("No encontramos ese cliente");
+  }
+  const suyas = delCliente(c.id);
+  const pend = suyas.filter((t) => !t.done);
+  const hechas = suyas.filter((t) => t.done);
+  const venc = pend.filter((t) => t.fecha && isPast(t.fecha));
+  const prox = pend.find((t) => t.fecha && !isPast(t.fecha)) || null;
+  const pct = suyas.length ? Math.round((hechas.length / suyas.length) * 100) : 0;
+
+  const visibles =
+    estado.pestana === "completadas" ? hechas :
+    estado.pestana === "todas" ? suyas : pend;
+
+  const pestanas = [["pendientes", "Pendientes", pend.length], ["completadas", "Completadas", hechas.length], ["todas", "Todas", suyas.length]];
+
+  return (
+    "<header>" +
+      '<button type="button" class="btn btn-quiet" style="padding:0 8px;margin-left:-8px" data-a="ir" data-v="clientes">' + icon("back") + "Clientes</button>" +
+      '<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:12px">' +
+        '<span class="cli-emoji" style="width:56px;height:56px;border-radius:18px;font-size:28px">' + esc(c.emoji || "🏢") + "</span>" +
+        '<div style="flex:1;min-width:180px"><h1>' + esc(c.nombre) + "</h1>" +
+          '<p class="sub">' + plural(pend.length, "tarea pendiente", "tareas pendientes") +
+          (venc.length ? " · " + venc.length + " vencida" + (venc.length === 1 ? "" : "s") : "") + "</p></div>" +
+        '<div style="display:flex;align-items:center;gap:6px;flex:none;flex-wrap:wrap">' +
+          '<button type="button" class="icon-btn" data-a="editar-cliente" title="Editar cliente" aria-label="Editar cliente">' + icon("pencil") + "</button>" +
+          '<button type="button" class="icon-btn danger" data-a="eliminar-cliente" title="Eliminar cliente" aria-label="Eliminar cliente">' + icon("trash") + "</button>" +
+          '<button type="button" class="btn btn-soft" data-a="informe-cliente">' + icon("report") + "Informe</button>" +
+          '<button type="button" class="btn btn-primary" data-a="nueva-tarea-cliente">' + icon("plus") + "Nueva tarea</button>" +
+        "</div>" +
+      "</div>" +
+    "</header>" +
+
+    '<div class="stats">' +
+      '<div class="stat glass"><b class="num">' + pend.length + "</b><span>Pendientes</span></div>" +
+      '<div class="stat glass ' + (venc.length ? "alerta" : "") + '"><b class="num">' + venc.length + "</b><span>Vencidas</span></div>" +
+      '<div class="stat glass acento"><b class="num">' + hechas.length + "</b><span>Completadas</span></div>" +
+      '<div class="stat glass"><b class="num">' + pct + "%</b><span>Avance</span></div>" +
+    "</div>" +
+
+    '<div class="card glass" style="display:flex;flex-direction:column;gap:10px">' +
+      '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">' +
+        '<span class="eyebrow">Próxima entrega</span>' +
+        (prox ? '<span style="font-size:12.5px;font-weight:700;color:var(--wine-ink)">' + esc(friendlyDate(prox.fecha)) + "</span>" : "") + "</div>" +
+      '<p style="font-size:14.5px;color:var(--ink-body);font-weight:600">' +
+        (prox ? esc(prox.texto) : "Sin entregas agendadas") + "</p>" +
+      '<div class="barra"><i style="width:' + pct + '%"></i></div>' +
+    "</div>" +
+
+    (c.notas ? '<div class="nota"><b>Notas</b><br />' + esc(c.notas).replace(/\n/g, "<br />") + "</div>" : "") +
+
+    '<div class="tabs" role="tablist">' +
+      pestanas.map(([v, label, n]) =>
+        '<button type="button" role="tab" aria-selected="' + (estado.pestana === v) + '" data-a="pestana" data-v="' + v + '">' +
+        label + (n ? ' <span class="num" style="opacity:.6">' + n + "</span>" : "") + "</button>").join("") +
+    "</div>" +
+
+    listaTareas(visibles, {
+      ocultarCliente: true,
+      vacio: estado.pestana === "completadas" ? "Todavía no completaste nada de este cliente" : "Sin tareas acá",
+      vacioDetalle: estado.pestana === "pendientes" ? "Agregá la primera con el botón de arriba." : undefined,
+    })
+  );
+}
+
+/* ---------- Calendario ---------- */
+function vistaCalendario() {
+  const hoy = today();
+  const marcasDe = (d) => {
+    const items = abiertas().filter((t) => t.fecha === d);
+    const propias = items.filter((t) => !t.clienteId).length;
+    const deCli = items.filter((t) => t.clienteId).length;
+    let out = "";
+    for (let i = 0; i < Math.min(propias, 2); i++) out += "<i></i>";
+    for (let i = 0; i < Math.min(deCli, 2); i++) out += '<i class="cli"></i>';
+    return out;
+  };
+  const celda = (d, fuera) => {
+    const n = abiertas().filter((t) => t.fecha === d).length;
+    return (
+      '<button type="button" class="day' + (d === hoy ? " es-hoy" : "") + (fuera ? " fuera" : "") + '" ' +
+      'aria-pressed="' + (d === estado.elegido) + '" data-a="dia" data-v="' + d + '" ' +
+      'aria-label="' + esc(longDate(d)) + ", " + plural(n, "tarea", "tareas") + '">' +
+        (estado.calVista === "semana" ? '<span class="dow">' + DIAS_CORTO[dow(d)] + "</span>" : "") +
+        '<span class="n num">' + parseDay(d).getDate() + "</span>" +
+        '<span class="marks">' + marcasDe(d) + "</span>" +
+      "</button>"
+    );
+  };
+
+  let grilla;
+  if (estado.calVista === "semana") {
+    grilla = '<div class="week">' + weekOf(estado.ancla).map((d) => celda(d, false)).join("") + "</div>";
+  } else {
+    const mes = parseDay(estado.ancla).getMonth();
+    const cabecera = DIAS_CORTO.slice(1).concat(DIAS_CORTO[0]).map((d) => '<span class="dow-head">' + d + "</span>").join("");
+    grilla = '<div class="month-grid">' + cabecera +
+      monthGrid(estado.ancla).map((d) => celda(d, parseDay(d).getMonth() !== mes)).join("") + "</div>";
+  }
+
+  const enHoy = estado.ancla === hoy && estado.elegido === hoy;
+  return (
+    '<header style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">' +
+      "<h1>Calendario</h1>" +
+      '<div style="display:flex;align-items:center;gap:8px">' +
+        (enHoy ? "" : '<button type="button" class="btn btn-soft" data-a="cal-hoy">Hoy</button>') +
+        '<div class="tabs">' +
+          '<button type="button" role="tab" data-a="cal-vista" data-v="semana" aria-selected="' + (estado.calVista === "semana") + '">Semana</button>' +
+          '<button type="button" role="tab" data-a="cal-vista" data-v="mes" aria-selected="' + (estado.calVista === "mes") + '">Mes</button>' +
+        "</div>" +
+      "</div>" +
+    "</header>" +
+    '<div class="cal-head">' +
+      '<button type="button" class="icon-btn" data-a="cal-paso" data-v="-1" aria-label="Anterior">' + icon("left") + "</button>" +
+      '<span class="cal-mes">' + esc(monthLabel(estado.ancla)) + "</span>" +
+      '<button type="button" class="icon-btn" data-a="cal-paso" data-v="1" aria-label="Siguiente">' + icon("right") + "</button>" +
+    "</div>" +
+    grilla +
+    '<section><div style="display:flex;align-items:center;justify-content:space-between;gap:10px">' +
+      "<h2>" + (estado.elegido === hoy ? "Hoy" : esc(longDate(estado.elegido))) + "</h2>" +
+      '<button type="button" class="btn btn-soft btn-sm" data-a="nueva-tarea-dia">' + icon("plus") + "Agregar</button></div>" +
+      listaTareas(delDia(estado.elegido), { vacio: "Sin tareas ese día" }) +
+    "</section>"
+  );
+}
+
+/* ---------- Búsqueda ---------- */
+function vistaBusqueda() {
+  const r = buscar(estado.consulta);
+  let html = "<header><h1>Resultados</h1>" +
+    '<p class="sub">' + plural(r.tareas.length, "tarea", "tareas") + " y " +
+    plural(r.clientes.length, "cliente", "clientes") + ' para “' + esc(estado.consulta.trim()) + "”.</p></header>";
+  if (r.clientes.length) {
+    html += '<section><h2>Clientes</h2><div class="cli-grid">' +
+      r.clientes.map((c) =>
+        '<button type="button" class="cli-card" data-a="abrir-cliente" data-id="' + c.id + '">' +
+          '<div class="cli-top"><span class="cli-emoji">' + esc(c.emoji || "🏢") + "</span>" +
+            '<span class="cli-nombre" style="flex:1;min-width:0">' + esc(c.nombre) + "</span>" +
+            '<span class="faint" style="display:flex">' + icon("right") + "</span></div></button>").join("") +
+      "</div></section>";
+  }
+  html += "<section><h2>Tareas</h2>" +
+    listaTareas(r.tareas, { vacio: "Ninguna tarea coincide", vacioDetalle: "Probá con otra palabra, o con el nombre del cliente." }) + "</section>";
+  if (!r.tareas.length && !r.clientes.length) {
+    html += '<div class="actions" style="justify-content:flex-start">' +
+      '<button type="button" class="btn btn-primary btn-bead" data-a="crear-desde-busqueda">Crear “' + esc(estado.consulta.trim()) +
+      '” como tarea<span class="bead">' + icon("plus") + "</span></button></div>";
+  }
+  return html;
+}
+
+/* ---------- Informes ----------
+   El documento se exporta como imagen con html2canvas, que rasteriza lo
+   que ve: por eso el informe usa colores fijos y no variables de tema. */
+function semanaActual() {
+  const s = weekOf(today());
+  return { desde: s[0], hasta: s[6] };
+}
+
+function tareasDelInforme() {
+  if (!estado.infCliente) return [];
+  let items = delCliente(estado.infCliente);
+  if (estado.infDesde) items = items.filter((t) => !t.fecha || t.fecha >= estado.infDesde);
+  if (estado.infHasta) items = items.filter((t) => !t.fecha || t.fecha <= estado.infHasta);
+  return items;
+}
+
+function docInformeHTML() {
+  const c = clientePorId(estado.infCliente);
+  if (!c) return "";
+  const elegidas = tareasDelInforme().filter((t) => estado.infSelec.indexOf(t.key) !== -1);
+  const periodo = estado.infDesde && estado.infHasta
+    ? fechaLegible(estado.infDesde) + " — " + fechaLegible(estado.infHasta)
+    : estado.infDesde ? "Desde " + fechaLegible(estado.infDesde) : "";
+  const hechas = elegidas.filter((t) => t.done).length;
+
+  const filas = elegidas.map((t) =>
+    '<div class="doc-tarea"><div class="doc-caja ' + (t.done ? "done" : "") + '"></div>' +
+      '<div class="doc-tarea-txt ' + (t.done ? "done" : "") + '">' + esc(t.texto) +
+      (t.fecha ? '<div class="doc-tarea-fecha">' + esc(fechaLegible(t.fecha)) + "</div>" : "") +
+      "</div></div>").join("");
+
+  return (
+    '<div class="doc" id="doc-informe">' +
+      '<div class="doc-top"><div>' +
+        '<div class="doc-emoji">' + esc(c.emoji || "🏢") + "</div>" +
+        '<div class="doc-cli">' + esc(c.nombre) + "</div>" +
+        (periodo ? '<div class="doc-periodo">' + esc(periodo) + "</div>" : "") +
+      "</div>" +
+      '<div class="doc-logo"><b>Jonathan Alvez</b>Informe de avance</div></div>' +
+      (estado.infTexto.trim()
+        ? '<div class="doc-sec"><div class="doc-lbl">Novedades</div><div class="doc-texto">' + esc(estado.infTexto.trim()) + "</div></div>"
+        : "") +
+      (elegidas.length
+        ? '<div class="doc-sec"><div class="doc-lbl">Tareas · ' + hechas + " de " + elegidas.length + " completadas</div>" + filas + "</div>"
+        : "") +
+      '<div class="doc-pie"><span>Generado el ' + esc(fechaLegible(today())) + "</span><span>jonathanalvez</span></div>" +
+    "</div>"
+  );
+}
+
+function vistaInformes() {
+  const opciones = ['<option value="">— Elegí un cliente —</option>'].concat(
+    datos.clientes.map((c) =>
+      '<option value="' + c.id + '"' + (estado.infCliente === c.id ? " selected" : "") + ">" + esc((c.emoji || "🏢") + " " + c.nombre) + "</option>")
+  ).join("");
+
+  const items = tareasDelInforme();
+  const lista = !estado.infCliente
+    ? '<div class="empty" style="padding:20px">Elegí un cliente para ver sus tareas</div>'
+    : !items.length
+      ? '<div class="empty" style="padding:20px">No hay tareas en ese período</div>'
+      : '<div class="inf-lista">' + items.map((t) => {
+          const marcada = estado.infSelec.indexOf(t.key) !== -1;
+          return (
+            '<button type="button" class="inf-fila" aria-pressed="' + marcada + '" data-a="inf-tarea" data-k="' + t.key + '">' +
+              '<span class="caja">' + (marcada ? icon("check") : "") + "</span>" +
+              '<span class="inf-fila-txt"><b>' + esc(t.texto) + "</b>" +
+                "<span>" + (t.fecha ? esc(fechaLegible(t.fecha)) : "Sin fecha") + " · " + (t.done ? "Completada" : "Pendiente") + "</span></span>" +
+            "</button>"
+          );
+        }).join("") + "</div>";
+
+  return (
+    "<header><h1>Informes</h1>" +
+      '<p class="sub">Armá el resumen de un cliente y descargalo como imagen para mandárselo.</p></header>' +
+    '<div class="inf-layout">' +
+      '<div class="inf-editor glass">' +
+        '<div class="field"><label for="inf-cli">Cliente</label>' +
+          '<select id="inf-cli" data-a-change="inf-cliente">' + opciones + "</select></div>" +
+        '<div class="grid2">' +
+          '<div class="field"><label for="inf-desde">Desde</label>' +
+            '<input id="inf-desde" type="date" value="' + esc(estado.infDesde) + '" data-a-change="inf-desde" /></div>' +
+          '<div class="field"><label for="inf-hasta">Hasta</label>' +
+            '<input id="inf-hasta" type="date" value="' + esc(estado.infHasta) + '" data-a-change="inf-hasta" /></div>' +
+        "</div>" +
+        '<div class="field"><label for="inf-texto">Novedades</label>' +
+          '<textarea id="inf-texto" rows="5" placeholder="Avances, comentarios, lo que quieras contarle…" data-f="infTexto">' + esc(estado.infTexto) + "</textarea></div>" +
+        '<div class="field"><span class="label">Tareas a incluir</span>' + lista + "</div>" +
+        '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+          '<button type="button" class="btn btn-soft btn-sm" data-a="inf-todas">Marcar todas</button>' +
+          '<button type="button" class="btn btn-soft btn-sm" data-a="inf-ninguna">Ninguna</button>' +
+        "</div>" +
+        '<button type="button" class="btn btn-primary btn-block" data-a="inf-descargar"' +
+          (estado.infCliente ? "" : " disabled") + ">" + icon("down") + "Descargar imagen</button>" +
+      "</div>" +
+      '<div class="inf-vista glass">' +
+        '<span class="eyebrow">Vista previa</span>' +
+        '<div class="inf-marco" style="margin-top:12px">' +
+          (estado.infCliente ? docInformeHTML() : '<div class="empty">Completá los datos para ver el informe</div>') +
+        "</div>" +
+      "</div>" +
+    "</div>"
+  );
+}
+
+/* ---------- Ajustes ---------- */
+function vistaAjustes() {
+  const tema = temaGuardado();
+  const opciones = [["claro", "Claro"], ["oscuro", "Oscuro"], ["sistema", "Sistema"]];
+  const usuarioActual = () => (typeof fb !== "undefined" && fb && fb.auth && fb.auth.currentUser ? fb.auth.currentUser.email : null);
+  const estadoSync = modo === "online"
+    ? "Conectado a la nube. Lo que cargues acá lo vas a ver en cualquier dispositivo."
+    : "Guardando solo en este navegador. Los cambios no están viajando a la nube.";
+
+  return (
+    "<header><h1>Ajustes</h1></header>" +
+
+    '<section><h2>Apariencia</h2><div class="seg" style="max-width:360px">' +
+      opciones.map(([v, l]) =>
+        '<button type="button" data-a="tema" data-v="' + v + '" aria-pressed="' + (tema === v) + '">' + l + "</button>").join("") +
+    "</div></section>" +
+
+    "<section><h2>Sincronización</h2>" +
+      '<div class="rows glass"><div class="row"><div>' +
+        '<div class="row-label">' + (modo === "online" ? "En la nube" : "Solo este equipo") + "</div>" +
+        '<p class="row-desc">' + estadoSync + "</p></div>" +
+        '<span class="badge ' + (modo === "online" ? "ok" : "gold") + '">' + (modo === "online" ? "Activa" : "Local") + "</span></div></div>" +
+    "</section>" +
+
+    "<section><h2>Seguridad</h2>" +
+      '<div class="rows glass"><div class="row"><div>' +
+        '<div class="row-label">Entrada con usuario de Firebase</div>' +
+        '<p class="row-desc">' +
+          (usuarioActual()
+            ? "Sesión iniciada como " + esc(usuarioActual()) + ". Las reglas de la base exigen esta sesión para leer o escribir."
+            : "Estás trabajando con la copia local de este equipo, sin sesión.") +
+        "</p></div>" +
+        '<span class="badge ' + (usuarioActual() ? "ok" : "gold") + '">' + (usuarioActual() ? "Con sesión" : "Sin sesión") + "</span></div></div>" +
+      '<div class="nota" style="margin-top:12px">' +
+        "<b>Falta un paso más en las reglas.</b><br />" +
+        "Con <code>auth != null</code> entra cualquiera que tenga una cuenta en tu proyecto, " +
+        "y con el alta por mail habilitada cualquiera puede crearse una. Atalo a tu usuario:<br /><br />" +
+        "1. Firebase → <b>Authentication → Users</b> y copiá tu <b>User UID</b>.<br />" +
+        "2. Firebase → <b>Realtime Database → Reglas</b> y pegá:<br />" +
+        '<code style="display:block;margin:6px 0;white-space:pre-wrap">{ "rules": { ".read": "auth.uid === \'TU_UID\'", ".write": "auth.uid === \'TU_UID\'" } }</code>' +
+        "3. <b>Publicar</b>.<br />" +
+        "4. Opcional: <b>Authentication → Settings → User actions</b> y desmarcá el alta de usuarios, para que nadie más pueda registrarse." +
+      "</div>" +
+    "</section>" +
+
+    "<section><h2>Tus datos</h2>" +
+      '<div class="rows glass">' +
+        '<div class="row"><div><div class="row-label">Copia de seguridad</div>' +
+          '<p class="row-desc">Copiá todo como texto para guardarlo aparte o llevarlo a otro lado.</p></div>' +
+          '<button type="button" class="btn btn-soft" data-a="copia">Abrir</button></div>' +
+        '<div class="row"><div><div class="row-label">Cerrar sesión</div>' +
+          '<p class="row-desc">Vuelve a pedir la contraseña en este dispositivo.</p></div>' +
+          '<button type="button" class="btn btn-soft" data-a="salir">Salir</button></div>' +
+        '<div class="row"><div><div class="row-label">Vaciar todo</div>' +
+          '<p class="row-desc">Borra clientes y tareas. Si la nube está activa, también se borran ahí.</p></div>' +
+          '<button type="button" class="btn btn-soft" data-a="vaciar">Vaciar</button></div>' +
+      "</div>" +
+      '<p class="hint">Ahora mismo: ' + plural(datos.clientes.length, "cliente", "clientes") + ", " +
+        plural(datos.tareas.length, "tarea propia", "tareas propias") + " y " +
+        plural(datos.tareasCliente.length, "tarea de cliente", "tareas de clientes") + ".</p>" +
+    "</section>" +
+
+    "<section><h2>Taski</h2>" +
+      tarjetaFlotante("wine", "bot", "Responde con tus propios datos", "Sin conexión externa ni modelos de terceros") +
+    "</section>"
+  );
+}
+
+/* ---------- navegación ---------- */
+const SECC_NAV = [
+  { id: "hoy", label: "Hoy", icon: "home" },
+  { id: "clientes", label: "Clientes", icon: "users" },
+  { id: "calendario", label: "Calendario", icon: "calendar" },
+  { id: "informes", label: "Informes", icon: "report" },
+  { id: "ajustes", label: "Ajustes", icon: "settings" },
+];
+
+const $view = document.getElementById("view");
+const $scroll = document.getElementById("scroll");
+const $search = document.getElementById("search");
+const $dlg = document.getElementById("dialog");
+const $fab = document.getElementById("taski-fab");
+const $taski = document.getElementById("taski-panel");
+
+document.getElementById("brand-mark").innerHTML = icon("spark");
+document.getElementById("lock-mark").innerHTML = icon("lock");
+$fab.innerHTML = icon("bot");
+
+function pintarNav() {
+  const activa = estado.consulta.trim() ? "" : estado.vista === "cliente" ? "clientes" : estado.vista;
+  document.getElementById("nav-desktop").innerHTML = SECC_NAV.map((s) =>
+    '<button type="button" data-a="ir" data-v="' + s.id + '"' +
+    (activa === s.id ? ' aria-current="page"' : "") + ">" + s.label + "</button>").join("");
+  document.getElementById("nav-mobile").innerHTML = SECC_NAV.map((s) =>
+    '<button type="button" data-a="ir" data-v="' + s.id + '"' +
+    (activa === s.id ? ' aria-current="page"' : "") + ">" + icon(s.icon) + "<span>" + s.label + "</span></button>").join("");
+}
+
+let primeraPintada = true;
+
+function render() {
+  pintarNav();
+  const buscando = Boolean(estado.consulta.trim());
+  $view.classList.toggle("narrow", buscando || (estado.vista !== "hoy" && estado.vista !== "informes"));
+
+  if (buscando) $view.innerHTML = vistaBusqueda();
+  else if (estado.vista === "clientes") $view.innerHTML = vistaClientes();
+  else if (estado.vista === "cliente") $view.innerHTML = vistaCliente();
+  else if (estado.vista === "calendario") $view.innerHTML = vistaCalendario();
+  else if (estado.vista === "informes") $view.innerHTML = vistaInformes();
+  else if (estado.vista === "ajustes") $view.innerHTML = vistaAjustes();
+  else $view.innerHTML = vistaHoy();
+
+  if (primeraPintada) {
+    $view.classList.add("enter");
+    primeraPintada = false;
+    setTimeout(() => $view.classList.remove("enter"), 1400);
+  }
+  pintarTaski();
+}
+
+function ir(vista) {
+  estado.vista = vista;
+  estado.consulta = "";
+  $search.value = "";
+  $scroll.scrollTop = 0;
+  if (vista === "informes" && !estado.infDesde) {
+    const s = semanaActual();
+    estado.infDesde = s.desde;
+    estado.infHasta = s.hasta;
+  }
+  render();
+}
+
+/* ---------- Taski ---------- */
+function escenaTaski() {
+  const tarjeta = (pos, tono, ico, arriba, abajo, flote, pregunta) =>
+    '<button type="button" class="float-card glass ' + flote + " " + pos + '" data-a="taski-sugerencia" data-v="' + esc(pregunta) + '">' +
+      '<span class="bead-icon bead-' + tono + '">' + icon(ico) + "</span>" +
+      '<span class="fc-text"><span class="fc-1">' + esc(arriba) + "</span>" +
+        '<span class="fc-2">' + esc(abajo) + "</span></span></button>";
+  return (
+    '<div class="escena"><div class="robo-wrap">' + roboSVG(190) + "</div>" +
+      tarjeta("c1", "wine", "list", "¿Qué tengo hoy?", "para la jornada", "float-a", "¿Qué tengo hoy?") +
+      tarjeta("c2", "gold", "doc", "¿Qué está vencido?", "sin completar", "float-b", "¿Qué está vencido?") +
+      tarjeta("c3", "olive", "check", "¿Qué hice?", "esta semana", "float-c", "¿Qué hice esta semana?") +
+    "</div>"
+  );
+}
+
+function pintarTaski() {
+  $fab.setAttribute("aria-expanded", String(taski.abierto));
+  $fab.setAttribute("aria-label", taski.abierto ? "Cerrar a Taski" : "Abrir a Taski");
+  $fab.innerHTML = taski.abierto ? icon("x") : icon("bot");
+  $taski.hidden = !taski.abierto;
+  if (!taski.abierto) return;
+
+  const campo = $taski.querySelector("#taski-input");
+  const texto = campo ? campo.value : "";
+
+  $taski.innerHTML =
+    '<div class="taski-head">' +
+      '<span class="bead-icon bead-wine">' + icon("bot") + "</span>" +
+      '<div><div class="taski-name">Taski</div><p class="taski-sub">Responde con tus tareas y clientes</p></div>' +
+      '<button type="button" class="icon-btn" style="margin-left:auto" data-a="taski" aria-label="Cerrar">' + icon("x") + "</button>" +
+    "</div>" +
+    '<div class="taski-log" id="taski-log">' +
+      taski.mensajes.map((m) => '<div class="msg ' + m.de + '">' + esc(m.texto) + "</div>").join("") +
+    "</div>" +
+    (taski.mensajes.length <= 1 ? escenaTaski() : "") +
+    '<form class="taski-form" id="taski-form">' +
+      '<input id="taski-input" autocomplete="off" placeholder="Preguntale algo a Taski…" aria-label="Preguntale algo a Taski" value="' + esc(texto) + '" />' +
+      '<button type="submit" class="taski-send" id="taski-send" aria-label="Enviar"' + (texto.trim() ? "" : " disabled") + ">" + icon("up") + "</button>" +
+    "</form>";
+
+  const log = $taski.querySelector("#taski-log");
+  log.scrollTop = log.scrollHeight;
+  $taski.querySelector("#taski-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    preguntarATaski($taski.querySelector("#taski-input").value);
+  });
+}
+
+function preguntarATaski(texto) {
+  const q = texto.trim();
+  if (!q) return;
+  taski.mensajes.push({ de: "me", texto: q });
+  taski.mensajes.push({ de: "it", texto: taskiResponde(q) });
+  pintarTaski();
+  const campo = $taski.querySelector("#taski-input");
+  if (campo) { campo.value = ""; campo.focus(); }
+  const enviar = $taski.querySelector("#taski-send");
+  if (enviar) enviar.disabled = true;
+}
+
+/* ---------- diálogos ---------- */
+let dlgDraft = null;
+let dlgOnOk = null;
+
+function abrirDialogo(o) {
+  dlgOnOk = o.onOk || null;
+  $dlg.innerHTML =
+    '<div class="dlg-head"><div><h2 class="dlg-title" id="dialog-title">' + esc(o.titulo) + "</h2>" +
+      (o.detalle ? '<p class="dlg-desc">' + esc(o.detalle) + "</p>" : "") + "</div>" +
+      '<button type="button" class="icon-btn" data-a="cerrar-dialogo" aria-label="Cerrar">' + icon("x") + "</button></div>" +
+    (o.cuerpo ? '<div class="dlg-body">' + o.cuerpo + "</div>" : "") +
+    '<div class="dlg-foot">' + (o.extra || "") +
+      '<button type="button" class="btn btn-quiet" data-a="cerrar-dialogo">' + esc(o.cancelar || "Cancelar") + "</button>" +
+      (o.ok ? '<button type="button" class="btn btn-primary" data-a="ok-dialogo">' + esc(o.ok) + "</button>" : "") +
+    "</div>";
+  $dlg.showModal();
+  const primero = $dlg.querySelector("input, textarea, select");
+  if (primero) primero.focus();
+}
+
+function cerrarDialogo() {
+  if ($dlg.open) $dlg.close();
+  dlgDraft = null;
+  dlgOnOk = null;
+}
+
+function dialogoTarea(titulo, draft, onOk, extra) {
+  dlgDraft = draft;
+  abrirDialogo({ titulo, cuerpo: camposTarea(draft, null, "dlg"), ok: titulo === "Editar tarea" ? "Guardar" : "Crear tarea", onOk, extra });
+}
+
+const EMOJIS = [
+  "🏢","🏬","🏛","🏗","🏠","🌿","🌱","🌾","🍀","⭐",
+  "🌟","💫","✨","🔥","💡","🎯","🎨","🎭","🎬","📱",
+  "💻","🖥","📷","🎙","📡","🔬","⚙️","🔧","🚀","✈️",
+  "🚢","🚗","🏍","🌍","🗺","🧭","🏔","🌊","🦁","🦊",
+  "🦅","🦋","🐬","🦄","🍎","🍋","🍇","🌸","🌺","🌻",
+  "🌴","🍃","🌙","💎","👑","🏆","🥇","🔑","💼","📋",
+  "🎵","🎸","🎺","🥁","🎹","🎤","🎧","📻","🎮","🩺",
+];
+
+function dialogoCliente(cli) {
+  const editando = Boolean(cli);
+  let emoji = editando ? cli.emoji || "🏢" : "🏢";
+  abrirDialogo({
+    titulo: editando ? "Editar cliente" : "Nuevo cliente",
+    detalle: editando ? "" : "Con este nombre lo va a reconocer cuando lo escribas en una tarea.",
+    cuerpo:
+      '<div class="field"><label for="dlg-cli-nombre">Nombre</label>' +
+        '<input id="dlg-cli-nombre" value="' + esc(editando ? cli.nombre : "") + '" placeholder="Ej. San Lucas" /></div>' +
+      '<div class="field"><span class="label">Ícono</span><div class="emoji-grid" id="dlg-emojis">' +
+        EMOJIS.map((e) => '<button type="button" data-emoji="' + e + '" aria-pressed="' + (e === emoji) + '">' + e + "</button>").join("") +
+      "</div></div>" +
+      '<div class="field"><label for="dlg-cli-notas">Notas (opcional)</label>' +
+        '<textarea id="dlg-cli-notas" rows="3" placeholder="Contacto, acuerdos, lo que quieras tener a mano…">' +
+        esc(editando && cli.notas ? cli.notas : "") + "</textarea></div>",
+    ok: editando ? "Guardar" : "Agregar",
+    onOk: () => {
+      const nombre = $dlg.querySelector("#dlg-cli-nombre").value.trim();
+      if (!nombre) return false;
+      const notas = $dlg.querySelector("#dlg-cli-notas").value.trim();
+      if (editando) {
+        const c = clientePorId(cli.id);
+        if (c) { c.nombre = nombre; c.emoji = emoji; c.notas = notas || null; }
+        toast("Cliente actualizado", nombre);
+      } else {
+        datos.clientes.push({ id: datos.nextCliId++, nombre, emoji, notas: notas || null });
+        toast("Cliente agregado", nombre);
+      }
+      guardar();
+      return true;
+    },
+  });
+  $dlg.querySelector("#dlg-emojis").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-emoji]");
+    if (!b) return;
+    emoji = b.dataset.emoji;
+    $dlg.querySelectorAll("#dlg-emojis button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+  });
+}
+
+function dialogoCopia() {
+  abrirDialogo({
+    titulo: "Copia de seguridad",
+    detalle: "Copiá este texto y guardalo donde quieras. Para restaurarlo, pegá acá una copia anterior y tocá Restaurar.",
+    cuerpo: '<textarea id="dlg-copia" class="backup-area" spellcheck="false" aria-label="Datos en texto">' + esc(JSON.stringify(datos)) + "</textarea>",
+    cancelar: "Cerrar",
+    extra: '<button type="button" class="btn btn-soft spacer" data-a="copiar-todo">' + icon("copy") + "Copiar</button>",
+    ok: "Restaurar",
+    onOk: () => {
+      try {
+        const entrante = JSON.parse($dlg.querySelector("#dlg-copia").value.trim());
+        if (!entrante || !Array.isArray(entrante.clientes)) throw new Error("formato");
+        datos = normalizar(entrante);
+        guardar();
+        toast("Datos restaurados", plural(datos.clientes.length, "cliente", "clientes"));
+        return true;
+      } catch (e) {
+        toast("Esa copia no se entiende", "Pegá el texto completo, tal cual lo copiaste.");
+        return false;
+      }
+    },
+  });
+}
+
+/* ---------- acciones ---------- */
+const porKey = (k) => todas().find((t) => t.key === k) || null;
+
+function borrarTarea(item) {
+  const crudo = bruta(item);
+  if (!crudo) return;
+  const copia = JSON.parse(JSON.stringify(crudo));
+  quitar(item);
+  render();
+  toast("Tarea eliminada", copia.texto, () => { restaurar(item, copia); render(); });
+}
+
+function nuevaTareaCon(base, titulo) {
+  dialogoTarea(titulo || "Nueva tarea", Object.assign({
+    texto: "", clienteId: null, seccion: "trabajo", prio: "media", fecha: today(), hora: null,
+  }, base), () => {
+    if (!dlgDraft.texto.trim()) return false;
+    nuevaTarea(dlgDraft);
+    toast("Tarea creada", dlgDraft.texto.trim());
+    return true;
+  });
+}
+
+const ACCIONES = {
+  ir: (el) => ir(el.dataset.v),
+
+  taski: () => {
+    taski.abierto = !taski.abierto;
+    pintarTaski();
+    if (taski.abierto) {
+      const c = $taski.querySelector("#taski-input");
+      if (c) c.focus();
+    } else $fab.focus();
+  },
+  "taski-sugerencia": (el) => preguntarATaski(el.dataset.v),
+
+  interpretar: () => {
+    const texto = estado.captura.trim();
+    if (!texto) return;
+    const r = interpretar(texto, datos.clientes);
+    estado.borrador = r.draft;
+    estado.deducido = r.deducido;
+    render();
+    const campo = document.getElementById("inline-texto");
+    if (campo) { campo.focus(); campo.setSelectionRange(campo.value.length, campo.value.length); }
+  },
+  "cancelar-borrador": () => {
+    estado.borrador = null; estado.deducido = null;
+    render();
+    const c = document.getElementById("captura");
+    if (c) c.focus();
+  },
+  "crear-borrador": () => {
+    if (!estado.borrador || !estado.borrador.texto.trim()) return;
+    const t = estado.borrador.texto.trim();
+    nuevaTarea(estado.borrador);
+    estado.borrador = null; estado.deducido = null; estado.captura = "";
+    render();
+    toast("Tarea creada", t);
+    const c = document.getElementById("captura");
+    if (c) c.focus();
+  },
+  "crear-desde-busqueda": () => {
+    const r = interpretar(estado.consulta, datos.clientes);
+    nuevaTareaCon(r.draft);
+  },
+
+  marcar: (el) => {
+    const item = porKey(el.dataset.k);
+    if (!item) return;
+    const done = marcar(item);
+    render();
+    if (done) toast("Listo", item.texto);
+  },
+  borrar: (el) => {
+    const item = porKey(el.dataset.k);
+    if (item) borrarTarea(item);
+  },
+  editar: (el) => {
+    const item = porKey(el.dataset.k);
+    if (!item) return;
+    const draft = {
+      texto: item.texto, clienteId: item.clienteId, seccion: item.seccion,
+      prio: item.prio, fecha: item.fecha, hora: item.hora,
+    };
+    dialogoTarea("Editar tarea", draft, () => {
+      if (!dlgDraft.texto.trim()) return false;
+      editar(item, dlgDraft);
+      toast("Tarea actualizada", dlgDraft.texto.trim());
+      return true;
+    }, '<button type="button" class="btn btn-danger spacer" data-a="borrar-desde-dialogo" data-k="' + item.key + '">' + icon("trash") + "Eliminar</button>");
+  },
+  "borrar-desde-dialogo": (el) => {
+    const item = porKey(el.dataset.k);
+    cerrarDialogo();
+    if (item) borrarTarea(item);
+  },
+
+  "abrir-cliente": (el) => {
+    estado.clienteId = Number(el.dataset.id);
+    estado.vista = "cliente";
+    estado.pestana = "pendientes";
+    estado.consulta = "";
+    $search.value = "";
+    $scroll.scrollTop = 0;
+    render();
+  },
+  pestana: (el) => { estado.pestana = el.dataset.v; render(); },
+  "nuevo-cliente": () => dialogoCliente(null),
+  "editar-cliente": () => {
+    const c = clientePorId(estado.clienteId);
+    if (c) dialogoCliente(c);
+  },
+  "eliminar-cliente": () => {
+    const c = clientePorId(estado.clienteId);
+    if (!c) return;
+    const n = datos.tareasCliente.filter((t) => t.clienteId === c.id).length;
+    abrirDialogo({
+      titulo: "¿Eliminar a " + c.nombre + "?",
+      detalle: n ? "También se borran sus " + plural(n, "tarea", "tareas") + ". No se puede deshacer." : "No tiene tareas asociadas.",
+      ok: "Eliminar cliente",
+      onOk: () => {
+        datos.clientes = datos.clientes.filter((x) => x.id !== c.id);
+        datos.tareasCliente = datos.tareasCliente.filter((t) => t.clienteId !== c.id);
+        guardar();
+        estado.vista = "clientes";
+        estado.clienteId = null;
+        toast("Cliente eliminado", c.nombre);
+        return true;
+      },
+    });
+  },
+  "nueva-tarea-cliente": () => nuevaTareaCon({ clienteId: estado.clienteId }, "Nueva tarea"),
+  "nueva-tarea-dia": () => nuevaTareaCon({ fecha: estado.elegido }, "Nueva tarea"),
+  "informe-cliente": () => {
+    estado.infCliente = estado.clienteId;
+    estado.infSelec = [];
+    if (!estado.infDesde) { const s = semanaActual(); estado.infDesde = s.desde; estado.infHasta = s.hasta; }
+    ir("informes");
+  },
+
+  dia: (el) => { estado.elegido = el.dataset.v; estado.ancla = el.dataset.v; render(); },
+  "cal-vista": (el) => { estado.calVista = el.dataset.v; render(); },
+  "cal-paso": (el) => {
+    const n = Number(el.dataset.v);
+    estado.ancla = estado.calVista === "semana" ? addDays(estado.ancla, n * 7) : addMonths(estado.ancla, n);
+    render();
+  },
+  "cal-hoy": () => { estado.ancla = today(); estado.elegido = today(); render(); },
+
+  "inf-tarea": (el) => {
+    const k = el.dataset.k;
+    const i = estado.infSelec.indexOf(k);
+    if (i === -1) estado.infSelec.push(k);
+    else estado.infSelec.splice(i, 1);
+    render();
+  },
+  "inf-todas": () => { estado.infSelec = tareasDelInforme().map((t) => t.key); render(); },
+  "inf-ninguna": () => { estado.infSelec = []; render(); },
+  "inf-descargar": () => descargarInforme(),
+
+  tema: (el) => elegirTema(el.dataset.v),
+  copia: () => dialogoCopia(),
+  "copiar-todo": () => {
+    const area = $dlg.querySelector("#dlg-copia");
+    area.select();
+    const intento = navigator.clipboard
+      ? navigator.clipboard.writeText(area.value).then(() => true, () => false)
+      : Promise.resolve(false);
+    intento.then((ok) => toast(ok ? "Copiado" : "Seleccioná y copiá a mano",
+      ok ? "Guardalo donde quieras." : "El navegador no dejó copiar solo."));
+  },
+  salir: () => {
+    if (fb && fb.auth && fb.auth.currentUser) fb.authMod.signOut(fb.auth);
+    else location.reload();
+  },
+  vaciar: () => {
+    abrirDialogo({
+      titulo: "¿Vaciar todo?",
+      detalle: "Se borran clientes y tareas" + (modo === "online" ? ", también en la nube." : " de este navegador.") + " Antes conviene sacar una copia.",
+      ok: "Vaciar todo",
+      onOk: () => {
+        datos = { tareas: [], nextId: 10, clientes: [], tareasCliente: [], nextCliId: 100 };
+        guardar();
+        estado.vista = "hoy";
+        estado.clienteId = null;
+        toast("Listo, quedó vacío");
+        return true;
+      },
+    });
+  },
+
+  "cerrar-dialogo": () => cerrarDialogo(),
+  "ok-dialogo": () => {
+    const fn = dlgOnOk;
+    if (!fn || fn() !== false) { cerrarDialogo(); render(); }
+  },
+};
+
+/* ---------- descarga del informe ---------- */
+async function descargarInforme() {
+  const c = clientePorId(estado.infCliente);
+  if (!c) return;
+  const nodo = document.getElementById("doc-informe");
+  if (!nodo) return;
+  toast("Generando la imagen…");
+  try {
+    if (!window.html2canvas) {
+      await new Promise((ok, mal) => {
+        const s = document.createElement("script");
+        s.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+        s.onload = ok; s.onerror = mal;
+        document.head.appendChild(s);
+      });
+    }
+    const canvas = await window.html2canvas(nodo, { backgroundColor: "#5c1a2e", scale: 2, useCORS: true, logging: false });
+    const a = document.createElement("a");
+    a.download = "informe-" + c.nombre.toLowerCase().replace(/\s+/g, "-") + "-" + today() + ".png";
+    a.href = canvas.toDataURL("image/png");
+    a.click();
+  } catch (e) {
+    toast("No se pudo generar la imagen", "Revisá la conexión y probá de nuevo.");
+  }
+}
+
+/* ---------- eventos ---------- */
+document.addEventListener("click", (e) => {
+  const el = e.target.closest("[data-a]");
+  if (!el) return;
+  const fn = ACCIONES[el.dataset.a];
+  if (!fn) return;
+  e.preventDefault();
+  fn(el);
+});
+
+// Los botones de prioridad se actualizan a mano: re-renderizar movería el foco.
+document.addEventListener("click", (e) => {
+  const el = e.target.closest('[data-a="prioridad"]');
+  if (!el) return;
+  const d = el.dataset.target === "dlg" ? dlgDraft : estado.borrador;
+  if (!d) return;
+  d.prio = el.dataset.v;
+  el.parentElement.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b === el)));
+});
+
+document.addEventListener("input", (e) => {
+  const el = e.target;
+  if (el.id === "captura") {
+    estado.captura = el.value;
+    const b = document.getElementById("captura-enviar");
+    if (b) b.disabled = !el.value.trim();
+    return;
+  }
+  if (el.id === "taski-input") {
+    const b = $taski.querySelector("#taski-send");
+    if (b) b.disabled = !el.value.trim();
+    return;
+  }
+  if (el.id === "search") {
+    estado.consulta = el.value;
+    $scroll.scrollTop = 0;
+    render();
+    return;
+  }
+  if (el.dataset.f === "infTexto") { estado.infTexto = el.value; refrescarVista(); return; }
+  const campo = el.dataset && el.dataset.f;
+  if (!campo) return;
+  const d = el.dataset.target === "dlg" ? dlgDraft : estado.borrador;
+  if (!d) return;
+  d[campo] = el.value === "" ? null : el.value;
+  if (campo === "clienteId") {
+    d.clienteId = el.value ? Number(el.value) : null;
+    // El área es solo para tareas propias: con cliente, la tarea es de trabajo.
+    const sec = document.getElementById(el.dataset.target + "-sec");
+    if (sec) sec.disabled = Boolean(d.clienteId);
+  }
+});
+
+document.addEventListener("change", (e) => {
+  const a = e.target.dataset && e.target.dataset.aChange;
+  if (!a) return;
+  if (a === "inf-cliente") { estado.infCliente = e.target.value ? Number(e.target.value) : null; estado.infSelec = []; }
+  if (a === "inf-desde") { estado.infDesde = e.target.value; estado.infSelec = []; }
+  if (a === "inf-hasta") { estado.infHasta = e.target.value; estado.infSelec = []; }
+  render();
+});
+
+/** La vista previa del informe se repinta sin tocar el textarea, para no
+    perder el cursor mientras se escribe. */
+function refrescarVista() {
+  const marco = document.querySelector(".inf-marco");
+  if (marco && estado.infCliente) marco.innerHTML = docInformeHTML();
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && e.target.id === "captura") { e.preventDefault(); ACCIONES.interpretar(); return; }
+  if (e.key === "Enter" && $dlg.open && e.target.tagName === "INPUT") { e.preventDefault(); ACCIONES["ok-dialogo"](); return; }
+  if (e.key !== "Escape") return;
+  if ($dlg.open) return;
+  if (taski.abierto) { ACCIONES.taski(); return; }
+  if ($search.value) { estado.consulta = ""; $search.value = ""; render(); }
+});
+
+$dlg.addEventListener("close", () => { dlgDraft = null; dlgOnOk = null; });
+
+/* ---------- entrada ----------
+   La contraseña vieja no protegía nada: estaba dentro del archivo y el
+   navegador se conectaba a la base antes de pedirla. Ahora entra quien tiene
+   usuario en Firebase, y las reglas de la base exigen esa sesión.
+   La contraseña local queda solo como salida de emergencia cuando Firebase
+   no carga (sin internet): ahí abre la copia guardada en este equipo, que es
+   lo único a lo que se puede llegar sin sesión. */
+const PASS_HASH = "5df6bb7389136dffd4585f14cc648995d017840e7d198a0e00333d68dce8587c";
+
+const $lock = document.getElementById("lock");
+const $lockForm = document.getElementById("lock-form");
+const $lockMail = document.getElementById("lock-mail");
+const $lockPass = document.getElementById("lock-pass");
+const $lockErr = document.getElementById("lock-error");
+const $lockBtn = document.getElementById("lock-btn");
+const $lockPie = document.getElementById("lock-pie");
+const $campoMail = document.getElementById("campo-mail");
+
+let modoEntrada = "firebase"; // firebase | local
+
+const ERRORES = {
+  "auth/invalid-credential": "Mail o contraseña incorrectos.",
+  "auth/invalid-login-credentials": "Mail o contraseña incorrectos.",
+  "auth/wrong-password": "Mail o contraseña incorrectos.",
+  "auth/user-not-found": "No hay ningún usuario con ese mail.",
+  "auth/invalid-email": "Ese mail no tiene formato válido.",
+  "auth/user-disabled": "Ese usuario está deshabilitado en Firebase.",
+  "auth/too-many-requests": "Demasiados intentos. Esperá unos minutos.",
+  "auth/network-request-failed": "Sin conexión con Firebase.",
+  "auth/operation-not-allowed": "Falta habilitar Email/contraseña en Firebase → Authentication → Sign-in method.",
+  "auth/configuration-not-found": "Falta habilitar Email/contraseña en Firebase → Authentication → Sign-in method.",
+};
+
+async function hashStr(s) {
+  // crypto.subtle solo existe en contexto seguro: por http:// (abrir la app
+  // por la IP del equipo, por ejemplo) no está, y esto reventaba sin aviso.
+  if (!(window.crypto && window.crypto.subtle)) throw new Error("sin-cripto");
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+function mostrarLock(mensaje) {
+  $lock.hidden = false;
+  document.getElementById("app").hidden = true;
+  $fab.hidden = true;
+  taski.abierto = false;
+  $taski.hidden = true;
+  $lockErr.textContent = mensaje || "";
+  $lockPass.value = "";
+  // Enfocar al cargar abre el teclado del teléfono, que tapa medio
+  // formulario antes de que se vea. En pantalla táctil, que enfoque la persona.
+  const tactil =
+    (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) ||
+    navigator.maxTouchPoints > 0;
+  if (!tactil) (modoEntrada === "firebase" && !$lockMail.value ? $lockMail : $lockPass).focus();
+}
+
+function abrirApp(alCargar) {
+  $lock.hidden = true;
+  document.getElementById("app").hidden = false;
+  $fab.hidden = false;
+  primeraPintada = true;
+  render();
+  if (alCargar) alCargar();
+}
+
+function pasarAModoLocal(motivo) {
+  modoEntrada = "local";
+  $campoMail.hidden = true;
+  $lockPass.setAttribute("aria-label", "Contraseña local");
+  $lockBtn.textContent = "Entrar sin conexión";
+  $lockPie.textContent = motivo;
+  marcarSync("local", "Solo este equipo");
+}
+
+$lockForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  $lockErr.textContent = "";
+
+  if (modoEntrada === "local") {
+    let hash;
+    try {
+      hash = await hashStr($lockPass.value);
+    } catch (err) {
+      $lockErr.textContent =
+        err && err.message === "sin-cripto"
+          ? "Este navegador no puede verificar la contraseña porque la página no está en HTTPS. Abrila con https:// (o desde localhost)."
+          : "No se pudo verificar la contraseña.";
+      return;
+    }
+    if (hash !== PASS_HASH) {
+      $lockErr.textContent = "Contraseña incorrecta";
+      $lockPass.value = "";
+      $lockPass.focus();
+      return;
+    }
+    const local = leerLocal();
+    if (local) datos = local;
+    abrirApp();
+    toast("Estás sin conexión", "Ves la copia de este equipo. Los cambios no viajan a la nube.");
+    return;
+  }
+
+  const mail = $lockMail.value.trim();
+  const clave = $lockPass.value;
+  if (!mail || !clave) { $lockErr.textContent = "Completá mail y contraseña."; return; }
+
+  if (!fb) {
+    $lockErr.textContent = "Todavía no terminó de cargar la conexión con Firebase. Esperá unos segundos y probá de nuevo.";
+    return;
+  }
+
+  $lockBtn.disabled = true;
+  $lockBtn.textContent = "Entrando…";
+  try {
+    // Sin reloj, el botón se queda en «Entrando…» para siempre cuando el
+    // teléfono pierde señal a mitad del pedido.
+    await conLimite(
+      fb.authMod.signInWithEmailAndPassword(fb.auth, mail, clave),
+      ESPERA_LOGIN,
+      "Firebase no respondió a tiempo. Revisá la conexión del teléfono."
+    );
+    // onAuthStateChanged se encarga de abrir la app.
+  } catch (err) {
+    const cod = err && err.code ? String(err.code) : "";
+    $lockErr.textContent = ERRORES[cod] || "No se pudo entrar. " + (err && err.message ? err.message : "");
+    $lockPass.value = "";
+    $lockPass.focus();
+  } finally {
+    $lockBtn.disabled = false;
+    $lockBtn.textContent = "Entrar";
+  }
+});
+
+async function arrancar() {
+  aplicarTema(temaGuardado());
+  // Sin esto, los segundos que tarda el SDK se ven como una pantalla colgada.
+  $lockPie.textContent = "Conectando con Firebase…";
+  const local = leerLocal();
+  if (local) datos = local;
+
+  try {
+    await cargarFirebase();
+  } catch (e) {
+    pasarAModoLocal("No se pudo contactar a Firebase. Podés entrar con la contraseña local y trabajar con la copia de este equipo.");
+    mostrarLock();
+    return;
+  }
+
+  $lockPie.textContent = "Entrás con el usuario de Firebase. La sesión queda guardada en este dispositivo.";
+
+  fb.authMod.onAuthStateChanged(fb.auth, (user) => {
+    if (user) {
+      marcarSync("cargando", "Conectando");
+      abrirApp();
+      escucharDatos((esActualizacion) => {
+        // No pisar lo que se está editando en ese momento.
+        if (esActualizacion && ($dlg.open || estado.borrador)) return;
+        render();
+      });
+    } else {
+      dejarDeEscuchar();
+      mostrarLock();
+    }
+  });
+}
+
+arrancar();
+
+// El reloj de los recordatorios: una vez por minuto alcanza.
+setTimeout(function tick() {
+  if (!$dlg.open && !estado.borrador && !estado.consulta.trim() && estado.vista === "hoy" && !document.getElementById("app").hidden) render();
+  setTimeout(tick, 60000);
+}, 60000 - (Date.now() % 60000));
+</script>
+</body>
+</html>
