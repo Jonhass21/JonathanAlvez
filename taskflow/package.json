@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "build:preview": "tsc -b && VITE_HASH_ROUTER=1 vite build --base ./ --outDir dist-preview"
   },
   "dependencies": {
     "lucide-react": "^1.47.0",
