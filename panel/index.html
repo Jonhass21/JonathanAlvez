@@ -239,14 +239,19 @@
   .lock-mark .ic { width: 26px; height: 26px; }
   .lock-title { font-family: var(--font-display); font-size: 26px; color: var(--ink); line-height: 1.1; }
   .lock-sub { margin-top: 6px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); }
-  .lock-field { margin-top: 22px; }
+  .lock-field { margin-top: 12px; }
+  .lock-field:first-of-type { margin-top: 22px; }
   .lock-field input {
     width: 100%; height: 46px; padding: 0 14px; text-align: center;
     border-radius: var(--r-sm); border: 1px solid var(--hairline);
-    background: var(--canvas); font-size: 16px; letter-spacing: .2em; color: var(--ink);
+    background: var(--canvas); font-size: 16px; color: var(--ink);
   }
+  .lock-field input[type="password"] { letter-spacing: .18em; }
+  .lock-field input[type="password"]::placeholder { letter-spacing: 0; }
   .lock-field input:focus { outline: none; border-color: var(--wine); box-shadow: 0 0 0 3px var(--wine-wash); }
-  .lock-error { margin-top: 10px; min-height: 18px; font-size: 12.5px; color: var(--alta); }
+  .lock-error { margin-top: 12px; min-height: 18px; font-size: 12.5px; line-height: 1.5; color: var(--alta); }
+  .lock-pie { margin-top: 14px; font-size: 11.5px; line-height: 1.55; color: var(--ink-faint); }
+  .lock-pie button { font-size: 11.5px; font-weight: 700; color: var(--wine-ink); text-decoration: underline; text-underline-offset: 2px; }
 
   /* ---------- estructura ---------- */
   .app { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; }
@@ -802,11 +807,17 @@
     <div class="lock-mark" id="lock-mark"></div>
     <div class="lock-title">Jonathan Alvez</div>
     <div class="lock-sub">Panel de trabajo</div>
-    <div class="lock-field">
-      <input id="lock-input" type="password" placeholder="••••••••" aria-label="Contraseña" autocomplete="current-password" />
+
+    <div class="lock-field" id="campo-mail">
+      <input id="lock-mail" type="email" placeholder="tu@mail.com" aria-label="Correo" autocomplete="username" inputmode="email" />
     </div>
+    <div class="lock-field">
+      <input id="lock-pass" type="password" placeholder="Contraseña" aria-label="Contraseña" autocomplete="current-password" />
+    </div>
+
     <div class="lock-error" id="lock-error" role="alert"></div>
-    <button type="submit" class="btn btn-primary btn-block" style="margin-top:4px">Entrar</button>
+    <button type="submit" class="btn btn-primary btn-block" id="lock-btn" style="margin-top:4px">Entrar</button>
+    <p class="lock-pie" id="lock-pie"></p>
   </form>
 </div>
 
@@ -1262,45 +1273,65 @@ function marcarSync(estado, txt) {
         : "Conectando…";
 }
 
-/** Firebase por import dinámico: si no carga (sin internet, bloqueado o
-    vista previa), la app sigue andando contra el navegador en vez de
-    quedarse en blanco. */
-async function conectar(alCargar) {
-  const local = leerLocal();
-  if (local) datos = local;
+/** Firebase se carga por import dinámico y una sola vez. Si no llega a
+    cargar (sin internet, red bloqueada), la app puede seguir contra la copia
+    local en vez de quedarse en blanco. */
+let fb = null;
 
-  try {
-    const [appMod, dbMod] = await Promise.all([
-      import(SDK + "firebase-app.js"),
-      import(SDK + "firebase-database.js"),
-    ]);
-    const app = appMod.initializeApp(FIREBASE_CONFIG);
-    const db = dbMod.getDatabase(app);
-    const nodo = dbMod.ref(db, "panel");
-    escribirRemoto = (d) => dbMod.set(nodo, d);
+async function cargarFirebase() {
+  if (fb) return fb;
+  const [appMod, authMod, dbMod] = await Promise.all([
+    import(SDK + "firebase-app.js"),
+    import(SDK + "firebase-auth.js"),
+    import(SDK + "firebase-database.js"),
+  ]);
+  const app = appMod.initializeApp(FIREBASE_CONFIG);
+  const auth = authMod.getAuth(app);
+  // La sesión queda guardada en este navegador: no hay que entrar cada vez.
+  try { await authMod.setPersistence(auth, authMod.browserLocalPersistence); } catch (e) { /* queda en memoria */ }
+  fb = { authMod, dbMod, app, auth };
+  return fb;
+}
 
-    let primera = true;
-    dbMod.onValue(
-      nodo,
-      (snap) => {
-        const remoto = snap.val();
-        if (remoto) datos = normalizar(remoto);
-        escribirLocal();
-        marcarSync("online", "En la nube");
-        if (primera) { primera = false; alCargar(); }
-        else alCargar(true);
-      },
-      () => {
-        escribirRemoto = null;
-        marcarSync("local", "Solo este equipo");
-        if (primera) { primera = false; alCargar(); }
-      }
-    );
-  } catch (e) {
-    escribirRemoto = null;
-    marcarSync("local", "Solo este equipo");
-    alCargar();
-  }
+let desuscribir = null;
+
+/** Se suscribe a la base ya con el usuario autenticado. Las reglas exigen
+    sesión, así que esto solo funciona después del login. */
+function escucharDatos(alCargar) {
+  if (!fb || desuscribir) return;
+  const { dbMod } = fb;
+  const nodo = dbMod.ref(dbMod.getDatabase(fb.app), "panel");
+  escribirRemoto = (d) => dbMod.set(nodo, d);
+
+  let primera = true;
+  desuscribir = dbMod.onValue(
+    nodo,
+    (snap) => {
+      const remoto = snap.val();
+      if (remoto) datos = normalizar(remoto);
+      escribirLocal();
+      marcarSync("online", "En la nube");
+      if (primera) { primera = false; alCargar(); }
+      else alCargar(true);
+    },
+    (err) => {
+      // Si las reglas rechazan la lectura conviene decirlo, no disimularlo.
+      escribirRemoto = null;
+      marcarSync("local", "Sin permiso");
+      const cod = err && err.code ? String(err.code) : "";
+      toast(
+        "La base rechazó la lectura",
+        /permission/i.test(cod) ? "Revisá las reglas de Realtime Database." : "Trabajando con la copia de este equipo."
+      );
+      if (primera) { primera = false; alCargar(); }
+    }
+  );
+}
+
+function dejarDeEscuchar() {
+  if (typeof desuscribir === "function") desuscribir();
+  desuscribir = null;
+  escribirRemoto = null;
 }
 
 /* ---------- consultas ---------- */
@@ -2151,6 +2182,7 @@ function vistaInformes() {
 function vistaAjustes() {
   const tema = temaGuardado();
   const opciones = [["claro", "Claro"], ["oscuro", "Oscuro"], ["sistema", "Sistema"]];
+  const usuarioActual = () => (typeof fb !== "undefined" && fb && fb.auth && fb.auth.currentUser ? fb.auth.currentUser.email : null);
   const estadoSync = modo === "online"
     ? "Conectado a la nube. Lo que cargues acá lo vas a ver en cualquier dispositivo."
     : "Guardando solo en este navegador. Los cambios no están viajando a la nube.";
@@ -2171,15 +2203,23 @@ function vistaAjustes() {
     "</section>" +
 
     "<section><h2>Seguridad</h2>" +
-      '<div class="nota">' +
-        "<b>La contraseña de entrada oculta la pantalla, pero no protege los datos.</b><br />" +
-        "Está dentro del archivo, así que cualquiera que mire el código fuente la esquiva. " +
-        "La protección de verdad se configura en Firebase, una sola vez:<br /><br />" +
-        "1. Entrá a la consola de Firebase → <b>Realtime Database</b> → <b>Reglas</b>.<br />" +
-        "2. Si dice <code>\".read\": true</code>, tu base está abierta a cualquiera que tenga la dirección.<br />" +
-        "3. Activá <b>Authentication → Email/contraseña</b> y creá tu usuario.<br />" +
-        "4. Cambiá las reglas a <code>{\"rules\":{\".read\":\"auth != null\",\".write\":\"auth != null\"}}</code>.<br /><br />" +
-        "Avisame cuando lo tengas y cambio la pantalla de entrada por el login real." +
+      '<div class="rows glass"><div class="row"><div>' +
+        '<div class="row-label">Entrada con usuario de Firebase</div>' +
+        '<p class="row-desc">' +
+          (usuarioActual()
+            ? "Sesión iniciada como " + esc(usuarioActual()) + ". Las reglas de la base exigen esta sesión para leer o escribir."
+            : "Estás trabajando con la copia local de este equipo, sin sesión.") +
+        "</p></div>" +
+        '<span class="badge ' + (usuarioActual() ? "ok" : "gold") + '">' + (usuarioActual() ? "Con sesión" : "Sin sesión") + "</span></div></div>" +
+      '<div class="nota" style="margin-top:12px">' +
+        "<b>Falta un paso más en las reglas.</b><br />" +
+        "Con <code>auth != null</code> entra cualquiera que tenga una cuenta en tu proyecto, " +
+        "y con el alta por mail habilitada cualquiera puede crearse una. Atalo a tu usuario:<br /><br />" +
+        "1. Firebase → <b>Authentication → Users</b> y copiá tu <b>User UID</b>.<br />" +
+        "2. Firebase → <b>Realtime Database → Reglas</b> y pegá:<br />" +
+        '<code style="display:block;margin:6px 0;white-space:pre-wrap">{ "rules": { ".read": "auth.uid === \'TU_UID\'", ".write": "auth.uid === \'TU_UID\'" } }</code>' +
+        "3. <b>Publicar</b>.<br />" +
+        "4. Opcional: <b>Authentication → Settings → User actions</b> y desmarcá el alta de usuarios, para que nadie más pueda registrarse." +
       "</div>" +
     "</section>" +
 
@@ -2611,8 +2651,8 @@ const ACCIONES = {
       ok ? "Guardalo donde quieras." : "El navegador no dejó copiar solo."));
   },
   salir: () => {
-    try { sessionStorage.removeItem("panel-auth"); } catch (e) { /* nada */ }
-    location.reload();
+    if (fb && fb.auth && fb.auth.currentUser) fb.authMod.signOut(fb.auth);
+    else location.reload();
   },
   vaciar: () => {
     abrirDialogo({
@@ -2743,46 +2783,143 @@ document.addEventListener("keydown", (e) => {
 
 $dlg.addEventListener("close", () => { dlgDraft = null; dlgOnOk = null; });
 
-/* ---------- entrada ---------- */
+/* ---------- entrada ----------
+   La contraseña vieja no protegía nada: estaba dentro del archivo y el
+   navegador se conectaba a la base antes de pedirla. Ahora entra quien tiene
+   usuario en Firebase, y las reglas de la base exigen esa sesión.
+   La contraseña local queda solo como salida de emergencia cuando Firebase
+   no carga (sin internet): ahí abre la copia guardada en este equipo, que es
+   lo único a lo que se puede llegar sin sesión. */
 const PASS_HASH = "5df6bb7389136dffd4585f14cc648995d017840e7d198a0e00333d68dce8587c";
+
+const $lock = document.getElementById("lock");
+const $lockForm = document.getElementById("lock-form");
+const $lockMail = document.getElementById("lock-mail");
+const $lockPass = document.getElementById("lock-pass");
+const $lockErr = document.getElementById("lock-error");
+const $lockBtn = document.getElementById("lock-btn");
+const $lockPie = document.getElementById("lock-pie");
+const $campoMail = document.getElementById("campo-mail");
+
+let modoEntrada = "firebase"; // firebase | local
+
+const ERRORES = {
+  "auth/invalid-credential": "Mail o contraseña incorrectos.",
+  "auth/invalid-login-credentials": "Mail o contraseña incorrectos.",
+  "auth/wrong-password": "Mail o contraseña incorrectos.",
+  "auth/user-not-found": "No hay ningún usuario con ese mail.",
+  "auth/invalid-email": "Ese mail no tiene formato válido.",
+  "auth/user-disabled": "Ese usuario está deshabilitado en Firebase.",
+  "auth/too-many-requests": "Demasiados intentos. Esperá unos minutos.",
+  "auth/network-request-failed": "Sin conexión con Firebase.",
+  "auth/operation-not-allowed": "Falta habilitar Email/contraseña en Firebase → Authentication → Sign-in method.",
+  "auth/configuration-not-found": "Falta habilitar Email/contraseña en Firebase → Authentication → Sign-in method.",
+};
 
 async function hashStr(s) {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
   return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-function abrirApp() {
-  document.getElementById("lock").hidden = true;
+function mostrarLock(mensaje) {
+  $lock.hidden = false;
+  document.getElementById("app").hidden = true;
+  $fab.hidden = true;
+  taski.abierto = false;
+  $taski.hidden = true;
+  $lockErr.textContent = mensaje || "";
+  $lockPass.value = "";
+  (modoEntrada === "firebase" && !$lockMail.value ? $lockMail : $lockPass).focus();
+}
+
+function abrirApp(alCargar) {
+  $lock.hidden = true;
   document.getElementById("app").hidden = false;
   $fab.hidden = false;
+  primeraPintada = true;
+  render();
+  if (alCargar) alCargar();
+}
+
+function pasarAModoLocal(motivo) {
+  modoEntrada = "local";
+  $campoMail.hidden = true;
+  $lockPass.setAttribute("aria-label", "Contraseña local");
+  $lockBtn.textContent = "Entrar sin conexión";
+  $lockPie.textContent = motivo;
+  marcarSync("local", "Solo este equipo");
+}
+
+$lockForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  $lockErr.textContent = "";
+
+  if (modoEntrada === "local") {
+    if ((await hashStr($lockPass.value)) !== PASS_HASH) {
+      $lockErr.textContent = "Contraseña incorrecta";
+      $lockPass.value = "";
+      $lockPass.focus();
+      return;
+    }
+    const local = leerLocal();
+    if (local) datos = local;
+    abrirApp();
+    toast("Estás sin conexión", "Ves la copia de este equipo. Los cambios no viajan a la nube.");
+    return;
+  }
+
+  const mail = $lockMail.value.trim();
+  const clave = $lockPass.value;
+  if (!mail || !clave) { $lockErr.textContent = "Completá mail y contraseña."; return; }
+
+  $lockBtn.disabled = true;
+  $lockBtn.textContent = "Entrando…";
+  try {
+    await fb.authMod.signInWithEmailAndPassword(fb.auth, mail, clave);
+    // onAuthStateChanged se encarga de abrir la app.
+  } catch (err) {
+    const cod = err && err.code ? String(err.code) : "";
+    $lockErr.textContent = ERRORES[cod] || "No se pudo entrar. " + (err && err.message ? err.message : "");
+    $lockPass.value = "";
+    $lockPass.focus();
+  } finally {
+    $lockBtn.disabled = false;
+    $lockBtn.textContent = "Entrar";
+  }
+});
+
+async function arrancar() {
   aplicarTema(temaGuardado());
-  marcarSync("cargando", "Conectando");
-  conectar((esActualizacion) => {
-    if (esActualizacion && ($dlg.open || estado.borrador)) return; // no pisar lo que se está editando
-    render();
+  const local = leerLocal();
+  if (local) datos = local;
+
+  try {
+    await cargarFirebase();
+  } catch (e) {
+    pasarAModoLocal("No se pudo contactar a Firebase. Podés entrar con la contraseña local y trabajar con la copia de este equipo.");
+    mostrarLock();
+    return;
+  }
+
+  $lockPie.textContent = "Entrás con el usuario de Firebase. La sesión queda guardada en este dispositivo.";
+
+  fb.authMod.onAuthStateChanged(fb.auth, (user) => {
+    if (user) {
+      marcarSync("cargando", "Conectando");
+      abrirApp();
+      escucharDatos((esActualizacion) => {
+        // No pisar lo que se está editando en ese momento.
+        if (esActualizacion && ($dlg.open || estado.borrador)) return;
+        render();
+      });
+    } else {
+      dejarDeEscuchar();
+      mostrarLock();
+    }
   });
 }
 
-document.getElementById("lock-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const inp = document.getElementById("lock-input");
-  const err = document.getElementById("lock-error");
-  if ((await hashStr(inp.value)) !== PASS_HASH) {
-    err.textContent = "Contraseña incorrecta";
-    inp.value = "";
-    inp.focus();
-    setTimeout(() => { err.textContent = ""; }, 2500);
-    return;
-  }
-  try { sessionStorage.setItem("panel-auth", "1"); } catch (e2) { /* nada */ }
-  abrirApp();
-});
-
-aplicarTema(temaGuardado());
-let yaEntro = false;
-try { yaEntro = sessionStorage.getItem("panel-auth") === "1"; } catch (e) { /* nada */ }
-if (yaEntro) abrirApp();
-else document.getElementById("lock-input").focus();
+arrancar();
 
 // El reloj de los recordatorios: una vez por minuto alcanza.
 setTimeout(function tick() {

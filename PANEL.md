@@ -40,35 +40,57 @@ informe descargable como imagen.
 - **Recordatorios** de lo que vence en la próxima hora, y aviso de vencidas.
 - **Buscador** por tarea, área o cliente.
 - **Tema claro y oscuro**, siguiendo el sistema por defecto.
+- **Login real con Firebase Authentication**, en lugar de la contraseña
+  escondida en el archivo.
 - **Funciona sin internet.** Si Firebase no carga, la app sigue andando contra
   el navegador y avisa con el indicador "Solo este equipo" arriba a la derecha.
   Antes, sin conexión, la pantalla quedaba vacía.
 - **Deshacer** al borrar una tarea, en vez de un cartel de confirmación.
 - **Copia de seguridad** en Ajustes: copiar y pegar para respaldar o mudar.
 
-## Importante: la contraseña no protege los datos
+## Entrada y seguridad
 
-La contraseña de entrada oculta la pantalla, pero está adentro del archivo:
-cualquiera que mire el código fuente la esquiva. Y la base de datos responde
-igual, porque el navegador se conecta antes de que vos escribas nada.
+La pantalla de entrada usa **Firebase Authentication**: entrás con el usuario
+y la contraseña que creaste en la consola, y la sesión queda guardada en ese
+dispositivo. Las reglas de la base exigen esa sesión, así que sin login no se
+lee ni se escribe nada.
 
-Si en las reglas de tu Realtime Database dice `".read": true`, **cualquiera que
-tenga la dirección de la base puede leer y modificar los datos de tus
-clientes.** La dirección está en el archivo, que es público en el sitio.
-
-Se arregla una vez, en la consola de Firebase:
+Para que funcione tienen que estar hechas estas tres cosas en la consola:
 
 1. **Authentication → Sign-in method → Email/contraseña → Habilitar.**
 2. **Authentication → Users → Add user**: tu mail y una contraseña.
-3. **Realtime Database → Reglas**, y pegar:
+3. **Realtime Database → Reglas** con la sesión exigida, y **Publicar**.
+
+Si falta alguna, la pantalla de entrada lo dice con el error exacto en lugar
+de fallar en silencio.
+
+### El aviso de Firebase sobre las reglas
+
+Firebase marca `{".read": "auth != null"}` como poco confiable, y tiene razón:
+**cualquier usuario autenticado del proyecto puede leer y escribir.** Como el
+alta por mail está habilitada y la clave de API es pública (está en el archivo,
+que es público en el sitio — eso es normal y esperado en Firebase), alguien
+podría crearse una cuenta y entrar.
+
+Se cierra atando las reglas a tu usuario:
+
+1. **Authentication → Users** y copiá tu **User UID**.
+2. **Realtime Database → Reglas**, reemplazá por esto poniendo tu UID:
 
    ```json
-   { "rules": { ".read": "auth != null", ".write": "auth != null" } }
+   { "rules": { ".read": "auth.uid === 'TU_UID'", ".write": "auth.uid === 'TU_UID'" } }
    ```
 
-4. Avisame y cambio la pantalla de entrada por el login real de Firebase.
+3. **Publicar**. El aviso naranja desaparece.
+4. Opcional pero recomendado: **Authentication → Settings → User actions** y
+   desmarcá el alta de usuarios, para que nadie pueda registrarse.
 
-Hasta que eso esté, lo que hay es un cartel en la puerta, no una cerradura.
+### Si no hay internet
+
+Si Firebase no carga, la pantalla de entrada cambia a **"Entrar sin conexión"**
+y pide la contraseña local de siempre. Ahí ves la copia guardada en ese
+navegador y los cambios no viajan a la nube; el indicador de arriba lo aclara.
+Esa contraseña no da acceso a la base: las reglas la rechazan igual.
 
 ## Los datos
 
