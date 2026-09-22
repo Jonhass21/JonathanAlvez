@@ -1,0 +1,14 @@
+# Netlify lee este archivo y lo aplica al sitio publicado.
+
+# El service worker nunca se guarda en caché del navegador: si quedara
+# pegado uno viejo, cualquier arreglo futuro tardaría días en llegarte
+# al teléfono, o no llegaría nunca.
+/sw.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+# El HTML también se revalida siempre: es lo que decide qué versión ves.
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/manifest.webmanifest
+  Cache-Control: public, max-age=0, must-revalidate
