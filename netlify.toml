@@ -1,10 +1,9 @@
-# Netlify publica la carpeta "site", que se arma en el momento a partir de
-# taskflow.html. Así el archivo vive una sola vez en el repo y no hay copias
-# que se desincronicen. No hace falta Node ni instalar dependencias.
+# El sitio publica la carpeta "panel", que ya trae el index.html, el
+# manifiesto y los iconos. No hay build ni dependencias: Netlify sube los
+# archivos tal cual.
 
 [build]
-  publish = "site"
-  command = "mkdir -p site && cp taskflow.html site/index.html && cp manifest.webmanifest icon-*.png site/"
+  publish = "panel"
 
 # La app es un archivo solo: cualquier ruta cae en la misma página.
 [[redirects]]
@@ -16,7 +15,6 @@
   for = "/*"
   [headers.values]
     X-Content-Type-Options = "nosniff"
-    X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
 # El HTML lleva la app adentro: nunca cachearlo, o un cambio tarda días en verse.
