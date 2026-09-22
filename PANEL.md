@@ -19,6 +19,45 @@ push republica.
 En el sitio que ya tenías: *Site configuration → Build & deploy → Continuous
 deployment*, y ahí apuntás a este repositorio y a la rama.
 
+## Si Chrome marca el sitio como "Peligroso"
+
+Les pasa seguido a los subdominios `*.netlify.app`: como se usan mucho para
+páginas de phishing, el clasificador de Google los mira con lupa, y una página
+que pide mail y contraseña en un dominio anónimo entra justo en ese molde. No
+es que el sitio esté comprometido; es reputación de dominio.
+
+Qué hacer, en orden:
+
+1. **Cambiá la contraseña del usuario de Firebase por una única.** El aviso de
+   "Comprueba tus contraseñas" aparece porque la que escribiste coincide con
+   una que ya tenés guardada para otra cuenta. Eso sí es un riesgo real,
+   independiente del cartel.
+2. **Reportá el falso positivo** en
+   [safebrowsing.google.com/safebrowsing/report_error](https://safebrowsing.google.com/safebrowsing/report_error/).
+   Suele destrabarse en horas.
+3. **Ponele un nombre al sitio**: Netlify → *Site configuration → Change site
+   name*. Un `panel-jalvez.netlify.app` levanta menos sospecha que
+   `moonlit-concha-0d18fc`.
+4. **Lo que lo resuelve de fondo: un dominio con reputación.** Si tenés uno
+   propio, Netlify → *Domain management → Add a domain*. Si no, está la opción
+   de GitHub Pages, más abajo.
+
+## Publicarlo en GitHub Pages
+
+Es la alternativa gratuita a Netlify, con un dominio (`github.io`) que Chrome
+no marca. Se configura una sola vez:
+
+1. En el repositorio: **Settings → Pages**.
+2. En **Source**, elegí **GitHub Actions**.
+3. Listo. El workflow `.github/workflows/pages.yml` publica la carpeta `panel/`
+   en cada push, y también podés correrlo a mano desde la pestaña *Actions*.
+
+La dirección queda como `https://jonhass21.github.io/JonathanAlvez/`.
+
+> Ojo: los datos se guardan por dirección. Si venías usando el sitio de
+> Netlify, en la dirección nueva vas a arrancar de cero — salvo lo que esté en
+> Firebase, que viaja con tu usuario. La copia local de cada navegador no.
+
 ## Qué cambió respecto del archivo anterior
 
 **Se mantiene igual:** la base de datos de Firebase (misma configuración, mismo

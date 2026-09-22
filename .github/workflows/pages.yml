@@ -1,0 +1,40 @@
+# Publica la carpeta panel/ en GitHub Pages.
+#
+# Alternativa a Netlify para cuando el subdominio *.netlify.app queda marcado
+# por Chrome: github.io arrastra la reputación de GitHub y no lo marca.
+#
+# Antes de que funcione hay que ir una vez a Settings → Pages y elegir
+# "GitHub Actions" como Source.
+
+name: Publicar panel en GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "panel/**"
+      - ".github/workflows/pages.yml"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: panel
+      - id: deploy
+        uses: actions/deploy-pages@v4
