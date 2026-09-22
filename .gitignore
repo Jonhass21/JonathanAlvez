@@ -1,3 +1,6 @@
 # taskflow.html sin el <!doctype>/<head>/<body>, para publicar como página
 # alojada. Se genera a partir del mismo contenido; no hace falta versionarlo.
 taskflow-simple-page.html
+
+# La arma Netlify en cada deploy con el comando de netlify.toml.
+site/
