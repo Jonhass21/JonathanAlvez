@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Two themes, one set of class names. Every color in tailwind.config.js points
+ * at one of these variables, so switching themes is `data-theme` on <html>
+ * (set by src/services/themeService.ts before React mounts, to avoid a flash).
+ *
+ * Values are space-separated RGB channels so Tailwind's `/opacity` modifiers
+ * still work: bg-accent/15 becomes rgb(var(--accent) / 0.15).
+ */
+
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --base: 251 250 249;
+  --base-soft: 245 243 241;
+  --surface: 255 255 255;
+  --surface-hover: 244 242 240;
+  --surface-raised: 255 255 255;
+
+  --border: 231 227 223;
+  --border-strong: 212 205 199;
+
+  --ink: 26 23 24;
+  --ink-secondary: 107 98 95;
+  --ink-tertiary: 154 145 141;
+
+  --accent: 140 47 61;
+  --accent-hover: 122 39 52;
+  --accent-soft: 249 238 240;
+  --accent-text: 147 48 62;
+  --accent-fg: 255 255 255;
+
+  --gold: 160 116 34;
+  --gold-hover: 138 99 27;
+  --gold-soft: 250 244 232;
+
+  --shadow-subtle: 0 1px 2px rgb(24 20 18 / 0.05);
+  --shadow-card: 0 1px 2px rgb(24 20 18 / 0.04), 0 12px 32px rgb(24 20 18 / 0.08);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --base: 18 16 19;
+  --base-soft: 23 20 22;
+  --surface: 28 23 25;
+  --surface-hover: 36 30 32;
+  --surface-raised: 42 34 37;
+
+  --border: 43 36 38;
+  --border-strong: 58 49 52;
+
+  --ink: 241 234 228;
+  --ink-secondary: 167 154 156;
+  --ink-tertiary: 111 101 103;
+
+  --accent: 140 47 61;
+  --accent-hover: 162 58 73;
+  --accent-soft: 58 34 38;
+  --accent-text: 231 163 173;
+  --accent-fg: 255 248 249;
+
+  --gold: 201 161 95;
+  --gold-hover: 214 179 121;
+  --gold-soft: 51 43 31;
+
+  --shadow-subtle: 0 1px 2px rgb(0 0 0 / 0.24);
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.02) inset, 0 8px 24px rgb(0 0 0 / 0.28);
+}
+
+@layer base {
+  body {
+    @apply bg-base text-ink font-sans antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  ::selection {
+    @apply bg-accent/25;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  /* Date/time pickers follow the active theme instead of always rendering dark. */
+  input[type="date"],
+  input[type="time"] {
+    color-scheme: inherit;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent/45 ring-offset-1 ring-offset-base;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
