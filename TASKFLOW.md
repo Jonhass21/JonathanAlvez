@@ -18,6 +18,10 @@ viajan a ningún lado.
 
 - **Hoy** — el saludo, el campo para escribir lo que tenés que hacer, los
   recordatorios de la próxima hora, lo vencido, lo de hoy y lo que sigue.
+- **Taski** — el botón azul abajo a la derecha. Preguntale *"¿qué tengo hoy?"*,
+  *"¿qué tengo pendiente de Kaia?"*, *"¿qué está vencido?"* o *"¿qué hice esta
+  semana?"*. Responde leyendo tus propias tareas: no hay conexión ni modelo
+  externo, así que anda igual sin internet.
 - **Clientes** — alta, renombrado y baja. Al borrar un cliente sus tareas se
   quedan, solo pierden la etiqueta.
 - **Calendario** — semana y mes, con el detalle del día que elijas.
@@ -51,6 +55,18 @@ reconoce queda vacío y se completa a mano en el mismo paso.
 **Ajustes → Copia de seguridad → Copiar al portapapeles.** Pegá ese texto en el
 mismo lugar del otro dispositivo y tocá Restaurar. Sirve también como respaldo:
 guardalo en una nota y tenés todo a salvo.
+
+## El diseño
+
+Lienzo blanco con auras azules difusas, paneles de vidrio líquido
+(translúcidos, con borde claro y reflejo interior), esquinas tipo squircle y un
+único azul de marca (`#0084FF`) para todo lo accionable. Los colores fuertes
+—rojo, ámbar, violeta, verde— son semánticos: vencido, recordatorio, en curso,
+prioridad. Nunca hacen de acento.
+
+Tipografías: **Outfit** para los títulos, **Fustat** para el logo y el nombre de
+Taski, **Inter** para el resto. Hay tema claro y oscuro; por defecto sigue al
+sistema y se cambia en Ajustes.
 
 ## La otra versión
 
