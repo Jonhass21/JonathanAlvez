@@ -919,6 +919,21 @@
     var r = e && e.reason;
     avisar((r && r.message) || String(r));
   });
+
+  // Abierta como archivo suelto (file://) el módulo ni arranca: los import
+  // están prohibidos ahí. Mejor decirlo que dejar la pantalla muerta.
+  if (location.protocol === "file:") {
+    avisar("esta copia está abierta como archivo suelto. Entrá por el link de la app, no por el archivo descargado.");
+  }
+
+  /* El service worker es lo que hace que la app instalada abra sin depender
+     de la señal del momento. Se registra desde acá, fuera del módulo, para
+     que funcione incluso si el módulo principal falla. */
+  if ("serviceWorker" in navigator && location.protocol !== "file:") {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").catch(function () { /* sin caché, la app igual anda */ });
+    });
+  }
 })();
 </script>
 
