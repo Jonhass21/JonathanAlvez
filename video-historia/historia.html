@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Sistema de Crecimiento</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #120709;
+    --wine: #3a0a12;
+    --red: #b3202e;
+    --gold: #d9b361;
+    --cream: #f4ece2;
+    --muted: #a8998f;
+    --card: rgba(255, 255, 255, 0.035);
+    --line: rgba(217, 179, 97, 0.22);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--bg); }
+  body { font-family: 'Inter', Arial, sans-serif; color: var(--cream); -webkit-font-smoothing: antialiased; }
+
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: var(--bg); }
+  #glow1, #glow2 { position: absolute; border-radius: 50%; filter: blur(40px); }
+  #glow1 { width: 1400px; height: 1400px; background: radial-gradient(circle, rgba(120,16,32,0.55), rgba(120,16,32,0) 65%); }
+  #glow2 { width: 1200px; height: 1200px; background: radial-gradient(circle, rgba(217,179,97,0.12), rgba(217,179,97,0) 60%); }
+  #grain { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px); background-size: 90px 90px; }
+
+  /* Header: tu marca + barra de progreso roja → dorada como en la propuesta */
+  #header { position: absolute; top: 150px; left: 80px; right: 80px; display: flex; justify-content: space-between; align-items: center; font-size: 30px; font-weight: 700; }
+  #header .tag { font-size: 20px; letter-spacing: 6px; color: var(--muted); font-weight: 500; }
+  #bar { position: absolute; top: 212px; left: 80px; height: 4px; background: linear-gradient(90deg, var(--red), var(--gold)); border-radius: 2px; }
+  #barTrack { position: absolute; top: 212px; left: 80px; right: 80px; height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; }
+  #footer { position: absolute; bottom: 300px; left: 60px; right: 60px; text-align: center; font-size: 19px; letter-spacing: 4px; white-space: nowrap; color: var(--muted); }
+  #footer b { color: var(--gold); font-weight: 600; }
+
+  .gold { color: var(--gold); }
+  .scene { position: absolute; left: 80px; right: 80px; top: 300px; bottom: 380px; display: flex; flex-direction: column; justify-content: center; }
+  .fx { will-change: transform, opacity; }
+  .kicker { font-size: 26px; letter-spacing: 7px; color: var(--gold); font-weight: 600; margin-bottom: 36px; }
+  .h1 { font-size: 104px; line-height: 1.04; font-weight: 800; letter-spacing: -3px; }
+  .h2 { font-size: 82px; line-height: 1.06; font-weight: 800; letter-spacing: -2px; }
+  .sub { font-size: 38px; line-height: 1.4; color: var(--muted); margin-top: 40px; font-weight: 400; }
+  .sub b { color: var(--cream); font-weight: 600; }
+
+  /* Escena 2: problema */
+  .versus { display: flex; flex-direction: column; gap: 26px; margin-top: 60px; }
+  .vrow { display: flex; align-items: center; justify-content: space-between; padding: 36px 44px; border-radius: 28px; background: var(--card); border: 1px solid rgba(255,255,255,0.08); font-size: 40px; font-weight: 600; }
+  .vrow .big { font-size: 64px; font-weight: 800; }
+  .vrow.bad .big { color: #e2515d; }
+  .vrow.good .big { color: var(--gold); }
+
+  /* Escena 3: servicios */
+  .svc { display: flex; align-items: center; gap: 34px; padding: 30px 40px; border-radius: 26px; background: var(--card); border: 1px solid var(--line); margin-top: 22px; }
+  .svc .n { font-size: 30px; font-weight: 700; color: var(--gold); width: 56px; }
+  .svc .t { font-size: 38px; font-weight: 700; }
+  .svc .d { font-size: 27px; color: var(--muted); margin-top: 8px; }
+
+  /* Escena 4: primer mes */
+  .step { position: relative; padding: 10px 0 44px 90px; }
+  .step .dot { position: absolute; left: 14px; top: 14px; width: 34px; height: 34px; border-radius: 50%; border: 4px solid var(--gold); background: var(--bg); }
+  .step .when { font-size: 24px; letter-spacing: 6px; color: var(--gold); font-weight: 600; }
+  .step .what { font-size: 58px; font-weight: 800; margin-top: 8px; }
+  .step .how { font-size: 30px; color: var(--muted); margin-top: 8px; line-height: 1.35; }
+  #rail { position: absolute; left: 29px; top: 40px; width: 4px; background: linear-gradient(var(--gold), var(--red)); border-radius: 2px; }
+
+  /* Escena 5: impacto */
+  .stat { padding: 40px 44px; border-radius: 28px; background: var(--card); border: 1px solid var(--line); margin-top: 26px; }
+  .stat .num { font-size: 118px; font-weight: 800; color: var(--gold); letter-spacing: -3px; line-height: 1; }
+  .stat .lbl { font-size: 32px; color: var(--cream); margin-top: 14px; line-height: 1.35; }
+  .stat .lbl span { color: var(--muted); }
+
+  /* Escena 6: cierre */
+  .badges { display: flex; gap: 22px; margin-top: 54px; }
+  .badge { flex: 1; padding: 34px 30px; border-radius: 26px; background: var(--card); border: 1px solid var(--line); }
+  .badge .num { font-size: 76px; font-weight: 800; color: var(--gold); }
+  .badge .lbl { font-size: 26px; color: var(--muted); margin-top: 6px; }
+  .cta { margin-top: 60px; padding: 40px; border-radius: 999px; text-align: center; font-size: 44px; font-weight: 800; color: #1a0a0c; background: linear-gradient(90deg, var(--gold), #f0d49a, var(--gold)); background-size: 200% 100%; }
+  .contact { margin-top: 36px; text-align: center; font-size: 32px; color: var(--muted); line-height: 1.6; }
+  .contact b { color: var(--cream); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="glow1"></div>
+  <div id="glow2"></div>
+  <div id="grain"></div>
+
+  <div id="header"><div>Jonathan <span class="gold">Alvez</span></div><div class="tag">ESTRATEGA DIGITAL</div></div>
+  <div id="barTrack"></div>
+  <div id="bar"></div>
+
+  <!-- 1 · Gancho -->
+  <section class="scene" data-in="0" data-out="3.8">
+    <div class="kicker fx" data-in="0.2">PARA DUEÑOS DE NEGOCIO</div>
+    <div class="h1 fx" data-in="0.4">¿Tu Instagram</div>
+    <div class="h1 fx" data-in="0.7">te trae <span class="gold">clientes</span></div>
+    <div class="h1 fx" data-in="1.0">o solo likes?</div>
+    <div class="sub fx" data-in="1.7">Publicar más <b>no es la solución.</b></div>
+  </section>
+
+  <!-- 2 · Problema -->
+  <section class="scene" data-in="3.8" data-out="8">
+    <div class="kicker fx" data-in="3.9">EL PROBLEMA</div>
+    <div class="h2 fx" data-in="4.05">La base está.<br><span class="gold">Falta el sistema.</span></div>
+    <div class="versus">
+      <div class="vrow fx good" data-in="4.7"><span>Seguidores</span><span class="big">✓</span></div>
+      <div class="vrow fx bad" data-in="5.1"><span>Comentarios</span><span class="big" data-count="0" data-from="48" data-cin="5.1">0</span></div>
+      <div class="vrow fx bad" data-in="5.5"><span>Consultas por WhatsApp</span><span class="big">✗</span></div>
+    </div>
+  </section>
+
+  <!-- 3 · Servicios -->
+  <section class="scene" data-in="8" data-out="14.6">
+    <div class="kicker fx" data-in="8.1">LA SOLUCIÓN</div>
+    <div class="h2 fx" data-in="8.25" style="margin-bottom:26px">El Sistema de<br><span class="gold">Crecimiento</span></div>
+    <div class="svc fx" data-in="8.9"><div class="n">01</div><div><div class="t">Community management</div><div class="d">Presencia constante que invita a consultar</div></div></div>
+    <div class="svc fx" data-in="9.5"><div class="n">02</div><div><div class="t">Meta Ads segmentada</div><div class="d">Consultas de gente lista para comprar</div></div></div>
+    <div class="svc fx" data-in="10.1"><div class="n">03</div><div><div class="t">Embudo de WhatsApp</div><div class="d">Ninguna consulta se pierde</div></div></div>
+    <div class="svc fx" data-in="10.7"><div class="n">04</div><div><div class="t">Dashboard mensual</div><div class="d">Consultas, costo y ventas en un lugar</div></div></div>
+    <div class="svc fx" data-in="11.3"><div class="n">05</div><div><div class="t">Producción de contenido</div><div class="d">Estratégico, hasta 8 posteos por mes</div></div></div>
+  </section>
+
+  <!-- 4 · Primer mes -->
+  <section class="scene" data-in="14.6" data-out="19">
+    <div class="kicker fx" data-in="14.7">PRIMER MES</div>
+    <div class="h2 fx" data-in="14.85" style="margin-bottom:60px">Resultados<br><span class="gold">en 4 semanas.</span></div>
+    <div style="position:relative">
+      <div id="rail"></div>
+      <div class="step fx" data-in="15.4"><div class="dot"></div><div class="when">SEMANA 1</div><div class="what">Ordenar</div><div class="how">Auditoría, bio con WhatsApp y embudo de venta.</div></div>
+      <div class="step fx" data-in="16.0"><div class="dot"></div><div class="when">SEMANAS 2 Y 3</div><div class="what">Lanzar</div><div class="how">Grilla de contenido y campañas en Meta Ads.</div></div>
+      <div class="step fx" data-in="16.6"><div class="dot"></div><div class="when">SEMANA 4</div><div class="what">Medir y ajustar</div><div class="how">Reporte de consultas, costos y próximo plan.</div></div>
+    </div>
+  </section>
+
+  <!-- 5 · Impacto -->
+  <section class="scene" data-in="19" data-out="23.6">
+    <div class="kicker fx" data-in="19.1">EL IMPACTO</div>
+    <div class="h2 fx" data-in="19.25">Cada posteo termina<br>en un <span class="gold">presupuesto.</span></div>
+    <div class="stat fx" data-in="19.9"><div class="num"><span data-count="6" data-cin="19.9">6</span>x</div><div class="lbl">más vistas con contenido de obras y personas <span>vs. flyers</span></div></div>
+    <div class="stat fx" data-in="20.5"><div class="num"><span data-count="100" data-cin="20.5">100</span>%</div><div class="lbl">de las consultas con seguimiento <span>hasta el cierre</span></div></div>
+    <div class="stat fx" data-in="21.1"><div class="num"><span data-count="1" data-cin="21.1">1</span> tablero</div><div class="lbl">para ver cuánto te cuesta cada cliente <span>y cuánto vendés</span></div></div>
+  </section>
+
+  <!-- 6 · Cierre -->
+  <section class="scene" data-in="23.6" data-out="99">
+    <div class="kicker fx" data-in="23.7">TU SOCIO DE CRECIMIENTO</div>
+    <div class="h1 fx" data-in="23.85">Jonathan<br><span class="gold">Alvez</span></div>
+    <div class="sub fx" data-in="24.3">Una sola dirección, <b>decisiones con datos</b> y un responsable de punta a punta.</div>
+    <div class="badges">
+      <div class="badge fx" data-in="24.8"><div class="num">+<span data-count="7" data-cin="24.8">7</span></div><div class="lbl">años de experiencia</div></div>
+      <div class="badge fx" data-in="25.1"><div class="num">+<span data-count="15" data-cin="25.1">15</span></div><div class="lbl">empresas acompañadas</div></div>
+    </div>
+    <div class="cta fx" data-in="25.6" data-fx="pop">¿Activamos el sistema? →</div>
+    <div class="contact fx" data-in="26.1"><b>jonathanalvez.com</b><br>@jonathanalvez.mk</div>
+  </section>
+
+  <div id="footer">ESTRATEGIA · <b>META ADS</b> · CONTENIDO · <b>WHATSAPP</b> · DATOS</div>
+</div>
+
+<script>
+  const DURATION = 28;
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const easeOut = x => 1 - Math.pow(1 - x, 3);
+  const easeIn = x => x * x * x;
+  const easeBack = x => { const c = 1.9; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+
+  const scenes = [...document.querySelectorAll('.scene')];
+  const counters = [...document.querySelectorAll('[data-count]')];
+
+  function render(t) {
+    // Fondo en movimiento lento
+    const g1 = document.getElementById('glow1'), g2 = document.getElementById('glow2');
+    g1.style.transform = `translate(${-500 + Math.sin(t * 0.35) * 160}px, ${-300 + t * 38}px)`;
+    g2.style.transform = `translate(${300 + Math.cos(t * 0.3) * 140}px, ${1200 - t * 26}px)`;
+    document.getElementById('bar').style.width = (920 * clamp(t / DURATION)) + 'px';
+
+    for (const s of scenes) {
+      const tin = +s.dataset.in, tout = +s.dataset.out;
+      const visible = t >= tin && t < tout;
+      s.style.display = visible ? 'flex' : 'none';
+      if (!visible) continue;
+      const outP = easeIn(clamp((t - (tout - 0.45)) / 0.45));
+      s.style.opacity = 1 - outP;
+      s.style.transform = `translateY(${-70 * outP}px) scale(${1 - 0.03 * outP})`;
+      for (const el of s.querySelectorAll('.fx')) {
+        const p = clamp((t - +el.dataset.in) / 0.6);
+        if (el.dataset.fx === 'pop') {
+          const e = easeBack(p);
+          el.style.opacity = clamp(p * 2);
+          el.style.transform = `scale(${0.6 + 0.4 * e + Math.sin(Math.max(0, t - 26.5) * 4) * 0.02 * (t > 26.5)})`;
+          el.style.backgroundPosition = `${(t * 40) % 200}% 0`;
+        } else {
+          const e = easeOut(p);
+          el.style.opacity = e;
+          el.style.transform = `translateY(${(1 - e) * 70}px)`;
+          el.style.filter = `blur(${(1 - e) * 10}px)`;
+        }
+      }
+      const rail = s.querySelector('#rail');
+      if (rail) rail.style.height = (560 * easeOut(clamp((t - 15.4) / 1.8))) + 'px';
+    }
+
+    for (const c of counters) {
+      const to = +c.dataset.count, from = c.dataset.from ? +c.dataset.from : 0;
+      const p = easeOut(clamp((t - +c.dataset.cin) / 1.1));
+      c.textContent = Math.round(from + (to - from) * p);
+    }
+  }
+  window.render = render;
+  window.DURATION = DURATION;
+
+  // Vista previa en navegador: reproduce en loop si no está siendo capturado
+  if (!location.search.includes('capture')) {
+    const start = performance.now();
+    const loop = now => { render(((now - start) / 1000) % DURATION); requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+  } else {
+    render(0);
+  }
+</script>
+</body>
+</html>
