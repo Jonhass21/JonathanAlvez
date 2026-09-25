@@ -158,7 +158,10 @@
 </div>
 
 <script>
-  const DURATION = 28;
+  // SPEED > 1 hace todo más lento (1.25 = 25% más lento)
+  const SPEED = 1.25;
+  const BASE = 28;
+  const DURATION = BASE * SPEED;
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
   const easeOut = x => 1 - Math.pow(1 - x, 3);
   const easeIn = x => x * x * x;
@@ -168,11 +171,12 @@
   const counters = [...document.querySelectorAll('[data-count]')];
 
   function render(t) {
+    t = t / SPEED;
     // Fondo en movimiento lento
     const g1 = document.getElementById('glow1'), g2 = document.getElementById('glow2');
     g1.style.transform = `translate(${-500 + Math.sin(t * 0.35) * 160}px, ${-300 + t * 38}px)`;
     g2.style.transform = `translate(${300 + Math.cos(t * 0.3) * 140}px, ${1200 - t * 26}px)`;
-    document.getElementById('bar').style.width = (920 * clamp(t / DURATION)) + 'px';
+    document.getElementById('bar').style.width = (920 * clamp(t / BASE)) + 'px';
 
     for (const s of scenes) {
       const tin = +s.dataset.in, tout = +s.dataset.out;
@@ -208,6 +212,7 @@
   }
   window.render = render;
   window.DURATION = DURATION;
+  window.SPEED = SPEED;
 
   // Vista previa en navegador: reproduce en loop si no está siendo capturado
   if (!location.search.includes('capture')) {
