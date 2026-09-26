@@ -9,6 +9,11 @@
    "frame": 0,
    "word": "(inicio)"
   },
+  "ventas": {
+   "t": 0.98,
+   "frame": 59,
+   "word": "ventas,"
+  },
   "pelicula": {
    "t": 3.36,
    "frame": 202,

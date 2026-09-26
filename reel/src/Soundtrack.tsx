@@ -3,6 +3,7 @@ import {Html5Audio, staticFile} from 'remotion';
 import {Sfx} from './components/Sfx';
 import {cue, LAST_FRAME, sec} from './timings';
 import {lightAt} from './scenes/Scene09Moment';
+import {CIRCLE_AT} from './scenes/Scene02OneNumber';
 
 /** Volumen de la música: 18% (siempre por debajo de la voz, normalizada a -16 LUFS). */
 export const MUSIC_VOLUME = 0.18;
@@ -20,6 +21,7 @@ export const Soundtrack: React.FC = () => (
     <Sfx at={cue('pelicula') - sec(0.15)} name="whoosh_out" volume={0.32} />
     {/* 2 · un solo número, publicidad y precio tachados */}
     <Sfx at={cue('s2_start') + sec(0.3)} name="text_in" volume={0.22} />
+    <Sfx at={CIRCLE_AT(cue('s2_start'))} name="stroke" volume={0.3} len={1.5} />
     <Sfx at={cue('mas_publicidad')} name="text_in" volume={0.16} />
     <Sfx at={cue('mas_publicidad') + sec(0.75)} name="stroke" volume={0.3} />
     <Sfx at={cue('precio_bajo')} name="text_in" volume={0.16} />

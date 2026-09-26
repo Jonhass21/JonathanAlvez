@@ -1,7 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {prog} from '../anim';
-import {C, cream, EASE, F, gold, STROKE, TRACK} from '../theme';
+import {C, cream, EASE, F, gold, GLOW, STROKE, TRACK} from '../theme';
 import {cue, sec} from '../timings';
 
 const MONTHS = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
@@ -26,7 +26,7 @@ export const Scene07Frequency: React.FC = () => {
 
   return (
     <AbsoluteFill style={{opacity: out}}>
-      <svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
+      <svg width={1080} height={1920} style={{position: 'absolute', inset: 0, filter: GLOW.soft}}>
         {MONTHS.map((_, i) => {
           const x = X0 + (i % COLS) * (CW + GAP);
           const y = Y0 + Math.floor(i / COLS) * (CH + GAP);
@@ -34,7 +34,7 @@ export const Scene07Frequency: React.FC = () => {
           if (p <= 0) return null;
           return (
             <g key={i}>
-              <rect x={x} y={y} width={CW} height={CH} pathLength={1} strokeDasharray={`${p} 1`} fill="none" stroke={cream(0.4)} strokeWidth={STROKE.hair} />
+              <rect x={x} y={y} width={CW} height={CH} pathLength={1} strokeDasharray={`${p} 1`} fill="none" stroke={cream(0.7)} strokeWidth={STROKE.hair} />
               {i === ACTIVE_MONTH && fill > 0 && (
                 <rect x={x} y={y + CH * (1 - fill)} width={CW} height={CH * fill} fill={gold(0.92)} stroke={C.gold} strokeWidth={STROKE.hair} />
               )}

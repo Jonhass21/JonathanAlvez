@@ -3,7 +3,7 @@ import {useCurrentFrame} from 'remotion';
 import {lerp, prog} from '../anim';
 import {DOTS} from '../components/dots';
 import {StageText} from '../components/StageText';
-import {cream, EASE} from '../theme';
+import {cream, EASE, GLOW} from '../theme';
 import {cue, sec} from '../timings';
 
 /** Posición de cada punto durante atracción (entran desde los costados y flotan en la franja). */
@@ -39,7 +39,7 @@ export const AttractionDots: React.FC<{fade: number}> = ({fade}) => {
   const f = useCurrentFrame();
   if (fade <= 0.001) return null;
   return (
-    <svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
+    <svg width={1080} height={1920} style={{position: 'absolute', inset: 0, filter: GLOW.soft}}>
       {DOTS.map((_, i) => {
         const p = attractionPos(f, i);
         if (!p.visible) return null;

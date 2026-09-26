@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {prog} from '../anim';
 import {Figure, FIGURES, ORDER} from '../components/Figures';
-import {EASE, gold, STROKE} from '../theme';
+import {EASE, gold, GLOW, STROKE} from '../theme';
 import {cue, sec} from '../timings';
 
 /** Fotograma en que se ilumina la k-ésima figura restante. */
@@ -21,7 +21,7 @@ export const Scene09Moment: React.FC = () => {
   const fadeOut = 1 - prog(f, cue('s10_start'), sec(0.45), EASE.inOut);
   return (
     <AbsoluteFill style={{opacity: fadeOut}}>
-      <svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
+      <svg width={1080} height={1920} style={{position: 'absolute', inset: 0, filter: GLOW.gold}}>
         {ORDER.map((idx, k) => {
           const p = prog(f, lightAt(k), sec(0.45), EASE.inOut);
           if (p <= 0) return null;

@@ -3,7 +3,7 @@ import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {lerp, prog} from '../anim';
 import {CONSIDER, CONVERTER, DOTS, SHAPES} from '../components/dots';
 import {StageText} from '../components/StageText';
-import {C, cream, EASE, STROKE} from '../theme';
+import {C, cream, EASE, GLOW, STROKE} from '../theme';
 import {cue, sec} from '../timings';
 import {attractionPos} from './Scene04Attraction';
 
@@ -40,14 +40,14 @@ export const Scene05Consideration: React.FC = () => {
   return (
     <AbsoluteFill>
       <StageText num="02" word="Consideración" metric="Consultas" at={s5} wordAt={cue('consideracion')} out={out} />
-      <svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
+      <svg width={1080} height={1920} style={{position: 'absolute', inset: 0, filter: GLOW.soft}}>
         {SHAPES.map((s, i) => {
           const p = prog(f, shapesIn + sec(i * 0.25), sec(1.1), EASE.inOut);
           if (p <= 0) return null;
           const d = shapePath(s.kind, s.x, s.y);
           return (
             <g key={i} opacity={shapesOut}>
-              <path d={d} pathLength={1} strokeDasharray={`${p} 1`} fill="none" stroke={cream(0.6)} strokeWidth={STROKE.hair} />
+              <path d={d} pathLength={1} strokeDasharray={`${p} 1`} fill="none" stroke={cream(0.85)} strokeWidth={STROKE.hair} />
               {i === 1 && proof > 0 && (
                 <path d={d} pathLength={1} strokeDasharray={`${proof} 1`} fill="none" stroke={C.gold} strokeWidth={STROKE.line} />
               )}

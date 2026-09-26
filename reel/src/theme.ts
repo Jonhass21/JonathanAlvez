@@ -46,4 +46,10 @@ export const EASE = {
 } as const;
 
 // Stroke finos
-export const STROKE = {hair: 1.5, line: 2, sales: 3} as const;
+export const STROKE = {hair: 2.2, line: 3, sales: 4} as const;
+
+/** Halo luminoso de las líneas (oro / crema de la paleta, sin colores nuevos) */
+export const GLOW = {
+  gold: 'drop-shadow(0 0 4px rgba(184, 148, 58, 0.9)) drop-shadow(0 0 14px rgba(184, 148, 58, 0.55))',
+  soft: 'drop-shadow(0 0 3px rgba(184, 148, 58, 0.7)) drop-shadow(0 0 10px rgba(240, 237, 232, 0.25))',
+} as const;

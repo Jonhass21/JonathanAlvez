@@ -4,7 +4,7 @@ import {lerp, prog} from '../anim';
 import {CONVERTER} from '../components/dots';
 import {FUNNEL} from '../components/Funnel';
 import {StageText} from '../components/StageText';
-import {C, cream, EASE, gold, STROKE} from '../theme';
+import {C, cream, EASE, gold, GLOW, STROKE} from '../theme';
 import {cue, sec} from '../timings';
 import {considerPos} from './Scene05Consideration';
 
@@ -44,7 +44,7 @@ export const Scene06Conversion: React.FC = () => {
   return (
     <AbsoluteFill>
       <StageText num="03" word="Conversión" metric="Tasa de cierre" at={s6} wordAt={cue('conversion')} out={out} />
-      <svg width={1080} height={1920} style={{position: 'absolute', inset: 0, opacity: fadeOut}}>
+      <svg width={1080} height={1920} style={{position: 'absolute', inset: 0, opacity: fadeOut, filter: GLOW.soft}}>
         {/* estela sutil del recorrido */}
         {cross > 0 && cross < 1 && (
           <line x1={540} y1={Math.max(900, y - 60)} x2={540} y2={y} stroke={gold(0.35 * exitFade)} strokeWidth={1} />
@@ -61,7 +61,7 @@ export const Scene06Conversion: React.FC = () => {
               strokeDasharray={`${clockIn} 1`}
               transform={`rotate(-90 ${CLOCK.x} ${CLOCK.y})`}
               fill="none"
-              stroke={cream(0.6)}
+              stroke={cream(0.85)}
               strokeWidth={STROKE.hair}
             />
             {Array.from({length: 12}, (_, i) => {
@@ -74,12 +74,12 @@ export const Scene06Conversion: React.FC = () => {
                   y1={CLOCK.y + Math.sin(a) * r0}
                   x2={CLOCK.x + Math.cos(a) * (CLOCK.r - 2)}
                   y2={CLOCK.y + Math.sin(a) * (CLOCK.r - 2)}
-                  stroke={cream(0.45 * clockIn)}
+                  stroke={cream(0.7 * clockIn)}
                   strokeWidth={1}
                 />
               );
             })}
-            <line x1={CLOCK.x} y1={CLOCK.y} x2={CLOCK.x + 26} y2={CLOCK.y - 15} stroke={cream(0.6 * clockIn)} strokeWidth={STROKE.hair} strokeLinecap="round" />
+            <line x1={CLOCK.x} y1={CLOCK.y} x2={CLOCK.x + 26} y2={CLOCK.y - 15} stroke={cream(0.85 * clockIn)} strokeWidth={STROKE.hair} strokeLinecap="round" />
             <line
               x1={CLOCK.x}
               y1={CLOCK.y}

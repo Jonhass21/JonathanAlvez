@@ -20,6 +20,7 @@ def find(seq, after=0.0):
 # cue -> (palabras que lo disparan, a partir de qué segundo buscar)
 CUES = {
     "s1_start":        None,
+    "ventas":          ("ventas", 0),
     "pelicula":        ("película", 0),
     "s2_start":        ("la mayoría", 0),
     "cuando_baja":     ("baja", 0),

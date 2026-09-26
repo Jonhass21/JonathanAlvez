@@ -1,7 +1,7 @@
 import React from 'react';
 import {AbsoluteFill} from 'remotion';
 import {lerp} from '../anim';
-import {C, cream, F, H, SECONDARY, STROKE, TRACK, W} from '../theme';
+import {C, cream, F, GLOW, H, SECONDARY, STROKE, TRACK, W} from '../theme';
 
 // ─── Geometría del embudo (coordenadas de mundo = pantalla con zoom 1) ──────
 export const FUNNEL = {
@@ -34,6 +34,24 @@ const SALES: [number, number][] = [
 ];
 const salesD = 'M' + SALES.map(([x, y]) => `${x} ${y}`).join(' L');
 
+/** Recorte de la línea de ventas hasta la fracción `t` de su longitud (para el efecto de caída). */
+const salesUpTo = (t: number) => {
+  const seg = SALES.slice(1).map((p, i) => Math.hypot(p[0] - SALES[i][0], p[1] - SALES[i][1]));
+  let left = seg.reduce((a, b) => a + b, 0) * t;
+  const pts: [number, number][] = [SALES[0]];
+  for (let i = 0; i < seg.length; i++) {
+    if (left >= seg[i]) {
+      pts.push(SALES[i + 1]);
+      left -= seg[i];
+    } else {
+      const k = left / seg[i];
+      pts.push([lerp(SALES[i][0], SALES[i + 1][0], k), lerp(SALES[i][1], SALES[i + 1][1], k)]);
+      break;
+    }
+  }
+  return {d: 'M' + pts.map(([x, y]) => `${x} ${y}`).join(' L'), tip: pts[pts.length - 1]};
+};
+
 export type Camera = {z: number; /** posición en pantalla de TIP */ sx: number; sy: number};
 /** Encuadre del embudo completo */
 export const CAM_FULL: Camera = {z: 1, sx: TIP.x, sy: TIP.y};
@@ -59,6 +77,9 @@ export type FunnelProps = {
   fill?: [number, number, number];
   /** opacidad de la etiqueta "VENTAS" (en pantalla) */
   salesLabel?: number;
+  /** efecto de caída: la línea se re-traza cayendo (0–1). `ghost` = rastro tenue de la línea completa */
+  trace?: number;
+  ghost?: number;
   children?: React.ReactNode;
 };
 
@@ -69,6 +90,8 @@ export const Funnel: React.FC<FunnelProps> = ({
   wall = [1, 1, 1],
   fill = [0, 0, 0],
   salesLabel = 0,
+  trace = 1,
+  ghost = 0,
   children,
 }) => {
   if (opacity <= 0.001) return null;
@@ -88,7 +111,7 @@ export const Funnel: React.FC<FunnelProps> = ({
 
   return (
     <AbsoluteFill style={{opacity}}>
-      <svg width={W} height={H} viewBox={`${cx - vw / 2} ${cy - vh / 2} ${vw} ${vh}`}>
+      <svg width={W} height={H} viewBox={`${cx - vw / 2} ${cy - vh / 2} ${vw} ${vh}`} style={{filter: GLOW.soft}}>
         {/* rellenos de franja activa */}
         {[0, 1, 2].map((i) => {
           const b = band(i);
@@ -122,9 +145,18 @@ export const Funnel: React.FC<FunnelProps> = ({
           return <line key={`s${i}`} x1={l} y1={y} x2={lerp(l, r, p)} y2={y} stroke={C.gold} strokeOpacity={sepOp[i]} strokeWidth={STROKE.hair} {...ns} />;
         })}
         {/* línea de ventas cayendo */}
-        <line x1={500} y1={1122} x2={580} y2={1122} stroke={cream(0.25)} strokeWidth={1} {...ns} />
-        <path d={salesD} stroke={C.cream} strokeOpacity={Math.max(0.35, wall[2])} strokeWidth={STROKE.sales} {...ns} />
-        <circle cx={SALES[SALES.length - 1][0]} cy={SALES[SALES.length - 1][1]} r={px(7)} fill={C.gold} fillOpacity={Math.max(0.35, wall[2])} />
+        <line x1={500} y1={1122} x2={580} y2={1122} stroke={cream(0.45)} strokeWidth={1.5} {...ns} />
+        {ghost > 0 && <path d={salesD} stroke={C.cream} strokeOpacity={1 - 0.82 * ghost} strokeWidth={STROKE.sales} {...ns} />}
+        {(() => {
+          const s = trace >= 1 ? {d: salesD, tip: SALES[SALES.length - 1]} : salesUpTo(trace);
+          const o = Math.max(0.35, wall[2]);
+          return (
+            <>
+              {trace > 0.001 && <path d={s.d} stroke={C.cream} strokeOpacity={o} strokeWidth={STROKE.sales} {...ns} />}
+              <circle cx={s.tip[0]} cy={s.tip[1]} r={px(8)} fill={C.gold} fillOpacity={o} />
+            </>
+          );
+        })()}
         {children}
       </svg>
       {salesLabel > 0.001 && (

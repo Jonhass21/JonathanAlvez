@@ -22,5 +22,11 @@ export const Scene01Opening: React.FC = () => {
   const label = 1 - prog(f, zoomAt, sec(0.6), EASE.in);
   const opacity = 1 - prog(f, cue('s2_start') + sec(0.1), sec(0.6), EASE.inOut);
 
-  return <Funnel cam={cam} opacity={opacity} salesLabel={label} />;
+  // "ventas": la línea se apaga a un rastro y se vuelve a trazar cayendo, acelerando (la caída se entiende)
+  const v = cue('ventas');
+  const dimIn = prog(f, v - sec(0.15), sec(0.15), EASE.inOut);
+  const trace = f < v - sec(0.15) ? 1 : prog(f, v, sec(1.5), EASE.in);
+  const ghost = trace >= 1 ? 0 : dimIn;
+
+  return <Funnel cam={cam} opacity={opacity} salesLabel={label} trace={trace} ghost={ghost} />;
 };
