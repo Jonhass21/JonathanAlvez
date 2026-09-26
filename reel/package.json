@@ -1,0 +1,25 @@
+{
+  "name": "variables-reel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VARIABLES · Jonathan Alvez — reel de motion graphics en Remotion",
+  "scripts": {
+    "studio": "remotion studio",
+    "preview": "node scripts/preview.mjs",
+    "render": "remotion render Variables01 out/variables-01.mp4"
+  },
+  "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/jost": "^5.3.0",
+    "@remotion/cli": "^4.0.529",
+    "@remotion/fonts": "^4.0.529",
+    "@remotion/media-utils": "^4.0.529",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "^4.0.529"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "typescript": "^7.0.2"
+  }
+}

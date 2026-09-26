@@ -1,0 +1,1099 @@
+{
+ "model": "whisper-small (q8)",
+ "source": "voz.mp3",
+ "text": " Si solo me des ventas, estás mirando al final de una película que no viste. La mayoría de los negocios mira un solo número, y cuando baja, reacciona igual. Más publicidad o precios más bajos. Pero la venta no empieza cuando el cliente paga. Tiene tres etapas. Uno, atracción, que te conozca gente que todavía no te necesita acá no se vende, se construye memoria dos, consideración cuando aparece la necesidad te comparan acá ganas con pruebas y la tercera, conversión el momento de decidir acá se pierde por responder tarde o complicar la compra. Hay una variable que casi nadie mira. Cada cuanto te compra un cliente. Si te compran una vez por año, este mes sólo uno de cada dos está listo para comprar. El resto no te está ignorando. Todavía no te necesita. El que te recuerda cuando llegas en momento es el que compra. Por eso, el error más común es este.",
+ "chunks": [
+  {
+   "text": " Si",
+   "timestamp": [
+    0.18,
+    0.4
+   ]
+  },
+  {
+   "text": " solo",
+   "timestamp": [
+    0.4,
+    0.6
+   ]
+  },
+  {
+   "text": " me",
+   "timestamp": [
+    0.6,
+    0.76
+   ]
+  },
+  {
+   "text": " des",
+   "timestamp": [
+    0.76,
+    0.98
+   ]
+  },
+  {
+   "text": " ventas,",
+   "timestamp": [
+    0.98,
+    1.5
+   ]
+  },
+  {
+   "text": " estás",
+   "timestamp": [
+    2,
+    2.26
+   ]
+  },
+  {
+   "text": " mirando",
+   "timestamp": [
+    2.26,
+    2.5
+   ]
+  },
+  {
+   "text": " al",
+   "timestamp": [
+    2.5,
+    2.72
+   ]
+  },
+  {
+   "text": " final",
+   "timestamp": [
+    2.72,
+    2.9
+   ]
+  },
+  {
+   "text": " de",
+   "timestamp": [
+    2.9,
+    3.02
+   ]
+  },
+  {
+   "text": " una",
+   "timestamp": [
+    3.02,
+    3.36
+   ]
+  },
+  {
+   "text": " película",
+   "timestamp": [
+    3.36,
+    3.58
+   ]
+  },
+  {
+   "text": " que",
+   "timestamp": [
+    3.58,
+    3.74
+   ]
+  },
+  {
+   "text": " no",
+   "timestamp": [
+    3.74,
+    3.86
+   ]
+  },
+  {
+   "text": " viste.",
+   "timestamp": [
+    3.86,
+    4.2
+   ]
+  },
+  {
+   "text": " La",
+   "timestamp": [
+    5.14,
+    5.42
+   ]
+  },
+  {
+   "text": " mayoría",
+   "timestamp": [
+    5.42,
+    5.58
+   ]
+  },
+  {
+   "text": " de",
+   "timestamp": [
+    5.58,
+    5.68
+   ]
+  },
+  {
+   "text": " los",
+   "timestamp": [
+    5.68,
+    5.9
+   ]
+  },
+  {
+   "text": " negocios",
+   "timestamp": [
+    5.9,
+    6.88
+   ]
+  },
+  {
+   "text": " mira",
+   "timestamp": [
+    6.88,
+    7.08
+   ]
+  },
+  {
+   "text": " un",
+   "timestamp": [
+    7.08,
+    7.32
+   ]
+  },
+  {
+   "text": " solo",
+   "timestamp": [
+    7.32,
+    7.62
+   ]
+  },
+  {
+   "text": " número,",
+   "timestamp": [
+    7.62,
+    7.9
+   ]
+  },
+  {
+   "text": " y",
+   "timestamp": [
+    8.54,
+    8.78
+   ]
+  },
+  {
+   "text": " cuando",
+   "timestamp": [
+    8.78,
+    9.16
+   ]
+  },
+  {
+   "text": " baja,",
+   "timestamp": [
+    9.16,
+    9.56
+   ]
+  },
+  {
+   "text": " reacciona",
+   "timestamp": [
+    9.84,
+    10.8
+   ]
+  },
+  {
+   "text": " igual.",
+   "timestamp": [
+    10.8,
+    11.1
+   ]
+  },
+  {
+   "text": " Más",
+   "timestamp": [
+    12.04,
+    12.36
+   ]
+  },
+  {
+   "text": " publicidad",
+   "timestamp": [
+    12.36,
+    13.34
+   ]
+  },
+  {
+   "text": " o",
+   "timestamp": [
+    13.34,
+    13.54
+   ]
+  },
+  {
+   "text": " precios",
+   "timestamp": [
+    13.54,
+    13.88
+   ]
+  },
+  {
+   "text": " más",
+   "timestamp": [
+    13.88,
+    14.12
+   ]
+  },
+  {
+   "text": " bajos.",
+   "timestamp": [
+    14.12,
+    14.3
+   ]
+  },
+  {
+   "text": " Pero",
+   "timestamp": [
+    15.42,
+    15.58
+   ]
+  },
+  {
+   "text": " la",
+   "timestamp": [
+    15.58,
+    15.84
+   ]
+  },
+  {
+   "text": " venta",
+   "timestamp": [
+    15.84,
+    16.84
+   ]
+  },
+  {
+   "text": " no",
+   "timestamp": [
+    16.84,
+    17.26
+   ]
+  },
+  {
+   "text": " empieza",
+   "timestamp": [
+    17.26,
+    17.94
+   ]
+  },
+  {
+   "text": " cuando",
+   "timestamp": [
+    17.94,
+    18.18
+   ]
+  },
+  {
+   "text": " el",
+   "timestamp": [
+    18.18,
+    18.48
+   ]
+  },
+  {
+   "text": " cliente",
+   "timestamp": [
+    18.48,
+    18.92
+   ]
+  },
+  {
+   "text": " paga.",
+   "timestamp": [
+    18.92,
+    19.3
+   ]
+  },
+  {
+   "text": " Tiene",
+   "timestamp": [
+    20.32,
+    20.72
+   ]
+  },
+  {
+   "text": " tres",
+   "timestamp": [
+    20.72,
+    21.04
+   ]
+  },
+  {
+   "text": " etapas.",
+   "timestamp": [
+    21.04,
+    21.4
+   ]
+  },
+  {
+   "text": " Uno,",
+   "timestamp": [
+    22.36,
+    23.02
+   ]
+  },
+  {
+   "text": " atracción,",
+   "timestamp": [
+    23.08,
+    23.7
+   ]
+  },
+  {
+   "text": " que",
+   "timestamp": [
+    24.46,
+    24.6
+   ]
+  },
+  {
+   "text": " te",
+   "timestamp": [
+    24.6,
+    24.76
+   ]
+  },
+  {
+   "text": " conozca",
+   "timestamp": [
+    24.76,
+    25.28
+   ]
+  },
+  {
+   "text": " gente",
+   "timestamp": [
+    25.3,
+    25.5
+   ]
+  },
+  {
+   "text": " que",
+   "timestamp": [
+    25.5,
+    25.86
+   ]
+  },
+  {
+   "text": " todavía",
+   "timestamp": [
+    25.86,
+    26.02
+   ]
+  },
+  {
+   "text": " no",
+   "timestamp": [
+    26.02,
+    26.14
+   ]
+  },
+  {
+   "text": " te",
+   "timestamp": [
+    26.14,
+    26.58
+   ]
+  },
+  {
+   "text": " necesita",
+   "timestamp": [
+    26.58,
+    27
+   ]
+  },
+  {
+   "text": " acá",
+   "timestamp": [
+    27.66,
+    28.14
+   ]
+  },
+  {
+   "text": " no",
+   "timestamp": [
+    28.14,
+    28.28
+   ]
+  },
+  {
+   "text": " se",
+   "timestamp": [
+    28.28,
+    28.42
+   ]
+  },
+  {
+   "text": " vende,",
+   "timestamp": [
+    28.42,
+    28.92
+   ]
+  },
+  {
+   "text": " se",
+   "timestamp": [
+    29.04,
+    29.42
+   ]
+  },
+  {
+   "text": " construye",
+   "timestamp": [
+    29.42,
+    29.76
+   ]
+  },
+  {
+   "text": " memoria",
+   "timestamp": [
+    29.76,
+    30
+   ]
+  },
+  {
+   "text": " dos,",
+   "timestamp": [
+    31.18,
+    31.82
+   ]
+  },
+  {
+   "text": " consideración",
+   "timestamp": [
+    32,
+    33
+   ]
+  },
+  {
+   "text": " cuando",
+   "timestamp": [
+    33.62,
+    34.02
+   ]
+  },
+  {
+   "text": " aparece",
+   "timestamp": [
+    34.02,
+    34.22
+   ]
+  },
+  {
+   "text": " la",
+   "timestamp": [
+    34.22,
+    34.44
+   ]
+  },
+  {
+   "text": " necesidad",
+   "timestamp": [
+    34.44,
+    35.28
+   ]
+  },
+  {
+   "text": " te",
+   "timestamp": [
+    35.28,
+    35.62
+   ]
+  },
+  {
+   "text": " comparan",
+   "timestamp": [
+    35.62,
+    36
+   ]
+  },
+  {
+   "text": " acá",
+   "timestamp": [
+    36.74,
+    37.22
+   ]
+  },
+  {
+   "text": " ganas",
+   "timestamp": [
+    37.22,
+    37.54
+   ]
+  },
+  {
+   "text": " con",
+   "timestamp": [
+    37.54,
+    37.72
+   ]
+  },
+  {
+   "text": " pruebas",
+   "timestamp": [
+    37.72,
+    38
+   ]
+  },
+  {
+   "text": " y",
+   "timestamp": [
+    38.96,
+    39.06
+   ]
+  },
+  {
+   "text": " la",
+   "timestamp": [
+    39.06,
+    39.22
+   ]
+  },
+  {
+   "text": " tercera,",
+   "timestamp": [
+    39.22,
+    40.14
+   ]
+  },
+  {
+   "text": " conversión",
+   "timestamp": [
+    40.38,
+    41
+   ]
+  },
+  {
+   "text": " el",
+   "timestamp": [
+    41.26,
+    41.54
+   ]
+  },
+  {
+   "text": " momento",
+   "timestamp": [
+    41.54,
+    41.82
+   ]
+  },
+  {
+   "text": " de",
+   "timestamp": [
+    41.82,
+    42.1
+   ]
+  },
+  {
+   "text": " decidir",
+   "timestamp": [
+    42.1,
+    43
+   ]
+  },
+  {
+   "text": " acá",
+   "timestamp": [
+    43.18,
+    43.38
+   ]
+  },
+  {
+   "text": " se",
+   "timestamp": [
+    43.38,
+    43.6
+   ]
+  },
+  {
+   "text": " pierde",
+   "timestamp": [
+    43.6,
+    44
+   ]
+  },
+  {
+   "text": " por",
+   "timestamp": [
+    44,
+    44.66
+   ]
+  },
+  {
+   "text": " responder",
+   "timestamp": [
+    44.66,
+    45.16
+   ]
+  },
+  {
+   "text": " tarde",
+   "timestamp": [
+    45.14,
+    45.48
+   ]
+  },
+  {
+   "text": " o",
+   "timestamp": [
+    45.48,
+    45.76
+   ]
+  },
+  {
+   "text": " complicar",
+   "timestamp": [
+    45.76,
+    46.08
+   ]
+  },
+  {
+   "text": " la",
+   "timestamp": [
+    46.08,
+    46.38
+   ]
+  },
+  {
+   "text": " compra.",
+   "timestamp": [
+    46.38,
+    47
+   ]
+  },
+  {
+   "text": " Hay",
+   "timestamp": [
+    48.1,
+    48.24
+   ]
+  },
+  {
+   "text": " una",
+   "timestamp": [
+    48.24,
+    48.56
+   ]
+  },
+  {
+   "text": " variable",
+   "timestamp": [
+    48.56,
+    49.36
+   ]
+  },
+  {
+   "text": " que",
+   "timestamp": [
+    49.36,
+    49.62
+   ]
+  },
+  {
+   "text": " casi",
+   "timestamp": [
+    49.62,
+    49.9
+   ]
+  },
+  {
+   "text": " nadie",
+   "timestamp": [
+    49.9,
+    50.24
+   ]
+  },
+  {
+   "text": " mira.",
+   "timestamp": [
+    50.24,
+    50.96
+   ]
+  },
+  {
+   "text": " Cada",
+   "timestamp": [
+    51.32,
+    51.74
+   ]
+  },
+  {
+   "text": " cuanto",
+   "timestamp": [
+    51.74,
+    52
+   ]
+  },
+  {
+   "text": " te",
+   "timestamp": [
+    52,
+    52.3
+   ]
+  },
+  {
+   "text": " compra",
+   "timestamp": [
+    52.3,
+    52.46
+   ]
+  },
+  {
+   "text": " un",
+   "timestamp": [
+    52.46,
+    52.7
+   ]
+  },
+  {
+   "text": " cliente.",
+   "timestamp": [
+    52.7,
+    53.8
+   ]
+  },
+  {
+   "text": " Si",
+   "timestamp": [
+    54.1,
+    54.24
+   ]
+  },
+  {
+   "text": " te",
+   "timestamp": [
+    54.24,
+    54.48
+   ]
+  },
+  {
+   "text": " compran",
+   "timestamp": [
+    54.48,
+    54.76
+   ]
+  },
+  {
+   "text": " una",
+   "timestamp": [
+    54.76,
+    55.02
+   ]
+  },
+  {
+   "text": " vez",
+   "timestamp": [
+    55.02,
+    55.24
+   ]
+  },
+  {
+   "text": " por",
+   "timestamp": [
+    55.24,
+    55.52
+   ]
+  },
+  {
+   "text": " año,",
+   "timestamp": [
+    55.52,
+    56.3
+   ]
+  },
+  {
+   "text": " este",
+   "timestamp": [
+    57.36,
+    57.62
+   ]
+  },
+  {
+   "text": " mes",
+   "timestamp": [
+    57.62,
+    58.1
+   ]
+  },
+  {
+   "text": " sólo",
+   "timestamp": [
+    58.1,
+    58.46
+   ]
+  },
+  {
+   "text": " uno",
+   "timestamp": [
+    58.46,
+    58.58
+   ]
+  },
+  {
+   "text": " de",
+   "timestamp": [
+    58.58,
+    58.74
+   ]
+  },
+  {
+   "text": " cada",
+   "timestamp": [
+    58.74,
+    58.96
+   ]
+  },
+  {
+   "text": " dos",
+   "timestamp": [
+    58.96,
+    59.26
+   ]
+  },
+  {
+   "text": " está",
+   "timestamp": [
+    59.26,
+    59.48
+   ]
+  },
+  {
+   "text": " listo",
+   "timestamp": [
+    59.48,
+    59.76
+   ]
+  },
+  {
+   "text": " para",
+   "timestamp": [
+    59.76,
+    60.12
+   ]
+  },
+  {
+   "text": " comprar.",
+   "timestamp": [
+    60.12,
+    60.72
+   ]
+  },
+  {
+   "text": " El",
+   "timestamp": [
+    61.08,
+    61.34
+   ]
+  },
+  {
+   "text": " resto",
+   "timestamp": [
+    61.34,
+    61.76
+   ]
+  },
+  {
+   "text": " no",
+   "timestamp": [
+    61.76,
+    61.9
+   ]
+  },
+  {
+   "text": " te",
+   "timestamp": [
+    61.9,
+    62.06
+   ]
+  },
+  {
+   "text": " está",
+   "timestamp": [
+    62.06,
+    62.24
+   ]
+  },
+  {
+   "text": " ignorando.",
+   "timestamp": [
+    62.24,
+    62.96
+   ]
+  },
+  {
+   "text": " Todavía",
+   "timestamp": [
+    63.22,
+    63.62
+   ]
+  },
+  {
+   "text": " no",
+   "timestamp": [
+    63.62,
+    63.74
+   ]
+  },
+  {
+   "text": " te",
+   "timestamp": [
+    63.74,
+    64.16
+   ]
+  },
+  {
+   "text": " necesita.",
+   "timestamp": [
+    64.16,
+    65.18
+   ]
+  },
+  {
+   "text": " El",
+   "timestamp": [
+    65.46,
+    65.56
+   ]
+  },
+  {
+   "text": " que",
+   "timestamp": [
+    65.56,
+    65.68
+   ]
+  },
+  {
+   "text": " te",
+   "timestamp": [
+    65.68,
+    65.98
+   ]
+  },
+  {
+   "text": " recuerda",
+   "timestamp": [
+    65.98,
+    66.44
+   ]
+  },
+  {
+   "text": " cuando",
+   "timestamp": [
+    66.44,
+    66.74
+   ]
+  },
+  {
+   "text": " llegas",
+   "timestamp": [
+    66.74,
+    66.98
+   ]
+  },
+  {
+   "text": " en",
+   "timestamp": [
+    66.98,
+    67.34
+   ]
+  },
+  {
+   "text": " momento",
+   "timestamp": [
+    67.34,
+    67.94
+   ]
+  },
+  {
+   "text": " es",
+   "timestamp": [
+    67.94,
+    68.06
+   ]
+  },
+  {
+   "text": " el",
+   "timestamp": [
+    68.06,
+    68.16
+   ]
+  },
+  {
+   "text": " que",
+   "timestamp": [
+    68.16,
+    68.5
+   ]
+  },
+  {
+   "text": " compra.",
+   "timestamp": [
+    68.5,
+    68.6
+   ]
+  },
+  {
+   "text": " Por",
+   "timestamp": [
+    69.54,
+    69.76
+   ]
+  },
+  {
+   "text": " eso,",
+   "timestamp": [
+    69.76,
+    70.1
+   ]
+  },
+  {
+   "text": " el",
+   "timestamp": [
+    70.24,
+    70.42
+   ]
+  },
+  {
+   "text": " error",
+   "timestamp": [
+    70.42,
+    70.6
+   ]
+  },
+  {
+   "text": " más",
+   "timestamp": [
+    70.6,
+    70.9
+   ]
+  },
+  {
+   "text": " común",
+   "timestamp": [
+    70.9,
+    71.38
+   ]
+  },
+  {
+   "text": " es",
+   "timestamp": [
+    71.38,
+    71.68
+   ]
+  },
+  {
+   "text": " este.",
+   "timestamp": [
+    71.7,
+    75.4
+   ]
+  }
+ ]
+}

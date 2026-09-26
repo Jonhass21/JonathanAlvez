@@ -1,0 +1,935 @@
+{
+ "fps": 60,
+ "durationInFrames": 4319,
+ "source": "voz.mp3",
+ "model": "whisper-small (q8)",
+ "cues": {
+  "s1_start": {
+   "t": 0.0,
+   "frame": 0,
+   "word": "(inicio)"
+  },
+  "pelicula": {
+   "t": 3.36,
+   "frame": 202,
+   "word": "película"
+  },
+  "s2_start": {
+   "t": 5.14,
+   "frame": 308,
+   "word": "La mayoría"
+  },
+  "cuando_baja": {
+   "t": 9.16,
+   "frame": 550,
+   "word": "baja,"
+  },
+  "mas_publicidad": {
+   "t": 12.04,
+   "frame": 722,
+   "word": "Más publicidad"
+  },
+  "precio_bajo": {
+   "t": 13.54,
+   "frame": 812,
+   "word": "precios más"
+  },
+  "s3_start": {
+   "t": 15.42,
+   "frame": 925,
+   "word": "Pero la venta"
+  },
+  "tres_etapas": {
+   "t": 20.72,
+   "frame": 1243,
+   "word": "tres etapas."
+  },
+  "s4_start": {
+   "t": 22.36,
+   "frame": 1342,
+   "word": "Uno,"
+  },
+  "atraccion": {
+   "t": 23.08,
+   "frame": 1385,
+   "word": "atracción,"
+  },
+  "gente": {
+   "t": 25.3,
+   "frame": 1518,
+   "word": "gente"
+  },
+  "memoria": {
+   "t": 29.76,
+   "frame": 1786,
+   "word": "memoria"
+  },
+  "s5_start": {
+   "t": 31.18,
+   "frame": 1871,
+   "word": "dos,"
+  },
+  "consideracion": {
+   "t": 32,
+   "frame": 1920,
+   "word": "consideración"
+  },
+  "comparan": {
+   "t": 35.62,
+   "frame": 2137,
+   "word": "comparan"
+  },
+  "prueba": {
+   "t": 37.54,
+   "frame": 2252,
+   "word": "con pruebas"
+  },
+  "s6_start": {
+   "t": 38.96,
+   "frame": 2338,
+   "word": "y la tercera,"
+  },
+  "conversion": {
+   "t": 40.38,
+   "frame": 2423,
+   "word": "conversión"
+  },
+  "decidir": {
+   "t": 41.54,
+   "frame": 2492,
+   "word": "momento de decidir"
+  },
+  "responder_tarde": {
+   "t": 44.66,
+   "frame": 2680,
+   "word": "responder tarde"
+  },
+  "s7_start": {
+   "t": 48.1,
+   "frame": 2886,
+   "word": "Hay una variable"
+  },
+  "cada_cuanto": {
+   "t": 51.32,
+   "frame": 3079,
+   "word": "Cada cuanto"
+  },
+  "s8_start": {
+   "t": 54.1,
+   "frame": 3246,
+   "word": "Si te compran"
+  },
+  "uno_de_cada": {
+   "t": 58.46,
+   "frame": 3508,
+   "word": "uno de cada"
+  },
+  "s9_start": {
+   "t": 65.46,
+   "frame": 3928,
+   "word": "El que te recuerda"
+  },
+  "compra_final": {
+   "t": 68.5,
+   "frame": 4110,
+   "word": "compra."
+  },
+  "s10_start": {
+   "t": 69.54,
+   "frame": 4172,
+   "word": "Por eso,"
+  },
+  "este": {
+   "t": 71.7,
+   "frame": 4302,
+   "word": "este."
+  },
+  "end": {
+   "t": 71.983,
+   "frame": 4319,
+   "word": "fin de «este»"
+  }
+ },
+ "words": [
+  {
+   "w": "Si",
+   "start": 0.18,
+   "end": 0.4
+  },
+  {
+   "w": "solo",
+   "start": 0.4,
+   "end": 0.6
+  },
+  {
+   "w": "me",
+   "start": 0.6,
+   "end": 0.76
+  },
+  {
+   "w": "des",
+   "start": 0.76,
+   "end": 0.98
+  },
+  {
+   "w": "ventas,",
+   "start": 0.98,
+   "end": 1.5
+  },
+  {
+   "w": "estás",
+   "start": 2,
+   "end": 2.26
+  },
+  {
+   "w": "mirando",
+   "start": 2.26,
+   "end": 2.5
+  },
+  {
+   "w": "al",
+   "start": 2.5,
+   "end": 2.72
+  },
+  {
+   "w": "final",
+   "start": 2.72,
+   "end": 2.9
+  },
+  {
+   "w": "de",
+   "start": 2.9,
+   "end": 3.02
+  },
+  {
+   "w": "una",
+   "start": 3.02,
+   "end": 3.36
+  },
+  {
+   "w": "película",
+   "start": 3.36,
+   "end": 3.58
+  },
+  {
+   "w": "que",
+   "start": 3.58,
+   "end": 3.74
+  },
+  {
+   "w": "no",
+   "start": 3.74,
+   "end": 3.86
+  },
+  {
+   "w": "viste.",
+   "start": 3.86,
+   "end": 4.2
+  },
+  {
+   "w": "La",
+   "start": 5.14,
+   "end": 5.42
+  },
+  {
+   "w": "mayoría",
+   "start": 5.42,
+   "end": 5.58
+  },
+  {
+   "w": "de",
+   "start": 5.58,
+   "end": 5.68
+  },
+  {
+   "w": "los",
+   "start": 5.68,
+   "end": 5.9
+  },
+  {
+   "w": "negocios",
+   "start": 5.9,
+   "end": 6.88
+  },
+  {
+   "w": "mira",
+   "start": 6.88,
+   "end": 7.08
+  },
+  {
+   "w": "un",
+   "start": 7.08,
+   "end": 7.32
+  },
+  {
+   "w": "solo",
+   "start": 7.32,
+   "end": 7.62
+  },
+  {
+   "w": "número,",
+   "start": 7.62,
+   "end": 7.9
+  },
+  {
+   "w": "y",
+   "start": 8.54,
+   "end": 8.78
+  },
+  {
+   "w": "cuando",
+   "start": 8.78,
+   "end": 9.16
+  },
+  {
+   "w": "baja,",
+   "start": 9.16,
+   "end": 9.56
+  },
+  {
+   "w": "reacciona",
+   "start": 9.84,
+   "end": 10.8
+  },
+  {
+   "w": "igual.",
+   "start": 10.8,
+   "end": 11.1
+  },
+  {
+   "w": "Más",
+   "start": 12.04,
+   "end": 12.36
+  },
+  {
+   "w": "publicidad",
+   "start": 12.36,
+   "end": 13.34
+  },
+  {
+   "w": "o",
+   "start": 13.34,
+   "end": 13.54
+  },
+  {
+   "w": "precios",
+   "start": 13.54,
+   "end": 13.88
+  },
+  {
+   "w": "más",
+   "start": 13.88,
+   "end": 14.12
+  },
+  {
+   "w": "bajos.",
+   "start": 14.12,
+   "end": 14.3
+  },
+  {
+   "w": "Pero",
+   "start": 15.42,
+   "end": 15.58
+  },
+  {
+   "w": "la",
+   "start": 15.58,
+   "end": 15.84
+  },
+  {
+   "w": "venta",
+   "start": 15.84,
+   "end": 16.84
+  },
+  {
+   "w": "no",
+   "start": 16.84,
+   "end": 17.26
+  },
+  {
+   "w": "empieza",
+   "start": 17.26,
+   "end": 17.94
+  },
+  {
+   "w": "cuando",
+   "start": 17.94,
+   "end": 18.18
+  },
+  {
+   "w": "el",
+   "start": 18.18,
+   "end": 18.48
+  },
+  {
+   "w": "cliente",
+   "start": 18.48,
+   "end": 18.92
+  },
+  {
+   "w": "paga.",
+   "start": 18.92,
+   "end": 19.3
+  },
+  {
+   "w": "Tiene",
+   "start": 20.32,
+   "end": 20.72
+  },
+  {
+   "w": "tres",
+   "start": 20.72,
+   "end": 21.04
+  },
+  {
+   "w": "etapas.",
+   "start": 21.04,
+   "end": 21.4
+  },
+  {
+   "w": "Uno,",
+   "start": 22.36,
+   "end": 23.02
+  },
+  {
+   "w": "atracción,",
+   "start": 23.08,
+   "end": 23.7
+  },
+  {
+   "w": "que",
+   "start": 24.46,
+   "end": 24.6
+  },
+  {
+   "w": "te",
+   "start": 24.6,
+   "end": 24.76
+  },
+  {
+   "w": "conozca",
+   "start": 24.76,
+   "end": 25.28
+  },
+  {
+   "w": "gente",
+   "start": 25.3,
+   "end": 25.5
+  },
+  {
+   "w": "que",
+   "start": 25.5,
+   "end": 25.86
+  },
+  {
+   "w": "todavía",
+   "start": 25.86,
+   "end": 26.02
+  },
+  {
+   "w": "no",
+   "start": 26.02,
+   "end": 26.14
+  },
+  {
+   "w": "te",
+   "start": 26.14,
+   "end": 26.58
+  },
+  {
+   "w": "necesita",
+   "start": 26.58,
+   "end": 27
+  },
+  {
+   "w": "acá",
+   "start": 27.66,
+   "end": 28.14
+  },
+  {
+   "w": "no",
+   "start": 28.14,
+   "end": 28.28
+  },
+  {
+   "w": "se",
+   "start": 28.28,
+   "end": 28.42
+  },
+  {
+   "w": "vende,",
+   "start": 28.42,
+   "end": 28.92
+  },
+  {
+   "w": "se",
+   "start": 29.04,
+   "end": 29.42
+  },
+  {
+   "w": "construye",
+   "start": 29.42,
+   "end": 29.76
+  },
+  {
+   "w": "memoria",
+   "start": 29.76,
+   "end": 30
+  },
+  {
+   "w": "dos,",
+   "start": 31.18,
+   "end": 31.82
+  },
+  {
+   "w": "consideración",
+   "start": 32,
+   "end": 33
+  },
+  {
+   "w": "cuando",
+   "start": 33.62,
+   "end": 34.02
+  },
+  {
+   "w": "aparece",
+   "start": 34.02,
+   "end": 34.22
+  },
+  {
+   "w": "la",
+   "start": 34.22,
+   "end": 34.44
+  },
+  {
+   "w": "necesidad",
+   "start": 34.44,
+   "end": 35.28
+  },
+  {
+   "w": "te",
+   "start": 35.28,
+   "end": 35.62
+  },
+  {
+   "w": "comparan",
+   "start": 35.62,
+   "end": 36
+  },
+  {
+   "w": "acá",
+   "start": 36.74,
+   "end": 37.22
+  },
+  {
+   "w": "ganas",
+   "start": 37.22,
+   "end": 37.54
+  },
+  {
+   "w": "con",
+   "start": 37.54,
+   "end": 37.72
+  },
+  {
+   "w": "pruebas",
+   "start": 37.72,
+   "end": 38
+  },
+  {
+   "w": "y",
+   "start": 38.96,
+   "end": 39.06
+  },
+  {
+   "w": "la",
+   "start": 39.06,
+   "end": 39.22
+  },
+  {
+   "w": "tercera,",
+   "start": 39.22,
+   "end": 40.14
+  },
+  {
+   "w": "conversión",
+   "start": 40.38,
+   "end": 41
+  },
+  {
+   "w": "el",
+   "start": 41.26,
+   "end": 41.54
+  },
+  {
+   "w": "momento",
+   "start": 41.54,
+   "end": 41.82
+  },
+  {
+   "w": "de",
+   "start": 41.82,
+   "end": 42.1
+  },
+  {
+   "w": "decidir",
+   "start": 42.1,
+   "end": 43
+  },
+  {
+   "w": "acá",
+   "start": 43.18,
+   "end": 43.38
+  },
+  {
+   "w": "se",
+   "start": 43.38,
+   "end": 43.6
+  },
+  {
+   "w": "pierde",
+   "start": 43.6,
+   "end": 44
+  },
+  {
+   "w": "por",
+   "start": 44,
+   "end": 44.66
+  },
+  {
+   "w": "responder",
+   "start": 44.66,
+   "end": 45.16
+  },
+  {
+   "w": "tarde",
+   "start": 45.14,
+   "end": 45.48
+  },
+  {
+   "w": "o",
+   "start": 45.48,
+   "end": 45.76
+  },
+  {
+   "w": "complicar",
+   "start": 45.76,
+   "end": 46.08
+  },
+  {
+   "w": "la",
+   "start": 46.08,
+   "end": 46.38
+  },
+  {
+   "w": "compra.",
+   "start": 46.38,
+   "end": 47
+  },
+  {
+   "w": "Hay",
+   "start": 48.1,
+   "end": 48.24
+  },
+  {
+   "w": "una",
+   "start": 48.24,
+   "end": 48.56
+  },
+  {
+   "w": "variable",
+   "start": 48.56,
+   "end": 49.36
+  },
+  {
+   "w": "que",
+   "start": 49.36,
+   "end": 49.62
+  },
+  {
+   "w": "casi",
+   "start": 49.62,
+   "end": 49.9
+  },
+  {
+   "w": "nadie",
+   "start": 49.9,
+   "end": 50.24
+  },
+  {
+   "w": "mira.",
+   "start": 50.24,
+   "end": 50.96
+  },
+  {
+   "w": "Cada",
+   "start": 51.32,
+   "end": 51.74
+  },
+  {
+   "w": "cuanto",
+   "start": 51.74,
+   "end": 52
+  },
+  {
+   "w": "te",
+   "start": 52,
+   "end": 52.3
+  },
+  {
+   "w": "compra",
+   "start": 52.3,
+   "end": 52.46
+  },
+  {
+   "w": "un",
+   "start": 52.46,
+   "end": 52.7
+  },
+  {
+   "w": "cliente.",
+   "start": 52.7,
+   "end": 53.8
+  },
+  {
+   "w": "Si",
+   "start": 54.1,
+   "end": 54.24
+  },
+  {
+   "w": "te",
+   "start": 54.24,
+   "end": 54.48
+  },
+  {
+   "w": "compran",
+   "start": 54.48,
+   "end": 54.76
+  },
+  {
+   "w": "una",
+   "start": 54.76,
+   "end": 55.02
+  },
+  {
+   "w": "vez",
+   "start": 55.02,
+   "end": 55.24
+  },
+  {
+   "w": "por",
+   "start": 55.24,
+   "end": 55.52
+  },
+  {
+   "w": "año,",
+   "start": 55.52,
+   "end": 56.3
+  },
+  {
+   "w": "este",
+   "start": 57.36,
+   "end": 57.62
+  },
+  {
+   "w": "mes",
+   "start": 57.62,
+   "end": 58.1
+  },
+  {
+   "w": "sólo",
+   "start": 58.1,
+   "end": 58.46
+  },
+  {
+   "w": "uno",
+   "start": 58.46,
+   "end": 58.58
+  },
+  {
+   "w": "de",
+   "start": 58.58,
+   "end": 58.74
+  },
+  {
+   "w": "cada",
+   "start": 58.74,
+   "end": 58.96
+  },
+  {
+   "w": "dos",
+   "start": 58.96,
+   "end": 59.26
+  },
+  {
+   "w": "está",
+   "start": 59.26,
+   "end": 59.48
+  },
+  {
+   "w": "listo",
+   "start": 59.48,
+   "end": 59.76
+  },
+  {
+   "w": "para",
+   "start": 59.76,
+   "end": 60.12
+  },
+  {
+   "w": "comprar.",
+   "start": 60.12,
+   "end": 60.72
+  },
+  {
+   "w": "El",
+   "start": 61.08,
+   "end": 61.34
+  },
+  {
+   "w": "resto",
+   "start": 61.34,
+   "end": 61.76
+  },
+  {
+   "w": "no",
+   "start": 61.76,
+   "end": 61.9
+  },
+  {
+   "w": "te",
+   "start": 61.9,
+   "end": 62.06
+  },
+  {
+   "w": "está",
+   "start": 62.06,
+   "end": 62.24
+  },
+  {
+   "w": "ignorando.",
+   "start": 62.24,
+   "end": 62.96
+  },
+  {
+   "w": "Todavía",
+   "start": 63.22,
+   "end": 63.62
+  },
+  {
+   "w": "no",
+   "start": 63.62,
+   "end": 63.74
+  },
+  {
+   "w": "te",
+   "start": 63.74,
+   "end": 64.16
+  },
+  {
+   "w": "necesita.",
+   "start": 64.16,
+   "end": 65.18
+  },
+  {
+   "w": "El",
+   "start": 65.46,
+   "end": 65.56
+  },
+  {
+   "w": "que",
+   "start": 65.56,
+   "end": 65.68
+  },
+  {
+   "w": "te",
+   "start": 65.68,
+   "end": 65.98
+  },
+  {
+   "w": "recuerda",
+   "start": 65.98,
+   "end": 66.44
+  },
+  {
+   "w": "cuando",
+   "start": 66.44,
+   "end": 66.74
+  },
+  {
+   "w": "llegas",
+   "start": 66.74,
+   "end": 66.98
+  },
+  {
+   "w": "en",
+   "start": 66.98,
+   "end": 67.34
+  },
+  {
+   "w": "momento",
+   "start": 67.34,
+   "end": 67.94
+  },
+  {
+   "w": "es",
+   "start": 67.94,
+   "end": 68.06
+  },
+  {
+   "w": "el",
+   "start": 68.06,
+   "end": 68.16
+  },
+  {
+   "w": "que",
+   "start": 68.16,
+   "end": 68.5
+  },
+  {
+   "w": "compra.",
+   "start": 68.5,
+   "end": 68.6
+  },
+  {
+   "w": "Por",
+   "start": 69.54,
+   "end": 69.76
+  },
+  {
+   "w": "eso,",
+   "start": 69.76,
+   "end": 70.1
+  },
+  {
+   "w": "el",
+   "start": 70.24,
+   "end": 70.42
+  },
+  {
+   "w": "error",
+   "start": 70.42,
+   "end": 70.6
+  },
+  {
+   "w": "más",
+   "start": 70.6,
+   "end": 70.9
+  },
+  {
+   "w": "común",
+   "start": 70.9,
+   "end": 71.38
+  },
+  {
+   "w": "es",
+   "start": 71.38,
+   "end": 71.68
+  },
+  {
+   "w": "este.",
+   "start": 71.7,
+   "end": 71.98
+  }
+ ]
+}
