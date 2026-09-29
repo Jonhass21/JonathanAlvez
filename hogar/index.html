@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Economía del Hogar</title>
+<meta name="description" content="Panel del mes: ingresos, gastos y ahorro de Marisol y Jona.">
+<meta name="theme-color" content="#f4f5fa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1120" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Hogar">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<!-- Barra compacta que aparece al bajar -->
+<div class="mini" id="mini" aria-hidden="true">
+  <span class="dot" id="miniDot"></span>
+  <span class="mini-free"><small>Libre</small> <b class="num" id="miniLib"></b></span>
+  <span class="mini-rest num" id="miniRest"></span>
+</div>
+
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand"><img src="icons/icon.svg" alt="" width="34" height="34"><span>Hogar</span></div>
+    <div class="top-actions">
+      <button class="icon-btn" id="themeBtn" title="Modo claro / oscuro" aria-label="Cambiar modo claro u oscuro">☾</button>
+      <button class="icon-btn" id="setBtn" title="Ajustes y respaldo" aria-label="Ajustes y respaldo">⚙</button>
+    </div>
+  </header>
+
+  <div class="month">
+    <button id="prevM" aria-label="Mes anterior">←</button>
+    <div class="month-mid">
+      <h1 id="monthTitle"></h1>
+      <button class="today" id="todayBtn" hidden>Ir a este mes</button>
+    </div>
+    <button id="nextM" aria-label="Mes siguiente">→</button>
+  </div>
+  <p class="copied" id="copiedNote" hidden>Copiamos los gastos fijos y los ingresos del mes anterior (sin tildar).</p>
+
+  <!-- RESUMEN -->
+  <section class="summary" id="summary">
+    <div class="stats">
+      <div class="stat"><div class="lbl">Ingresos</div><div class="val num" id="sIng"></div></div>
+      <div class="stat"><div class="lbl">Gastos</div><div class="val num" id="sGas"></div></div>
+      <div class="stat"><div class="lbl">Ahorro</div><div class="val num" id="sAho"></div></div>
+      <div class="stat free" id="freeBox"><div class="lbl">Queda libre</div><div class="val num" id="sLib"></div></div>
+    </div>
+    <div class="signal" id="signal"><span class="dot"></span><span id="sigTxt"></span></div>
+  </section>
+
+  <div class="grid">
+    <!-- INGRESOS -->
+    <section class="block ing wide">
+      <div class="bhead"><h2><span class="chip">💰</span>Ingresos</h2><span class="btotal num" id="tIng"></span></div>
+      <div class="people">
+        <div class="person" data-p="marisol">
+          <div class="name"><span>Marisol</span><span class="sub num" data-cob></span></div>
+          <div class="ptotal num" data-tot></div>
+          <div class="lst" data-list="ing.marisol"></div>
+          <form class="add" data-add="ing.marisol"><input name="n" placeholder="Concepto" autocomplete="off" enterkeyhint="next"><input name="m" class="amt num" placeholder="$ 0" inputmode="decimal" autocomplete="off" enterkeyhint="done"><button aria-label="Agregar ingreso de Marisol">+</button></form>
+        </div>
+        <div class="person" data-p="jona">
+          <div class="name"><span>Jona</span><span class="sub num" data-cob></span></div>
+          <div class="ptotal num" data-tot></div>
+          <div class="lst" data-list="ing.jona"></div>
+          <form class="add" data-add="ing.jona"><input name="n" placeholder="Cliente o concepto" autocomplete="off" enterkeyhint="next"><input name="m" class="amt num" placeholder="$ 0" inputmode="decimal" autocomplete="off" enterkeyhint="done"><button aria-label="Agregar ingreso de Jona">+</button></form>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIJOS -->
+    <section class="block fij">
+      <div class="bhead"><h2><span class="chip">🏠</span>Gastos fijos</h2><span class="btotal num" id="tFij"></span></div>
+      <div class="prog" id="pFij"><div class="bar"><div class="fill"></div></div><div class="txt"><span data-t></span><span data-p></span></div></div>
+      <div class="lst" data-list="fijos"></div>
+      <form class="add" data-add="fijos"><input name="n" placeholder="Nuevo gasto fijo" autocomplete="off" enterkeyhint="next"><input name="m" class="amt num" placeholder="$ 0" inputmode="decimal" autocomplete="off" enterkeyhint="done"><button aria-label="Agregar gasto fijo">+</button></form>
+      <p class="foot">Se copian solos al mes siguiente.</p>
+    </section>
+
+    <!-- VARIABLES -->
+    <section class="block var">
+      <div class="bhead"><h2><span class="chip">🛒</span>Gastos variables</h2><span class="btotal num" id="tVar"></span></div>
+      <div class="prog" id="pVar"><div class="bar"><div class="fill"></div></div><div class="txt"><span data-t></span><span data-p></span></div></div>
+      <div class="lst" data-list="variables"></div>
+      <form class="add" data-add="variables"><input name="n" placeholder="Nuevo gasto" autocomplete="off" enterkeyhint="next"><input name="m" class="amt num" placeholder="$ 0" inputmode="decimal" autocomplete="off" enterkeyhint="done"><button aria-label="Agregar gasto variable">+</button></form>
+      <p class="foot">Solo para este mes.</p>
+    </section>
+
+    <!-- AHORRO -->
+    <section class="block aho wide">
+      <div class="bhead"><h2><span class="chip">🐷</span>Ahorro</h2>
+        <label class="tc">Dólar $ <input class="num" id="tc" inputmode="decimal" autocomplete="off" placeholder="0"></label></div>
+      <div class="people">
+        <div class="person saver" data-s="marisol"></div>
+        <div class="person saver" data-s="jona"></div>
+      </div>
+      <div class="totals">
+        <div class="tbox"><div class="lbl">Este mes</div><div class="big num" id="ahoMesUsd"></div><div class="small num" id="ahoMesArs"></div></div>
+        <div class="tbox"><div class="lbl">Acumulado</div><div class="big num" id="ahoAcuUsd"></div><div class="small num" id="ahoAcuArs"></div></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- Ajustes -->
+<dialog id="settings">
+  <form method="dialog" class="sheet">
+    <div class="sheet-head"><h3>Ajustes</h3><button class="icon-btn" value="close" aria-label="Cerrar">✕</button></div>
+
+    <label class="field">
+      <span>Meta de ahorro mensual</span>
+      <span class="pct"><input id="metaPct" type="number" min="0" max="100" inputmode="numeric"> % de los ingresos</span>
+    </label>
+
+    <div class="field">
+      <span>Respaldo de datos</span>
+      <p class="hint" id="backupInfo"></p>
+      <div class="btns">
+        <button type="button" class="btn primary" id="exportBtn">⬇ Exportar respaldo</button>
+        <button type="button" class="btn" id="importBtn">⬆ Importar respaldo</button>
+      </div>
+      <input type="file" id="importFile" accept="application/json,.json" hidden>
+      <p class="hint">Los datos se guardan solo en este dispositivo. Exportá un respaldo de vez en cuando y guardalo en Drive o mandátelo por WhatsApp.</p>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status"><span id="toastTxt"></span><button id="toastBtn" hidden>Deshacer</button></div>
+
+<script src="app.js"></script>
+</body>
+</html>
