@@ -12,7 +12,7 @@
     X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "geolocation=(), microphone=(), camera=(), interest-cohort=()"
-    Content-Security-Policy = "default-src 'self'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'self' 'sha256-DamCoPgB/VkDCPsu0R6X4sJsz1c66vGlUGBXLu04Yxg=' 'sha256-4ikvwGQqcuIrdNtDnpYhgCkR4IMXJAd/02qg5PYAZYM='; frame-ancestors 'self'; base-uri 'self'; form-action 'self'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'sha256-DamCoPgB/VkDCPsu0R6X4sJsz1c66vGlUGBXLu04Yxg=' 'sha256-4ikvwGQqcuIrdNtDnpYhgCkR4IMXJAd/02qg5PYAZYM=' https://www.googletagmanager.com https://connect.facebook.net; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.facebook.com; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com https://www.facebook.com; style-src 'self'; font-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'"
 
 # El HTML se revalida siempre; los estáticos versionables van con caché larga.
 [[headers]]

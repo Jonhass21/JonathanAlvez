@@ -8,8 +8,10 @@ lista para publicar en Netlify.
 ```
 index.html            Página principal
 404.html              Página de error
+privacidad.html       Política de privacidad
 css/styles.css        Todos los estilos (tokens, componentes, layout, responsive)
 js/main.js            Animaciones al scrollear, menú móvil, barra de progreso
+js/analytics.js       GA4 + Meta Pixel con consentimiento previo
 assets/fonts/         Inter (variable, subsets latin y latin-ext) autoalojada
 assets/img/           Retrato optimizado (WebP + JPG), imagen para redes e íconos
 favicon.svg           Ícono del sitio
@@ -91,6 +93,44 @@ Lo que **no** depende del sitio y define el ranking local:
 
 Pendientes de mayor impacto en el sitio: páginas propias por servicio (hoy todo
 vive en una sola URL) y contenido nuevo de forma sostenida.
+
+## Medición: GA4 y Meta Pixel
+
+Los dos IDs se pegan en **`js/analytics.js`**, en las dos primeras líneas:
+
+```js
+var GA4_ID = '';        // Measurement ID de GA4, formato 'G-XXXXXXXXXX'
+var META_PIXEL_ID = ''; // ID del Pixel de Meta, 15 o 16 dígitos
+```
+
+Mientras estén vacíos no se carga nada y el banner de cookies ni siquiera
+aparece, así que el sitio se puede publicar sin ellos.
+
+**Cómo funciona el consentimiento:** nada de Google ni de Meta se descarga
+hasta que el visitante toca *Aceptar*. Si rechaza, no se pide un solo byte a
+esos dominios. La decisión se guarda en el navegador y se puede cambiar desde
+el enlace *Cookies* del pie.
+
+**Qué se mide, además de las visitas:** los clics al botón de WhatsApp, que son
+la conversión real del sitio.
+
+| | GA4 | Meta |
+|---|---|---|
+| Evento | `click_whatsapp` | `Contact` |
+| Parámetros | `metodo`, `ubicacion` | `content_name` |
+
+`ubicacion` distingue si el clic salió de la sección de contacto o del pie.
+En GA4 hay que marcar `click_whatsapp` como **evento clave** (*Administrar →
+Eventos*) para que cuente como conversión; tarda hasta 24 h en aparecer listado.
+
+**Content-Security-Policy:** `netlify.toml` ya habilita los dominios que
+necesitan GA4 y el Pixel (`googletagmanager.com`, `connect.facebook.net`,
+`google-analytics.com`, `facebook.com`). Si se suma otra herramienta de
+medición, hay que agregar su dominio ahí o el navegador la bloquea en silencio.
+
+**Aviso:** el bloque `<script>` de `index.html` está protegido por hash en la
+CSP. Si se edita ese script inline, hay que recalcular el hash o la página deja
+de funcionar.
 
 ## Ver el sitio en local
 
