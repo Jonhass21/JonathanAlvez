@@ -6,8 +6,8 @@
    │  PEGAR ACÁ LOS DOS IDS. Mientras estén vacíos no se carga nada.  │
    └──────────────────────────────────────────────────────────────────┘ */
 
-var GA4_ID = '';        // Measurement ID de GA4, formato 'G-XXXXXXXXXX'
-var META_PIXEL_ID = ''; // ID del Pixel de Meta, 15 o 16 dígitos
+var GA4_ID = 'G-1GPBVHP248';        // Measurement ID de GA4, formato 'G-XXXXXXXXXX'
+var META_PIXEL_ID = '246183465150517'; // ID del Pixel de Meta, 15 o 16 dígitos
 
 (function () {
   'use strict';
