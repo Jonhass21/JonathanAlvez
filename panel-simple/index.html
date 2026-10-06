@@ -1,0 +1,1632 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Panel de clientes</title>
+<meta name="description" content="Tareas por cliente, calendario e informes. Todo en un archivo." />
+<meta name="theme-color" content="#fbfaf9" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#16151a" media="(prefers-color-scheme: dark)" />
+<meta name="color-scheme" content="light dark" />
+
+<style>
+  /* ============================================================
+     Panel de clientes.
+
+     Disposición: una barra fija arriba con el nombre y tres
+     pestañas; debajo, una sola columna de contenido que en
+     pantalla ancha se abre en grilla de tarjetas. Nada flota,
+     nada se superpone: se lee de arriba hacia abajo.
+
+     Tipografía del sistema a propósito: en Mac y iPhone eso es
+     San Francisco, que es exactamente el aire que se pidió, y no
+     depende de que haya internet para verse bien.
+     ============================================================ */
+  :root {
+    /* --- superficies y tinta (neutros tibios, corridos hacia el vino) --- */
+    --lienzo: #fbfaf9;
+    --tarjeta: #ffffff;
+    --relleno: #f4f2f1;
+    --relleno-2: #eceae9;
+    --borde: #e6e2e0;
+    --borde-marcado: #d5cfcd;
+    --tinta: #1a1718;
+    --tinta-2: #5d5659;
+    --tinta-3: #908889;
+
+    /* --- acento de marca --- */
+    --acento: #8d2740;
+    --acento-fuerte: #761f35;
+    --acento-suave: #f8eef1;
+    --acento-sobre: #ffffff;
+    --aviso-accion: #f0a8b8;
+
+    /* --- estado (familia aparte del acento, nunca decorativa) --- */
+    --vencida: #c4452c;
+    --vencida-fondo: #fceee9;
+    --hoy: #9a6407;
+    --hoy-fondo: #fdf4e4;
+    --lista: #2f7d4f;
+    --lista-fondo: #ecf5ef;
+
+    /* --- identidad de cada cliente (orden fijo, nunca se recicla) --- */
+    --c0: #c2425a;
+    --c1: #2f7dd1;
+    --c2: #1f9d6b;
+    --c3: #b8831a;
+    --c4: #7b5bd6;
+    --c5: #1a9aa8;
+    --c6: #d4603a;
+    --c7: #c04a9e;
+
+    /* --- tipografía --- */
+    --letra: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", system-ui, sans-serif;
+    --letra-titulo: ui-rounded, "SF Pro Rounded", "Hiragino Maru Gothic ProN", Avenir, system-ui, sans-serif;
+
+    /* --- medidas --- */
+    --r: 14px;
+    --r-chico: 9px;
+    --r-grande: 20px;
+    --sombra: 0 1px 2px rgba(26, 23, 24, .05), 0 6px 18px -8px rgba(26, 23, 24, .14);
+    --sombra-alta: 0 10px 40px -10px rgba(26, 23, 24, .3);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-tema="claro"]) {
+      --lienzo: #16151a;
+      --tarjeta: #1f1d24;
+      --relleno: #272530;
+      --relleno-2: #302d39;
+      --borde: #302d38;
+      --borde-marcado: #413d4a;
+      --tinta: #f3f0f2;
+      --tinta-2: #aaa3ac;
+      --tinta-3: #7b7480;
+      --acento: #e07d94;
+      --acento-fuerte: #ef92a7;
+      --acento-suave: #2d1f25;
+      --acento-sobre: #1a1014;
+    --aviso-accion: #8d2740;
+      --aviso-accion: #8d2740;
+      --vencida: #ef8a6c;
+      --vencida-fondo: #2e1c17;
+      --hoy: #dfae52;
+      --hoy-fondo: #2b2314;
+      --lista: #68c08c;
+      --lista-fondo: #16261c;
+      --c0: #e0677c;
+      --c1: #4e93d8;
+      --c2: #2fa876;
+      --c3: #b8842a;
+      --c4: #8f74da;
+      --c5: #159dab;
+      --c6: #da7149;
+      --c7: #ca5ea8;
+      --sombra: 0 1px 2px rgba(0, 0, 0, .4), 0 6px 18px -8px rgba(0, 0, 0, .6);
+      --sombra-alta: 0 10px 40px -10px rgba(0, 0, 0, .8);
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-tema="oscuro"] {
+    --lienzo: #16151a;
+    --tarjeta: #1f1d24;
+    --relleno: #272530;
+    --relleno-2: #302d39;
+    --borde: #302d38;
+    --borde-marcado: #413d4a;
+    --tinta: #f3f0f2;
+    --tinta-2: #aaa3ac;
+    --tinta-3: #7b7480;
+    --acento: #e07d94;
+    --acento-fuerte: #ef92a7;
+    --acento-suave: #2d1f25;
+    --acento-sobre: #1a1014;
+    --vencida: #ef8a6c;
+    --vencida-fondo: #2e1c17;
+    --hoy: #dfae52;
+    --hoy-fondo: #2b2314;
+    --lista: #68c08c;
+    --lista-fondo: #16261c;
+    --c0: #e0677c;
+    --c1: #4e93d8;
+    --c2: #2fa876;
+    --c3: #b8842a;
+    --c4: #8f74da;
+    --c5: #159dab;
+    --c6: #da7149;
+    --c7: #ca5ea8;
+    --sombra: 0 1px 2px rgba(0, 0, 0, .4), 0 6px 18px -8px rgba(0, 0, 0, .6);
+    --sombra-alta: 0 10px 40px -10px rgba(0, 0, 0, .8);
+    color-scheme: dark;
+  }
+
+  /* ---------- base ---------- */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { height: 100%; -webkit-text-size-adjust: 100%; }
+  body {
+    min-height: 100%;
+    background: var(--lienzo);
+    color: var(--tinta);
+    font-family: var(--letra);
+    font-size: 15px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  button { background: none; border: 0; cursor: pointer; color: inherit; }
+  input, textarea, select { background: none; border: 0; }
+  ul, ol { list-style: none; }
+  [hidden] { display: none !important; }
+  .num { font-variant-numeric: tabular-nums; }
+  :focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; border-radius: 6px; }
+  ::selection { background: var(--acento-suave); }
+
+  /* ---------- barra superior ---------- */
+  .barra {
+    position: sticky; top: 0; z-index: 30;
+    background: var(--lienzo);
+    border-bottom: 1px solid var(--borde);
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .barra-fila {
+    max-width: 1180px; margin: 0 auto;
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .marca {
+    font-family: var(--letra-titulo);
+    font-size: 17px; font-weight: 700; letter-spacing: -.01em;
+    display: flex; align-items: center; gap: 8px;
+    margin-right: auto;
+  }
+  .marca-punto {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--acento); flex: none;
+  }
+  .barra-acciones { display: flex; align-items: center; gap: 8px; }
+
+  /* Pestañas: control segmentado, al estilo de iOS. */
+  .pestanas {
+    display: flex; gap: 2px; padding: 3px;
+    background: var(--relleno); border-radius: 11px;
+    width: 100%; order: 3;
+  }
+  @media (min-width: 720px) {
+    .pestanas { width: auto; order: 0; margin: 0 auto; }
+  }
+  .pestana {
+    flex: 1; padding: 7px 16px; border-radius: 8px;
+    font-size: 14px; font-weight: 500; color: var(--tinta-2);
+    white-space: nowrap; text-align: center;
+    transition: background .15s ease, color .15s ease;
+  }
+  .pestana[aria-selected="true"] {
+    background: var(--tarjeta); color: var(--tinta); font-weight: 600;
+    box-shadow: 0 1px 3px rgba(26, 23, 24, .12);
+  }
+
+  /* ---------- botones ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 8px 14px; border-radius: 10px;
+    font-size: 14px; font-weight: 600; white-space: nowrap;
+    border: 1px solid transparent;
+    transition: background .15s ease, border-color .15s ease, opacity .15s ease;
+  }
+  .btn-primario { background: var(--acento); color: var(--acento-sobre); }
+  .btn-primario:hover { background: var(--acento-fuerte); }
+  .btn-suave { background: var(--relleno); color: var(--tinta); }
+  .btn-suave:hover { background: var(--relleno-2); }
+  .btn-linea { border-color: var(--borde-marcado); color: var(--tinta-2); }
+  .btn-linea:hover { background: var(--relleno); color: var(--tinta); }
+  .btn-peligro { background: var(--vencida-fondo); color: var(--vencida); }
+  .btn-chico { padding: 5px 10px; font-size: 13px; border-radius: 8px; }
+  .btn-icono {
+    width: 32px; height: 32px; padding: 0; border-radius: 9px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--tinta-2);
+  }
+  .btn-icono:hover { background: var(--relleno); color: var(--tinta); }
+  .btn:disabled { opacity: .45; cursor: default; }
+  .ic { width: 17px; height: 17px; flex: none; stroke-width: 1.9; }
+
+  /* ---------- estructura ---------- */
+  .hoja { max-width: 1180px; margin: 0 auto; padding: 20px 16px 72px; }
+  .cabecera-vista {
+    display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .cabecera-vista h1 {
+    font-family: var(--letra-titulo);
+    font-size: 26px; font-weight: 700; letter-spacing: -.02em;
+    line-height: 1.15; text-wrap: balance;
+  }
+  .cabecera-vista p { color: var(--tinta-2); font-size: 14px; margin-top: 2px; }
+  .cabecera-texto { margin-right: auto; min-width: 0; }
+  .cabecera-botones { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ---------- aviso de datos de ejemplo ---------- */
+  .aviso {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 11px 14px; margin-bottom: 16px;
+    background: var(--acento-suave); border-radius: var(--r);
+    font-size: 13.5px; color: var(--tinta-2);
+  }
+  .aviso b { color: var(--tinta); font-weight: 600; }
+  .aviso .btn { margin-left: auto; }
+
+  /* ---------- filtros ---------- */
+  .filtros {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .segmentado {
+    display: flex; gap: 2px; padding: 3px;
+    background: var(--relleno); border-radius: 10px;
+  }
+  .segmentado button {
+    padding: 5px 13px; border-radius: 7px;
+    font-size: 13.5px; font-weight: 500; color: var(--tinta-2);
+    transition: background .15s ease, color .15s ease;
+  }
+  .segmentado button[aria-pressed="true"] {
+    background: var(--tarjeta); color: var(--tinta); font-weight: 600;
+    box-shadow: 0 1px 3px rgba(26, 23, 24, .12);
+  }
+  .conmutador {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 13.5px; color: var(--tinta-2); cursor: pointer;
+    padding: 5px 4px;
+  }
+  .conmutador input { width: 15px; height: 15px; accent-color: var(--acento); cursor: pointer; }
+
+  /* ---------- resumen ---------- */
+  .resumen {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+    gap: 10px; margin-bottom: 18px;
+  }
+  .ficha {
+    padding: 13px 15px; border-radius: var(--r);
+    background: var(--tarjeta); border: 1px solid var(--borde);
+    text-align: left;
+  }
+  .ficha-n {
+    font-family: var(--letra-titulo);
+    font-size: 27px; font-weight: 700; line-height: 1.05; letter-spacing: -.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .ficha-r {
+    margin-top: 3px; font-size: 12px; font-weight: 600;
+    letter-spacing: .03em; text-transform: uppercase; color: var(--tinta-3);
+  }
+  .ficha[data-tono="vencida"] { background: var(--vencida-fondo); border-color: transparent; }
+  .ficha[data-tono="vencida"] .ficha-n { color: var(--vencida); }
+  .ficha[data-tono="vencida"] .ficha-r { color: var(--vencida); opacity: .85; }
+  .ficha[data-tono="hoy"] { background: var(--hoy-fondo); border-color: transparent; }
+  .ficha[data-tono="hoy"] .ficha-n { color: var(--hoy); }
+  .ficha[data-tono="hoy"] .ficha-r { color: var(--hoy); opacity: .85; }
+
+  /* ---------- tarjetas de cliente ---------- */
+  .grilla {
+    display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr));
+    align-items: start;
+  }
+  .tarjeta {
+    background: var(--tarjeta); border: 1px solid var(--borde);
+    border-radius: var(--r-grande); box-shadow: var(--sombra);
+    overflow: hidden; min-width: 0;
+  }
+  .tarjeta-cab {
+    display: flex; align-items: center; gap: 9px;
+    padding: 13px 15px 11px;
+  }
+  .punto { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .tarjeta-nombre {
+    font-weight: 650; font-size: 15px; letter-spacing: -.01em;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    min-width: 0; margin-right: auto;
+  }
+  .cuenta {
+    font-size: 12px; font-weight: 600; color: var(--tinta-3);
+    font-variant-numeric: tabular-nums; flex: none;
+  }
+
+  .tareas { border-top: 1px solid var(--borde); }
+  .tarea {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 11px 15px;
+    border-bottom: 1px solid var(--borde);
+    position: relative;
+  }
+  .tarea:last-child { border-bottom: 0; }
+  .tarea[data-estado="vencida"] { background: var(--vencida-fondo); }
+  .tarea[data-estado="vencida"]::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--vencida);
+  }
+  .tarea-cuerpo { min-width: 0; flex: 1; }
+  .tarea-titulo { font-size: 14.5px; line-height: 1.35; word-wrap: break-word; }
+  .tarea[data-hecha="si"] .tarea-titulo { text-decoration: line-through; color: var(--tinta-3); }
+  .tarea-meta {
+    display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
+    margin-top: 5px;
+  }
+  .tarea-nota {
+    margin-top: 4px; font-size: 13px; color: var(--tinta-2);
+    word-wrap: break-word;
+  }
+
+  /* casilla redonda */
+  .casilla {
+    width: 21px; height: 21px; margin-top: 1px; flex: none;
+    border-radius: 50%; border: 1.8px solid var(--borde-marcado);
+    display: grid; place-items: center;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .casilla:hover { border-color: var(--acento); }
+  .casilla .ic { width: 13px; height: 13px; stroke-width: 3; color: transparent; }
+  .tarea[data-hecha="si"] .casilla { background: var(--lista); border-color: var(--lista); }
+  .tarea[data-hecha="si"] .casilla .ic { color: #fff; }
+
+  /* chips de fecha y urgencia */
+  .chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px; border-radius: 7px;
+    font-size: 12px; font-weight: 600; white-space: nowrap;
+    background: var(--relleno); color: var(--tinta-2);
+    font-variant-numeric: tabular-nums;
+  }
+  .chip[data-estado="vencida"] { background: var(--vencida); color: #fff; }
+  .chip[data-estado="hoy"] { background: var(--hoy); color: #fff; }
+  .chip[data-estado="pronto"] { background: var(--hoy-fondo); color: var(--hoy); }
+  .chip[data-urgencia="alta"] { background: transparent; color: var(--vencida); padding-inline: 0; }
+  .chip[data-urgencia="baja"] { background: transparent; color: var(--tinta-3); padding-inline: 0; }
+  .chip-urg { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; }
+  .barrita { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+  .tarea-acciones { display: flex; gap: 2px; flex: none; opacity: 0; transition: opacity .15s ease; }
+  .tarea:hover .tarea-acciones, .tarea:focus-within .tarea-acciones { opacity: 1; }
+  @media (hover: none) { .tarea-acciones { opacity: 1; } }
+
+  .agregar-rapido {
+    display: flex; align-items: center; gap: 7px; width: 100%;
+    padding: 10px 15px; font-size: 13.5px; font-weight: 600;
+    color: var(--tinta-3); border-top: 1px solid var(--borde);
+    transition: background .15s ease, color .15s ease;
+  }
+  .agregar-rapido:hover { background: var(--relleno); color: var(--acento); }
+
+  .vacio-tarjeta { padding: 16px 15px; font-size: 13.5px; color: var(--tinta-3); }
+
+  /* ---------- estado vacío general ---------- */
+  .vacio {
+    text-align: center; padding: 48px 20px;
+    background: var(--tarjeta); border: 1px dashed var(--borde-marcado);
+    border-radius: var(--r-grande);
+  }
+  .vacio h2 {
+    font-family: var(--letra-titulo); font-size: 19px; font-weight: 700;
+    margin-bottom: 6px; letter-spacing: -.01em;
+  }
+  .vacio p { color: var(--tinta-2); font-size: 14px; max-width: 42ch; margin: 0 auto 16px; }
+
+  /* ---------- calendario ---------- */
+  .cal-cab {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+  }
+  .cal-mes {
+    font-family: var(--letra-titulo); font-size: 20px; font-weight: 700;
+    letter-spacing: -.01em; margin-right: auto;
+  }
+  .cal-marco {
+    background: var(--tarjeta); border: 1px solid var(--borde);
+    border-radius: var(--r-grande); overflow: hidden; box-shadow: var(--sombra);
+  }
+  .cal-dias, .cal-grilla { display: grid; grid-template-columns: repeat(7, 1fr); }
+  .cal-dias div {
+    padding: 9px 4px; text-align: center;
+    font-size: 11px; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--tinta-3);
+    border-bottom: 1px solid var(--borde);
+  }
+  .cal-celda {
+    min-height: 92px; padding: 6px 5px 5px;
+    border-right: 1px solid var(--borde); border-bottom: 1px solid var(--borde);
+    text-align: left; display: flex; flex-direction: column; gap: 3px;
+    min-width: 0; transition: background .15s ease;
+  }
+  .cal-celda:nth-child(7n) { border-right: 0; }
+  .cal-celda:hover { background: var(--relleno); }
+  .cal-celda[data-fuera="si"] { background: var(--lienzo); }
+  .cal-celda[data-fuera="si"] .cal-n { color: var(--tinta-3); opacity: .55; }
+  .cal-celda[aria-pressed="true"] { background: var(--acento-suave); }
+  .cal-n {
+    font-size: 12.5px; font-weight: 600; color: var(--tinta-2);
+    font-variant-numeric: tabular-nums;
+    width: 22px; height: 22px; border-radius: 50%;
+    display: grid; place-items: center; flex: none;
+  }
+  .cal-celda[data-hoy="si"] .cal-n { background: var(--acento); color: var(--acento-sobre); }
+  .cal-chip {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 11px; line-height: 1.3; padding: 2px 4px;
+    border-radius: 5px; background: var(--relleno);
+    overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+    min-width: 0;
+  }
+  .cal-chip .punto { width: 6px; height: 6px; }
+  .cal-chip span {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+  }
+  .cal-chip[data-estado="vencida"] { background: var(--vencida-fondo); color: var(--vencida); }
+  .cal-chip[data-hecha="si"] { opacity: .5; text-decoration: line-through; }
+  .cal-mas { font-size: 10.5px; font-weight: 600; color: var(--tinta-3); padding-left: 4px; }
+  @media (max-width: 640px) {
+    .cal-celda { min-height: 62px; padding: 4px 3px; }
+    .cal-chip span { display: none; }
+    .cal-chip { padding: 2px; justify-content: center; }
+    .cal-mas { text-align: center; padding: 0; }
+  }
+
+  .cal-detalle { margin-top: 16px; }
+  .cal-detalle h2 {
+    font-family: var(--letra-titulo); font-size: 17px; font-weight: 700;
+    margin-bottom: 10px; letter-spacing: -.01em;
+  }
+
+  /* ---------- informes ---------- */
+  .bloque {
+    background: var(--tarjeta); border: 1px solid var(--borde);
+    border-radius: var(--r-grande); padding: 18px; box-shadow: var(--sombra);
+    margin-bottom: 14px;
+  }
+  .bloque h2 {
+    font-family: var(--letra-titulo); font-size: 16px; font-weight: 700;
+    letter-spacing: -.01em; margin-bottom: 3px;
+  }
+  .bloque .pie { font-size: 13px; color: var(--tinta-3); margin-bottom: 16px; }
+
+  .barras { display: flex; flex-direction: column; gap: 11px; }
+  .barra-fila-g { display: grid; grid-template-columns: minmax(80px, 150px) 1fr auto; gap: 11px; align-items: center; }
+  .barra-et {
+    font-size: 13.5px; color: var(--tinta-2);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+  }
+  .barra-pista { height: 11px; background: var(--relleno); border-radius: 6px; overflow: hidden; min-width: 0; }
+  .barra-llena { height: 100%; border-radius: 6px; min-width: 3px; transition: width .4s cubic-bezier(.2, .8, .3, 1); }
+  .barra-val { font-size: 13px; font-weight: 650; font-variant-numeric: tabular-nums; color: var(--tinta); min-width: 2ch; text-align: right; }
+
+  .cumplimiento { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
+  .cumplimiento .n {
+    font-family: var(--letra-titulo); font-size: 40px; font-weight: 700;
+    line-height: 1; letter-spacing: -.03em; color: var(--lista);
+    font-variant-numeric: tabular-nums;
+  }
+  .cumplimiento .t { font-size: 13.5px; color: var(--tinta-2); }
+  .doble-pista { height: 11px; background: var(--relleno); border-radius: 6px; overflow: hidden; }
+  .doble-llena { height: 100%; background: var(--lista); border-radius: 6px; transition: width .4s cubic-bezier(.2, .8, .3, 1); }
+
+  .leyenda { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 12px; font-size: 12.5px; color: var(--tinta-2); }
+  .leyenda span { display: inline-flex; align-items: center; gap: 6px; }
+
+  /* ---------- diálogo ---------- */
+  dialog {
+    width: min(460px, calc(100% - 24px)); max-height: 86dvh; padding: 0;
+    border: 1px solid var(--borde); border-radius: var(--r-grande);
+    background: var(--tarjeta); color: var(--tinta);
+    box-shadow: var(--sombra-alta); overflow: auto;
+  }
+  dialog::backdrop { background: rgba(26, 23, 24, .32); }
+  .dlg-cab { padding: 18px 18px 0; }
+  .dlg-cab h2 {
+    font-family: var(--letra-titulo); font-size: 19px; font-weight: 700;
+    letter-spacing: -.01em;
+  }
+  .dlg-cuerpo { padding: 16px 18px; display: flex; flex-direction: column; gap: 13px; }
+  .dlg-pie {
+    padding: 0 18px 18px; display: flex; gap: 8px; justify-content: flex-end;
+    flex-wrap: wrap; align-items: center;
+  }
+  .dlg-pie .izq { margin-right: auto; }
+
+  .campo { display: flex; flex-direction: column; gap: 5px; }
+  .campo > label {
+    font-size: 12px; font-weight: 650; letter-spacing: .03em;
+    text-transform: uppercase; color: var(--tinta-3);
+  }
+  .campo input[type="text"], .campo input[type="date"], .campo select, .campo textarea {
+    width: 100%; padding: 10px 12px; border-radius: var(--r-chico);
+    background: var(--lienzo); border: 1px solid var(--borde-marcado);
+    color: var(--tinta); font-size: 15px;
+  }
+  .campo textarea { resize: vertical; min-height: 68px; font-family: inherit; }
+  .campo input:focus, .campo select:focus, .campo textarea:focus {
+    outline: none; border-color: var(--acento);
+    box-shadow: 0 0 0 3px var(--acento-suave);
+  }
+  .fila-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+  .atajos { display: flex; gap: 6px; flex-wrap: wrap; }
+  .atajos button {
+    padding: 5px 10px; border-radius: 7px; font-size: 12.5px; font-weight: 600;
+    background: var(--relleno); color: var(--tinta-2);
+  }
+  .atajos button:hover { background: var(--acento-suave); color: var(--acento); }
+
+  .colores { display: flex; gap: 8px; flex-wrap: wrap; }
+  .colores button {
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 2px solid transparent; position: relative;
+  }
+  .colores button[aria-pressed="true"] {
+    border-color: var(--tinta); transform: scale(1.06);
+  }
+
+  .dlg-texto { font-size: 14px; color: var(--tinta-2); line-height: 1.5; }
+  .copia-area {
+    width: 100%; min-height: 150px; padding: 11px; border-radius: var(--r-chico);
+    background: var(--lienzo); border: 1px solid var(--borde-marcado);
+    color: var(--tinta); font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11.5px; resize: vertical;
+  }
+
+  /* ---------- avisos flotantes ---------- */
+  .avisos {
+    position: fixed; z-index: 90; left: 12px; right: 12px;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    pointer-events: none;
+  }
+  .aviso-flota {
+    pointer-events: auto; max-width: 420px; width: 100%;
+    display: flex; align-items: center; gap: 11px;
+    padding: 11px 14px; border-radius: var(--r);
+    background: var(--tinta); color: var(--lienzo);
+    box-shadow: var(--sombra-alta); font-size: 13.5px;
+  }
+  .aviso-flota b { font-weight: 650; }
+  .aviso-flota button {
+    margin-left: auto; font-size: 13px; font-weight: 700;
+    color: var(--aviso-accion); flex: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important; transition-duration: .01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header class="barra">
+  <div class="barra-fila">
+    <div class="marca"><span class="marca-punto"></span>Panel</div>
+
+    <div class="pestanas" role="tablist" aria-label="Secciones">
+      <button type="button" class="pestana" role="tab" id="tab-panel" aria-selected="true" data-vista="panel">Tareas</button>
+      <button type="button" class="pestana" role="tab" id="tab-calendario" aria-selected="false" data-vista="calendario">Calendario</button>
+      <button type="button" class="pestana" role="tab" id="tab-informes" aria-selected="false" data-vista="informes">Informes</button>
+    </div>
+
+    <div class="barra-acciones">
+      <button type="button" class="btn-icono" id="btn-tema" aria-label="Cambiar entre claro y oscuro" title="Claro / oscuro"></button>
+      <button type="button" class="btn-icono" id="btn-copia" aria-label="Copia de seguridad" title="Copia de seguridad"></button>
+    </div>
+  </div>
+</header>
+
+<main class="hoja" id="hoja">
+  <section id="vista-panel" role="tabpanel" aria-labelledby="tab-panel"></section>
+  <section id="vista-calendario" role="tabpanel" aria-labelledby="tab-calendario" hidden></section>
+  <section id="vista-informes" role="tabpanel" aria-labelledby="tab-informes" hidden></section>
+</main>
+
+<dialog id="dlg" aria-labelledby="dlg-titulo"></dialog>
+<div class="avisos" id="avisos" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+
+/* ============================================================
+   Panel de clientes — un solo archivo, sin dependencias.
+
+   Los datos viven en este navegador (localStorage). No hay
+   servidor ni cuenta: se abre el archivo y funciona, también
+   con doble clic desde la compu y sin internet. La copia de
+   seguridad es la forma de llevárselos a otro lado.
+   ============================================================ */
+
+var CLAVE = "panel.simple.v1";
+var CLAVE_TEMA = "panel.simple.tema";
+var COLORES = 8;
+
+/* ---------- iconos (trazo, 24×24) ---------- */
+var ICONOS = {
+  mas: '<path d="M12 5v14M5 12h14"/>',
+  tilde: '<path d="m4.5 12.5 5 5 10-11"/>',
+  lapiz: '<path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17v3z"/>',
+  tacho: '<path d="M4 7h16M10 7V5h4v2M6 7l1 13h10l1-13"/>',
+  izq: '<path d="m14 6-6 6 6 6"/>',
+  der: '<path d="m10 6 6 6-6 6"/>',
+  sol: '<circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"/>',
+  luna: '<path d="M20 14.5A8.2 8.2 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/>',
+  caja: '<path d="M4 8h16v12H4zM4 8l2-4h12l2 4M12 8v12"/>',
+  x: '<path d="m6 6 12 12M18 6 6 18"/>'
+};
+function icono(n) {
+  return '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICONOS[n] || "") + "</svg>";
+}
+function esc(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+/* ---------- fechas ----------
+   Todo se guarda como "AAAA-MM-DD" y se construye a mano. Pasar ese
+   texto a new Date() lo lee como UTC y en Argentina te corre el día
+   para atrás: una tarea del 15 aparece el 14. */
+function hoyMismo() { var d = new Date(); d.setHours(0, 0, 0, 0); return d; }
+function aFecha(t) {
+  if (!t) return null;
+  var p = String(t).split("-");
+  return new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]));
+}
+function aTexto(d) {
+  return d.getFullYear() + "-" +
+    String(d.getMonth() + 1).padStart(2, "0") + "-" +
+    String(d.getDate()).padStart(2, "0");
+}
+function diasHasta(t) {
+  var f = aFecha(t);
+  if (!f) return null;
+  return Math.round((f - hoyMismo()) / 86400000);
+}
+function sumarDias(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+
+var MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
+  "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+var DIAS_CORTOS = ["lun", "mar", "mié", "jue", "vie", "sáb", "dom"];
+
+function conMayuscula(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
+
+/* Lunes = 0, para que la semana empiece donde la empezamos acá. */
+function diaSemana(d) { return (d.getDay() + 6) % 7; }
+
+function estadoDe(t) {
+  if (t.hecha) return "hecha";
+  if (!t.fecha) return "sinfecha";
+  var d = diasHasta(t.fecha);
+  if (d < 0) return "vencida";
+  if (d === 0) return "hoy";
+  if (d <= 7) return "pronto";
+  return "futura";
+}
+
+function etiquetaFecha(t) {
+  if (!t.fecha) return "Sin fecha";
+  var d = diasHasta(t.fecha);
+  if (d === 0) return "Hoy";
+  if (d === 1) return "Mañana";
+  if (d === -1) return "Venció ayer";
+  if (d < 0) return "Venció hace " + Math.abs(d) + " días";
+  if (d <= 7) {
+    var f = aFecha(t.fecha);
+    return DIAS_CORTOS[diaSemana(f)] + " " + f.getDate();
+  }
+  var g = aFecha(t.fecha);
+  return g.getDate() + " " + MESES[g.getMonth()].slice(0, 3);
+}
+
+function fechaLarga(t) {
+  var f = aFecha(t);
+  return DIAS_CORTOS[diaSemana(f)] + " " + f.getDate() + " de " + MESES[f.getMonth()];
+}
+
+/* ---------- datos ---------- */
+var datos = null;
+
+function vacios() {
+  return { v: 1, seq: 1, clientes: [], tareas: [], ejemplo: false };
+}
+
+function normalizar(b) {
+  var d = b && typeof b === "object" ? b : {};
+  var salida = {
+    v: 1,
+    seq: Number(d.seq) || 1,
+    clientes: Array.isArray(d.clientes) ? d.clientes.filter(Boolean) : [],
+    tareas: Array.isArray(d.tareas) ? d.tareas.filter(Boolean) : [],
+    ejemplo: !!d.ejemplo
+  };
+  salida.clientes = salida.clientes.map(function (c, i) {
+    return {
+      id: c.id != null ? String(c.id) : "c" + i,
+      nombre: String(c.nombre || "Sin nombre"),
+      color: Number(c.color) % COLORES || 0
+    };
+  });
+  var ids = {};
+  salida.clientes.forEach(function (c) { ids[c.id] = true; });
+  salida.tareas = salida.tareas.map(function (t, i) {
+    return {
+      id: t.id != null ? String(t.id) : "t" + i,
+      cliente: ids[t.cliente] ? String(t.cliente) : null,
+      titulo: String(t.titulo || "").trim() || "Sin título",
+      nota: String(t.nota || ""),
+      fecha: t.fecha ? String(t.fecha) : "",
+      urgencia: ["alta", "media", "baja"].indexOf(t.urgencia) >= 0 ? t.urgencia : "media",
+      hecha: !!t.hecha,
+      hechaEn: t.hechaEn ? String(t.hechaEn) : "",
+      creada: t.creada ? String(t.creada) : aTexto(hoyMismo())
+    };
+  });
+  return salida;
+}
+
+function leer() {
+  try {
+    var crudo = localStorage.getItem(CLAVE);
+    return crudo ? normalizar(JSON.parse(crudo)) : null;
+  } catch (e) { return null; }
+}
+function guardar() {
+  try { localStorage.setItem(CLAVE, JSON.stringify(datos)); }
+  catch (e) { avisar("No se pudo guardar", "El navegador bloqueó el almacenamiento."); }
+}
+function nuevoId(p) { return p + (datos.seq++); }
+
+/* Datos de ejemplo: la primera vez el panel tiene que mostrar para qué
+   sirve, no una pantalla vacía. Se borran de un botón. */
+function ejemplo() {
+  var d = vacios();
+  d.ejemplo = true;
+  var hoy = hoyMismo();
+  var mes = hoy.getMonth(), anio = hoy.getFullYear();
+  function delMes(dia) {
+    var ultimo = new Date(anio, mes + 1, 0).getDate();
+    return aTexto(new Date(anio, mes, Math.min(dia, ultimo)));
+  }
+  var cls = [
+    { id: "c1", nombre: "Panadería del Sol", color: 0 },
+    { id: "c2", nombre: "Estudio Ruiz", color: 1 },
+    { id: "c3", nombre: "Gimnasio Impulso", color: 2 }
+  ];
+  d.clientes = cls;
+  d.tareas = [
+    { cliente: "c1", titulo: "Grilla de contenidos del mes", fecha: aTexto(sumarDias(hoy, -2)), urgencia: "alta" },
+    { cliente: "c1", titulo: "Sorteo: bases y condiciones", fecha: delMes(15), urgencia: "alta",
+      nota: "Definir premio y fecha de cierre antes de publicar." },
+    { cliente: "c1", titulo: "Reel: detrás de escena del horno", fecha: aTexto(sumarDias(hoy, 4)), urgencia: "media" },
+    { cliente: "c2", titulo: "Carrusel 2 slides: nueva sede", fecha: aTexto(hoy), urgencia: "alta" },
+    { cliente: "c2", titulo: "Responder comentarios de la semana", fecha: aTexto(hoy), urgencia: "baja" },
+    { cliente: "c2", titulo: "Informe mensual de métricas", fecha: delMes(30), urgencia: "media" },
+    { cliente: "c3", titulo: "Historias: rutina de fuerza", fecha: aTexto(sumarDias(hoy, 1)), urgencia: "media" },
+    { cliente: "c3", titulo: "Sorteo de la membresía anual", fecha: delMes(30), urgencia: "alta" },
+    { cliente: "c3", titulo: "Pedir fotos nuevas del salón", fecha: aTexto(sumarDias(hoy, -5)), urgencia: "media" },
+    { cliente: "c3", titulo: "Cerrar presupuesto de pauta", fecha: aTexto(sumarDias(hoy, 9)), urgencia: "baja",
+      hecha: true, hechaEn: aTexto(sumarDias(hoy, -1)) }
+  ].map(function (t, i) {
+    t.id = "t" + (i + 1);
+    t.nota = t.nota || "";
+    t.hecha = !!t.hecha;
+    t.hechaEn = t.hechaEn || "";
+    t.creada = aTexto(sumarDias(hoy, -10));
+    return t;
+  });
+  d.seq = 20;
+  return normalizar(d);
+}
+
+/* Acepta también la copia del panel anterior, que guardaba las tareas
+   en dos listas separadas. */
+function desdeFormatoViejo(b) {
+  if (!b || (!Array.isArray(b.tareasCliente) && !Array.isArray(b.tareas))) return null;
+  if (Array.isArray(b.clientes) && b.clientes.length && b.clientes[0] &&
+      b.clientes[0].nombre !== undefined && b.tareasCliente === undefined) return null;
+  var d = vacios();
+  var mapa = {};
+  (b.clientes || []).forEach(function (c, i) {
+    var id = "c" + (i + 1);
+    mapa[c.id] = id;
+    d.clientes.push({ id: id, nombre: c.nombre || "Sin nombre", color: i % COLORES });
+  });
+  var n = 1;
+  function sumar(lista, conCliente) {
+    (lista || []).forEach(function (t) {
+      d.tareas.push({
+        id: "t" + (n++),
+        cliente: conCliente ? (mapa[t.clienteId] || mapa[t.cliente] || null) : null,
+        titulo: t.titulo || t.texto || "Sin título",
+        nota: t.nota || t.detalle || "",
+        fecha: t.fecha || t.vence || "",
+        urgencia: t.prioridad === "alta" ? "alta" : t.prioridad === "baja" ? "baja" : "media",
+        hecha: !!(t.hecha || t.completada),
+        hechaEn: "",
+        creada: aTexto(hoyMismo())
+      });
+    });
+  }
+  sumar(b.tareasCliente, true);
+  sumar(b.tareas, false);
+  d.seq = n + d.clientes.length + 1;
+  return normalizar(d);
+}
+
+/* ---------- tema ---------- */
+function temaGuardado() {
+  try { return localStorage.getItem(CLAVE_TEMA) || "sistema"; } catch (e) { return "sistema"; }
+}
+function aplicarTema(t) {
+  if (t === "sistema") document.documentElement.removeAttribute("data-tema");
+  else document.documentElement.setAttribute("data-tema", t);
+  var oscuro = t === "oscuro" ||
+    (t === "sistema" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  document.getElementById("btn-tema").innerHTML = icono(oscuro ? "sol" : "luna");
+}
+function alternarTema() {
+  var ahora = document.documentElement.getAttribute("data-tema");
+  var sistemaOscuro = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  var actualOscuro = ahora === "oscuro" || (!ahora && sistemaOscuro);
+  var nuevo = actualOscuro ? "claro" : "oscuro";
+  try { localStorage.setItem(CLAVE_TEMA, nuevo); } catch (e) { /* no se recuerda */ }
+  aplicarTema(nuevo);
+}
+
+/* ---------- avisos ---------- */
+function avisar(titulo, detalle, deshacer) {
+  var cont = document.getElementById("avisos");
+  var el = document.createElement("div");
+  el.className = "aviso-flota";
+  el.innerHTML = "<div><b>" + esc(titulo) + "</b>" +
+    (detalle ? " " + esc(detalle) : "") + "</div>" +
+    (deshacer ? '<button type="button">Deshacer</button>' : "");
+  var reloj = setTimeout(cerrar, 4600);
+  function cerrar() { clearTimeout(reloj); if (el.parentNode) el.remove(); }
+  if (deshacer) {
+    el.querySelector("button").addEventListener("click", function () { cerrar(); deshacer(); });
+  }
+  cont.appendChild(el);
+  while (cont.children.length > 2) cont.firstElementChild.remove();
+}
+
+/* ---------- consultas ---------- */
+function cliente(id) {
+  for (var i = 0; i < datos.clientes.length; i++) {
+    if (datos.clientes[i].id === id) return datos.clientes[i];
+  }
+  return null;
+}
+function colorDe(id) {
+  var c = cliente(id);
+  return "var(--c" + (c ? c.color % COLORES : 0) + ")";
+}
+function nombreDe(id) {
+  var c = cliente(id);
+  return c ? c.nombre : "Sin cliente";
+}
+
+var ORDEN_URGENCIA = { alta: 0, media: 1, baja: 2 };
+
+function ordenar(lista) {
+  return lista.slice().sort(function (a, b) {
+    if (a.hecha !== b.hecha) return a.hecha ? 1 : -1;
+    if (!a.fecha !== !b.fecha) return a.fecha ? -1 : 1;
+    if (a.fecha !== b.fecha) return a.fecha < b.fecha ? -1 : 1;
+    return ORDEN_URGENCIA[a.urgencia] - ORDEN_URGENCIA[b.urgencia];
+  });
+}
+
+function tareasDe(id) {
+  return datos.tareas.filter(function (t) { return t.cliente === id; });
+}
+
+function pasaFiltro(t) {
+  if (!estado.verHechas && t.hecha) return false;
+  var f = estado.filtro;
+  if (f === "todo") return true;
+  var d = t.fecha ? diasHasta(t.fecha) : null;
+  if (f === "vencidas") return !t.hecha && d !== null && d < 0;
+  if (f === "hoy") return d !== null && d <= 0;
+  if (f === "semana") return d !== null && d <= 7;
+  return true;
+}
+
+function contar() {
+  var r = { vencidas: 0, hoy: 0, semana: 0, pendientes: 0, hechasHoy: 0 };
+  var textoHoy = aTexto(hoyMismo());
+  datos.tareas.forEach(function (t) {
+    if (t.hecha) { if (t.hechaEn === textoHoy) r.hechasHoy++; return; }
+    r.pendientes++;
+    if (!t.fecha) return;
+    var d = diasHasta(t.fecha);
+    if (d < 0) r.vencidas++;
+    else if (d === 0) r.hoy++;
+    if (d >= 0 && d <= 7) r.semana++;
+  });
+  return r;
+}
+
+/* ---------- estado de la pantalla ---------- */
+var estado = {
+  vista: "panel",
+  filtro: "semana",
+  verHechas: false,
+  mes: null,
+  diaElegido: null
+};
+
+/* ============================================================
+   Vista 1 — Tareas
+   ============================================================ */
+function vistaPanel() {
+  var c = contar();
+  var h = "";
+
+  if (datos.ejemplo) {
+    h += '<div class="aviso"><div><b>Estás viendo datos de ejemplo.</b> ' +
+      'Son tres clientes inventados para que veas cómo queda.</div>' +
+      '<button type="button" class="btn btn-chico btn-linea" data-a="limpiar">Empezar de cero</button></div>';
+  }
+
+  h += '<div class="cabecera-vista">' +
+    '<div class="cabecera-texto"><h1>Tus tareas</h1>' +
+    '<p>' + (c.pendientes === 0 ? "No tenés nada pendiente." :
+      c.pendientes + (c.pendientes === 1 ? " tarea pendiente" : " tareas pendientes") +
+      (c.vencidas ? " · " + c.vencidas + " vencida" + (c.vencidas === 1 ? "" : "s") : "")) + '</p></div>' +
+    '<div class="cabecera-botones">' +
+    '<button type="button" class="btn btn-suave" data-a="nuevo-cliente">' + icono("mas") + 'Cliente</button>' +
+    '<button type="button" class="btn btn-primario" data-a="nueva-tarea">' + icono("mas") + 'Tarea</button>' +
+    "</div></div>";
+
+  h += '<div class="resumen">' +
+    ficha(c.vencidas, "Vencidas", c.vencidas ? "vencida" : "") +
+    ficha(c.hoy, "Para hoy", c.hoy ? "hoy" : "") +
+    ficha(c.semana, "Próximos 7 días", "") +
+    ficha(c.hechasHoy, "Hechas hoy", "") +
+    "</div>";
+
+  h += '<div class="filtros"><div class="segmentado">' +
+    seg("hoy", "Hoy") + seg("semana", "Semana") + seg("todo", "Todo") +
+    seg("vencidas", "Vencidas" + (c.vencidas ? " (" + c.vencidas + ")" : "")) +
+    '</div><label class="conmutador"><input type="checkbox" id="ver-hechas"' +
+    (estado.verHechas ? " checked" : "") + "> Mostrar hechas</label></div>";
+
+  if (!datos.clientes.length) {
+    h += '<div class="vacio"><h2>Todavía no hay clientes</h2>' +
+      "<p>Creá el primero y después cargale las tareas. Cada cliente es una tarjeta " +
+      "y cada tarea vive adentro de la suya.</p>" +
+      '<button type="button" class="btn btn-primario" data-a="nuevo-cliente">' +
+      icono("mas") + "Crear el primer cliente</button></div>";
+    return h;
+  }
+
+  var tarjetas = datos.clientes.map(function (cl) {
+    var todas = tareasDe(cl.id);
+    var visibles = ordenar(todas.filter(pasaFiltro));
+    var pendientes = todas.filter(function (t) { return !t.hecha; }).length;
+    var s = '<article class="tarjeta"><div class="tarjeta-cab">' +
+      '<span class="punto" style="background:var(--c' + (cl.color % COLORES) + ')"></span>' +
+      '<span class="tarjeta-nombre">' + esc(cl.nombre) + "</span>" +
+      '<span class="cuenta num">' + pendientes + "</span>" +
+      '<button type="button" class="btn-icono" data-a="editar-cliente" data-id="' + esc(cl.id) +
+      '" aria-label="Editar ' + esc(cl.nombre) + '">' + icono("lapiz") + "</button></div>";
+
+    if (!visibles.length) {
+      s += '<div class="vacio-tarjeta">' +
+        (pendientes ? "Nada en este filtro." : "Sin tareas pendientes.") + "</div>";
+    } else {
+      s += '<ul class="tareas">' + visibles.map(filaTarea).join("") + "</ul>";
+    }
+    s += '<button type="button" class="agregar-rapido" data-a="nueva-tarea" data-cliente="' +
+      esc(cl.id) + '">' + icono("mas") + "Agregar tarea</button></article>";
+    return s;
+  }).join("");
+
+  var sinCliente = ordenar(datos.tareas.filter(function (t) {
+    return !t.cliente && pasaFiltro(t);
+  }));
+  if (sinCliente.length) {
+    tarjetas += '<article class="tarjeta"><div class="tarjeta-cab">' +
+      '<span class="punto" style="background:var(--tinta-3)"></span>' +
+      '<span class="tarjeta-nombre">Sin cliente</span>' +
+      '<span class="cuenta num">' + sinCliente.length + "</span></div>" +
+      '<ul class="tareas">' + sinCliente.map(filaTarea).join("") + "</ul></article>";
+  }
+
+  h += '<div class="grilla">' + tarjetas + "</div>";
+  return h;
+}
+
+function ficha(n, rotulo, tono) {
+  return '<div class="ficha"' + (tono ? ' data-tono="' + tono + '"' : "") + '>' +
+    '<div class="ficha-n">' + n + '</div><div class="ficha-r">' + esc(rotulo) + "</div></div>";
+}
+function seg(valor, texto) {
+  return '<button type="button" data-a="filtro" data-v="' + valor + '" aria-pressed="' +
+    (estado.filtro === valor) + '">' + esc(texto) + "</button>";
+}
+
+function filaTarea(t) {
+  var est = estadoDe(t);
+  var s = '<li class="tarea" data-estado="' + est + '" data-hecha="' + (t.hecha ? "si" : "no") + '">' +
+    '<button type="button" class="casilla" data-a="marcar" data-id="' + esc(t.id) + '" ' +
+    'role="checkbox" aria-checked="' + (t.hecha ? "true" : "false") + '" ' +
+    'aria-label="' + (t.hecha ? "Marcar como pendiente" : "Marcar como hecha") + '">' +
+    icono("tilde") + "</button>" +
+    '<div class="tarea-cuerpo"><div class="tarea-titulo">' + esc(t.titulo) + "</div>" +
+    (t.nota ? '<div class="tarea-nota">' + esc(t.nota) + "</div>" : "") +
+    '<div class="tarea-meta">' +
+    '<span class="chip"' + (t.hecha ? "" : ' data-estado="' + est + '"') + '>' +
+    esc(etiquetaFecha(t)) + "</span>" +
+    (t.urgencia !== "media" && !t.hecha
+      ? '<span class="chip-urg" style="color:' +
+        (t.urgencia === "alta" ? "var(--vencida)" : "var(--tinta-3)") + '">' +
+        '<span class="barrita"></span>' + (t.urgencia === "alta" ? "Urgente" : "Puede esperar") + "</span>"
+      : "") +
+    "</div></div>" +
+    '<div class="tarea-acciones">' +
+    '<button type="button" class="btn-icono" data-a="editar-tarea" data-id="' + esc(t.id) +
+    '" aria-label="Editar tarea">' + icono("lapiz") + "</button></div></li>";
+  return s;
+}
+
+/* ============================================================
+   Vista 2 — Calendario
+   ============================================================ */
+function vistaCalendario() {
+  var base = estado.mes || hoyMismo();
+  var anio = base.getFullYear(), mes = base.getMonth();
+  var primero = new Date(anio, mes, 1);
+  var arranque = sumarDias(primero, -diaSemana(primero));
+  var hoyTexto = aTexto(hoyMismo());
+
+  var porDia = {};
+  datos.tareas.forEach(function (t) {
+    if (!t.fecha) return;
+    (porDia[t.fecha] = porDia[t.fecha] || []).push(t);
+  });
+
+  var h = '<div class="cal-cab">' +
+    '<div class="cal-mes">' + conMayuscula(MESES[mes]) + " " + anio + "</div>" +
+    '<button type="button" class="btn btn-chico btn-linea" data-a="cal-hoy">Hoy</button>' +
+    '<button type="button" class="btn-icono" data-a="cal-mes" data-d="-1" aria-label="Mes anterior">' +
+    icono("izq") + "</button>" +
+    '<button type="button" class="btn-icono" data-a="cal-mes" data-d="1" aria-label="Mes siguiente">' +
+    icono("der") + "</button></div>";
+
+  h += '<div class="cal-marco"><div class="cal-dias">' +
+    DIAS_CORTOS.map(function (d) { return "<div>" + d + "</div>"; }).join("") +
+    '</div><div class="cal-grilla">';
+
+  for (var i = 0; i < 42; i++) {
+    var dia = sumarDias(arranque, i);
+    var texto = aTexto(dia);
+    var fuera = dia.getMonth() !== mes;
+    var lista = ordenar(porDia[texto] || []);
+    h += '<button type="button" class="cal-celda" data-a="cal-dia" data-f="' + texto + '"' +
+      (fuera ? ' data-fuera="si"' : "") +
+      (texto === hoyTexto ? ' data-hoy="si"' : "") +
+      ' aria-pressed="' + (estado.diaElegido === texto) + '"' +
+      ' aria-label="' + esc(fechaLarga(texto)) + ", " + lista.length + ' tareas">' +
+      '<span class="cal-n">' + dia.getDate() + "</span>";
+    lista.slice(0, 3).forEach(function (t) {
+      var est = estadoDe(t);
+      h += '<span class="cal-chip"' + (est === "vencida" ? ' data-estado="vencida"' : "") +
+        (t.hecha ? ' data-hecha="si"' : "") + ">" +
+        '<span class="punto" style="background:' + colorDe(t.cliente) + '"></span>' +
+        "<span>" + esc(t.titulo) + "</span></span>";
+    });
+    if (lista.length > 3) h += '<span class="cal-mas">+' + (lista.length - 3) + "</span>";
+    h += "</button>";
+  }
+  h += "</div></div>";
+
+  var elegido = estado.diaElegido;
+  if (elegido) {
+    var delDia = ordenar(porDia[elegido] || []);
+    h += '<div class="cal-detalle"><h2>' + esc(conMayuscula(fechaLarga(elegido))) + "</h2>";
+    if (!delDia.length) {
+      h += '<div class="vacio" style="padding:28px 20px"><p style="margin-bottom:14px">' +
+        "Ese día está libre.</p>" +
+        '<button type="button" class="btn btn-primario" data-a="nueva-tarea" data-fecha="' +
+        esc(elegido) + '">' + icono("mas") + "Agregar una tarea</button></div>";
+    } else {
+      h += '<div class="tarjeta"><ul class="tareas">' +
+        delDia.map(function (t) {
+          return filaTareaConCliente(t);
+        }).join("") + "</ul>" +
+        '<button type="button" class="agregar-rapido" data-a="nueva-tarea" data-fecha="' +
+        esc(elegido) + '">' + icono("mas") + "Agregar tarea ese día</button></div>";
+    }
+    h += "</div>";
+  }
+  return h;
+}
+
+/* En el calendario la tarea está fuera de su tarjeta, así que el cliente
+   tiene que viajar con ella. */
+function filaTareaConCliente(t) {
+  var fila = filaTarea(t);
+  var marca = '<div class="tarea-meta">';
+  var nombre = '<div class="tarea-meta"><span class="chip">' +
+    '<span class="punto" style="background:' + colorDe(t.cliente) + ';width:7px;height:7px"></span>' +
+    esc(nombreDe(t.cliente)) + "</span>";
+  return fila.replace(marca, nombre);
+}
+
+/* ============================================================
+   Vista 3 — Informes
+   ============================================================ */
+function vistaInformes() {
+  var c = contar();
+  var hoy = hoyMismo();
+  var hace30 = aTexto(sumarDias(hoy, -30));
+
+  var hechas30 = datos.tareas.filter(function (t) {
+    return t.hecha && t.hechaEn && t.hechaEn >= hace30;
+  }).length;
+
+  var h = '<div class="cabecera-vista"><div class="cabecera-texto">' +
+    "<h1>Cómo viene el mes</h1>" +
+    "<p>Una mirada rápida a dónde está puesta la carga.</p></div></div>";
+
+  h += '<div class="resumen" style="margin-bottom:14px">' +
+    ficha(c.pendientes, "Pendientes", "") +
+    ficha(c.vencidas, "Vencidas", c.vencidas ? "vencida" : "") +
+    ficha(hechas30, "Hechas en 30 días", "") +
+    ficha(datos.clientes.length, "Clientes", "") +
+    "</div>";
+
+  /* --- carga por cliente: magnitud por identidad, con el nombre y el
+         número siempre escritos, así el color nunca es el único dato --- */
+  var carga = datos.clientes.map(function (cl) {
+    var pend = tareasDe(cl.id).filter(function (t) { return !t.hecha; });
+    return {
+      nombre: cl.nombre,
+      color: "var(--c" + (cl.color % COLORES) + ")",
+      n: pend.length,
+      vencidas: pend.filter(function (t) {
+        return t.fecha && diasHasta(t.fecha) < 0;
+      }).length
+    };
+  }).sort(function (a, b) { return b.n - a.n; });
+
+  var tope = Math.max.apply(null, carga.map(function (x) { return x.n; }).concat([1]));
+
+  h += '<div class="bloque"><h2>Carga por cliente</h2>' +
+    '<p class="pie">Tareas pendientes de cada uno. ' +
+    (carga.length && carga[0].n ? "Hoy el que más pide es " + esc(carga[0].nombre) + "." :
+      "No hay nada pendiente.") + "</p>";
+  if (!carga.length) {
+    h += '<p class="dlg-texto">Cargá un cliente para ver esto.</p>';
+  } else {
+    h += '<div class="barras">' + carga.map(function (x) {
+      return '<div class="barra-fila-g"><div class="barra-et" title="' + esc(x.nombre) + '">' +
+        esc(x.nombre) + "</div>" +
+        '<div class="barra-pista"><div class="barra-llena" style="width:' +
+        (x.n ? Math.max(3, Math.round((x.n / tope) * 100)) : 0) + "%;background:" + x.color + '"></div></div>' +
+        '<div class="barra-val num">' + x.n + (x.vencidas ? ' <span style="color:var(--vencida)">· ' +
+          x.vencidas + " venc.</span>" : "") + "</div></div>";
+    }).join("") + "</div>";
+  }
+  h += "</div>";
+
+  /* --- lo que viene, semana por semana --- */
+  var semanas = [];
+  for (var s = 0; s < 4; s++) {
+    var desde = sumarDias(hoy, s * 7);
+    var hasta = sumarDias(hoy, s * 7 + 6);
+    var n = datos.tareas.filter(function (t) {
+      if (t.hecha || !t.fecha) return false;
+      var f = aFecha(t.fecha);
+      return f >= desde && f <= hasta;
+    }).length;
+    semanas.push({
+      rotulo: s === 0 ? "Esta semana" : s === 1 ? "La que viene" :
+        "Del " + desde.getDate() + " al " + hasta.getDate() +
+        (desde.getMonth() !== hasta.getMonth() ? " de " + MESES[hasta.getMonth()].slice(0, 3) : ""),
+      n: n
+    });
+  }
+  var topeS = Math.max.apply(null, semanas.map(function (x) { return x.n; }).concat([1]));
+
+  h += '<div class="bloque"><h2>Las próximas cuatro semanas</h2>' +
+    '<p class="pie">Cuántas tareas caen en cada tramo, para ver dónde se amontona.</p>' +
+    '<div class="barras">' + semanas.map(function (x) {
+      return '<div class="barra-fila-g"><div class="barra-et">' + esc(x.rotulo) + "</div>" +
+        '<div class="barra-pista"><div class="barra-llena" style="width:' +
+        (x.n ? Math.max(3, Math.round((x.n / topeS) * 100)) : 0) +
+        '%;background:var(--acento)"></div></div>' +
+        '<div class="barra-val num">' + x.n + "</div></div>";
+    }).join("") + "</div></div>";
+
+  /* --- cumplimiento --- */
+  var cerradas = datos.tareas.filter(function (t) {
+    return t.hecha && t.hechaEn && t.hechaEn >= hace30;
+  }).length;
+  var abiertas = datos.tareas.filter(function (t) {
+    return !t.hecha && t.fecha && t.fecha >= hace30 && diasHasta(t.fecha) <= 0;
+  }).length;
+  var total = cerradas + abiertas;
+  var pct = total ? Math.round((cerradas / total) * 100) : 0;
+
+  h += '<div class="bloque"><h2>Cumplimiento de los últimos 30 días</h2>' +
+    '<p class="pie">De todo lo que venció en el último mes, cuánto quedó cerrado.</p>' +
+    '<div class="cumplimiento"><span class="n num">' + pct + '%</span>' +
+    '<span class="t">' + cerradas + " hechas de " + (total || 0) + "</span></div>" +
+    '<div class="doble-pista"><div class="doble-llena" style="width:' + pct + '%"></div></div>' +
+    '<div class="leyenda">' +
+    '<span><span class="punto" style="background:var(--lista)"></span>Cerradas: ' + cerradas + "</span>" +
+    '<span><span class="punto" style="background:var(--relleno-2)"></span>Sin cerrar: ' + abiertas + "</span>" +
+    "</div></div>";
+
+  return h;
+}
+
+/* ============================================================
+   Dibujado
+   ============================================================ */
+function render() {
+  var p = document.getElementById("vista-panel");
+  var c = document.getElementById("vista-calendario");
+  var i = document.getElementById("vista-informes");
+
+  p.hidden = estado.vista !== "panel";
+  c.hidden = estado.vista !== "calendario";
+  i.hidden = estado.vista !== "informes";
+
+  if (estado.vista === "panel") p.innerHTML = vistaPanel();
+  else if (estado.vista === "calendario") c.innerHTML = vistaCalendario();
+  else i.innerHTML = vistaInformes();
+
+  Array.prototype.forEach.call(document.querySelectorAll(".pestana"), function (b) {
+    b.setAttribute("aria-selected", String(b.dataset.vista === estado.vista));
+  });
+}
+
+/* ============================================================
+   Diálogos
+   ============================================================ */
+var $dlg = document.getElementById("dlg");
+var alAceptar = null;
+
+function abrirDialogo(o) {
+  alAceptar = o.alAceptar || null;
+  $dlg.innerHTML =
+    '<form method="dialog"><div class="dlg-cab"><h2 id="dlg-titulo">' + esc(o.titulo) + "</h2></div>" +
+    '<div class="dlg-cuerpo">' + o.cuerpo + "</div>" +
+    '<div class="dlg-pie">' + (o.izquierda || "") +
+    '<button type="button" class="btn btn-suave" data-a="cerrar">' + esc(o.cancelar || "Cancelar") + "</button>" +
+    (o.aceptar ? '<button type="button" class="btn btn-primario" data-a="aceptar">' +
+      esc(o.aceptar) + "</button>" : "") +
+    "</div></form>";
+  $dlg.showModal();
+  var primero = $dlg.querySelector("input:not([type=hidden]), textarea");
+  var tactil = (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) ||
+    navigator.maxTouchPoints > 0;
+  if (primero && !tactil) { primero.focus(); primero.select && primero.select(); }
+}
+function cerrarDialogo() { alAceptar = null; $dlg.close(); }
+
+function campo(id, rotulo, html) {
+  return '<div class="campo"><label for="' + id + '">' + esc(rotulo) + "</label>" + html + "</div>";
+}
+
+function dialogoTarea(t, prefijo) {
+  var esNueva = !t;
+  var d = t || {
+    id: null, cliente: (prefijo && prefijo.cliente) || (datos.clientes[0] && datos.clientes[0].id) || null,
+    titulo: "", nota: "", fecha: (prefijo && prefijo.fecha) || aTexto(hoyMismo()),
+    urgencia: "media", hecha: false
+  };
+
+  var opciones = datos.clientes.map(function (c) {
+    return '<option value="' + esc(c.id) + '"' + (c.id === d.cliente ? " selected" : "") + ">" +
+      esc(c.nombre) + "</option>";
+  }).join("");
+
+  var cuerpo =
+    campo("f-titulo", "Qué hay que hacer",
+      '<input type="text" id="f-titulo" value="' + esc(d.titulo) +
+      '" placeholder="Carrusel de la promo" autocomplete="off">') +
+    campo("f-cliente", "Cliente",
+      '<select id="f-cliente">' +
+      (datos.clientes.length ? opciones : "") +
+      '<option value=""' + (d.cliente ? "" : " selected") + ">Sin cliente</option></select>") +
+    '<div class="fila-2">' +
+    campo("f-fecha", "Para cuándo", '<input type="date" id="f-fecha" value="' + esc(d.fecha) + '">') +
+    campo("f-urgencia", "Urgencia",
+      '<select id="f-urgencia">' +
+      '<option value="alta"' + (d.urgencia === "alta" ? " selected" : "") + ">Urgente</option>" +
+      '<option value="media"' + (d.urgencia === "media" ? " selected" : "") + ">Normal</option>" +
+      '<option value="baja"' + (d.urgencia === "baja" ? " selected" : "") + ">Puede esperar</option></select>") +
+    "</div>" +
+    '<div class="atajos">' +
+    '<button type="button" data-f="0">Hoy</button>' +
+    '<button type="button" data-f="1">Mañana</button>' +
+    '<button type="button" data-f="7">En una semana</button>' +
+    '<button type="button" data-f="">Sin fecha</button></div>' +
+    campo("f-nota", "Nota (opcional)", '<textarea id="f-nota" placeholder="Detalles, links, lo que haga falta">' +
+      esc(d.nota) + "</textarea>");
+
+  abrirDialogo({
+    titulo: esNueva ? "Nueva tarea" : "Editar tarea",
+    cuerpo: cuerpo,
+    aceptar: esNueva ? "Crear" : "Guardar",
+    izquierda: esNueva ? "" :
+      '<button type="button" class="btn btn-peligro izq" data-a="borrar-tarea" data-id="' +
+      esc(d.id) + '">' + icono("tacho") + "Eliminar</button>",
+    alAceptar: function () {
+      var titulo = document.getElementById("f-titulo").value.trim();
+      if (!titulo) { document.getElementById("f-titulo").focus(); return false; }
+      var campos = {
+        titulo: titulo,
+        cliente: document.getElementById("f-cliente").value || null,
+        fecha: document.getElementById("f-fecha").value || "",
+        urgencia: document.getElementById("f-urgencia").value,
+        nota: document.getElementById("f-nota").value.trim()
+      };
+      if (esNueva) {
+        datos.tareas.push({
+          id: nuevoId("t"), cliente: campos.cliente, titulo: campos.titulo,
+          nota: campos.nota, fecha: campos.fecha, urgencia: campos.urgencia,
+          hecha: false, hechaEn: "", creada: aTexto(hoyMismo())
+        });
+        avisar("Tarea creada", campos.fecha ? etiquetaFecha(campos).toLowerCase() : "sin fecha");
+      } else {
+        for (var k in campos) if (campos.hasOwnProperty(k)) t[k] = campos[k];
+        avisar("Tarea guardada");
+      }
+      guardar(); render();
+      return true;
+    }
+  });
+
+  Array.prototype.forEach.call($dlg.querySelectorAll(".atajos button"), function (b) {
+    b.addEventListener("click", function () {
+      var v = b.dataset.f;
+      document.getElementById("f-fecha").value =
+        v === "" ? "" : aTexto(sumarDias(hoyMismo(), Number(v)));
+    });
+  });
+}
+
+function dialogoCliente(c) {
+  var esNuevo = !c;
+  var d = c || { id: null, nombre: "", color: datos.clientes.length % COLORES };
+  var colores = "";
+  for (var i = 0; i < COLORES; i++) {
+    colores += '<button type="button" data-c="' + i + '" aria-pressed="' + (i === d.color) +
+      '" style="background:var(--c' + i + ')" aria-label="Color ' + (i + 1) + '"></button>';
+  }
+
+  abrirDialogo({
+    titulo: esNuevo ? "Nuevo cliente" : "Editar cliente",
+    cuerpo: campo("f-nombre", "Nombre",
+      '<input type="text" id="f-nombre" value="' + esc(d.nombre) +
+      '" placeholder="Panadería del Sol" autocomplete="off">') +
+      '<div class="campo"><label>Color</label><div class="colores" id="f-colores">' + colores + "</div></div>",
+    aceptar: esNuevo ? "Crear" : "Guardar",
+    izquierda: esNuevo ? "" :
+      '<button type="button" class="btn btn-peligro izq" data-a="borrar-cliente" data-id="' +
+      esc(d.id) + '">' + icono("tacho") + "Eliminar</button>",
+    alAceptar: function () {
+      var nombre = document.getElementById("f-nombre").value.trim();
+      if (!nombre) { document.getElementById("f-nombre").focus(); return false; }
+      var elegido = $dlg.querySelector('.colores button[aria-pressed="true"]');
+      var color = elegido ? Number(elegido.dataset.c) : 0;
+      if (esNuevo) {
+        datos.clientes.push({ id: nuevoId("c"), nombre: nombre, color: color });
+        avisar("Cliente creado", nombre);
+      } else {
+        c.nombre = nombre; c.color = color;
+        avisar("Cliente guardado");
+      }
+      guardar(); render();
+      return true;
+    }
+  });
+
+  var caja = document.getElementById("f-colores");
+  caja.addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-c]");
+    if (!b) return;
+    Array.prototype.forEach.call(caja.children, function (x) {
+      x.setAttribute("aria-pressed", String(x === b));
+    });
+  });
+}
+
+function dialogoCopia() {
+  abrirDialogo({
+    titulo: "Copia de seguridad",
+    cuerpo: '<p class="dlg-texto">Los datos viven en este navegador. Copiá este texto y ' +
+      "guardalo donde quieras; para traerlo de vuelta, pegalo acá y tocá Restaurar.</p>" +
+      '<textarea class="copia-area" id="f-copia" spellcheck="false">' +
+      esc(JSON.stringify(datos)) + "</textarea>",
+    cancelar: "Cerrar",
+    izquierda: '<button type="button" class="btn btn-suave izq" data-a="copiar-texto">Copiar</button>',
+    aceptar: "Restaurar",
+    alAceptar: function () {
+      var crudo = document.getElementById("f-copia").value.trim();
+      if (!crudo) return false;
+      var leido;
+      try { leido = JSON.parse(crudo); }
+      catch (e) {
+        avisar("No se pudo leer", "Ese texto no es una copia válida.");
+        return false;
+      }
+      var nuevo = desdeFormatoViejo(leido) || normalizar(leido);
+      if (!nuevo.clientes.length && !nuevo.tareas.length) {
+        avisar("La copia está vacía", "No se cambió nada.");
+        return false;
+      }
+      datos = nuevo;
+      datos.ejemplo = false;
+      guardar(); render();
+      avisar("Copia restaurada", nuevo.clientes.length + " clientes, " + nuevo.tareas.length + " tareas");
+      return true;
+    }
+  });
+}
+
+function confirmar(titulo, texto, etiqueta, alHacer) {
+  abrirDialogo({
+    titulo: titulo,
+    cuerpo: '<p class="dlg-texto">' + esc(texto) + "</p>",
+    aceptar: etiqueta,
+    alAceptar: function () { alHacer(); return true; }
+  });
+  var b = $dlg.querySelector('[data-a="aceptar"]');
+  if (b) { b.classList.remove("btn-primario"); b.classList.add("btn-peligro"); }
+}
+
+/* ============================================================
+   Acciones
+   ============================================================ */
+var ACCIONES = {
+  "nueva-tarea": function (el) {
+    if (!datos.clientes.length) {
+      avisar("Primero un cliente", "Creá al menos uno para poder asignarle tareas.");
+      dialogoCliente(null);
+      return;
+    }
+    dialogoTarea(null, { cliente: el.dataset.cliente, fecha: el.dataset.fecha });
+  },
+  "nuevo-cliente": function () { dialogoCliente(null); },
+  "editar-cliente": function (el) {
+    var c = cliente(el.dataset.id);
+    if (c) dialogoCliente(c);
+  },
+  "editar-tarea": function (el) {
+    var t = tarea(el.dataset.id);
+    if (t) dialogoTarea(t, null);
+  },
+  "marcar": function (el) {
+    var t = tarea(el.dataset.id);
+    if (!t) return;
+    t.hecha = !t.hecha;
+    t.hechaEn = t.hecha ? aTexto(hoyMismo()) : "";
+    guardar(); render();
+  },
+  "borrar-tarea": function (el) {
+    var t = tarea(el.dataset.id);
+    if (!t) return;
+    cerrarDialogo();
+    var copia = t, pos = datos.tareas.indexOf(t);
+    datos.tareas.splice(pos, 1);
+    guardar(); render();
+    avisar("Tarea eliminada", copia.titulo, function () {
+      datos.tareas.splice(pos, 0, copia);
+      guardar(); render();
+    });
+  },
+  "borrar-cliente": function (el) {
+    var c = cliente(el.dataset.id);
+    if (!c) return;
+    var suyas = tareasDe(c.id);
+    cerrarDialogo();
+    confirmar("¿Eliminar " + c.nombre + "?",
+      suyas.length
+        ? "Se van también sus " + suyas.length + " tarea" + (suyas.length === 1 ? "" : "s") + "."
+        : "No tiene tareas cargadas.",
+      "Eliminar",
+      function () {
+        datos.clientes = datos.clientes.filter(function (x) { return x.id !== c.id; });
+        datos.tareas = datos.tareas.filter(function (t) { return t.cliente !== c.id; });
+        guardar(); render();
+        avisar("Cliente eliminado", c.nombre);
+      });
+  },
+  "limpiar": function () {
+    confirmar("¿Empezar de cero?",
+      "Se borran los tres clientes de ejemplo y sus tareas. El panel queda vacío para que cargues lo tuyo.",
+      "Borrar el ejemplo",
+      function () {
+        datos = vacios();
+        guardar(); render();
+        avisar("Listo", "El panel quedó vacío.");
+      });
+  },
+  "filtro": function (el) { estado.filtro = el.dataset.v; render(); },
+  "cal-mes": function (el) {
+    var base = estado.mes || hoyMismo();
+    estado.mes = new Date(base.getFullYear(), base.getMonth() + Number(el.dataset.d), 1);
+    render();
+  },
+  "cal-hoy": function () {
+    estado.mes = null;
+    estado.diaElegido = aTexto(hoyMismo());
+    render();
+  },
+  "cal-dia": function (el) {
+    estado.diaElegido = estado.diaElegido === el.dataset.f ? null : el.dataset.f;
+    render();
+    if (estado.diaElegido) {
+      var d = document.querySelector(".cal-detalle");
+      if (d) d.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  },
+  "cerrar": function () { cerrarDialogo(); },
+  "aceptar": function () {
+    if (!alAceptar || alAceptar() !== false) cerrarDialogo();
+  },
+  "copiar-texto": function () {
+    var area = document.getElementById("f-copia");
+    area.select();
+    var listo = function (bien) {
+      avisar(bien ? "Copiado" : "No se pudo copiar",
+        bien ? "Pegalo donde quieras guardarlo." : "Copialo a mano: ya está seleccionado.");
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(area.value).then(function () { listo(true); }, function () { listo(false); });
+    } else { listo(false); }
+  }
+};
+
+function tarea(id) {
+  for (var i = 0; i < datos.tareas.length; i++) {
+    if (datos.tareas[i].id === id) return datos.tareas[i];
+  }
+  return null;
+}
+
+document.addEventListener("click", function (e) {
+  var pestana = e.target.closest ? e.target.closest(".pestana") : null;
+  if (pestana) { estado.vista = pestana.dataset.vista; render(); return; }
+
+  var el = e.target.closest ? e.target.closest("[data-a]") : null;
+  if (!el) return;
+  var fn = ACCIONES[el.dataset.a];
+  if (fn) { e.preventDefault(); fn(el); }
+});
+
+document.addEventListener("change", function (e) {
+  if (e.target.id === "ver-hechas") { estado.verHechas = e.target.checked; render(); }
+});
+
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter" && $dlg.open && e.target.tagName === "INPUT") {
+    e.preventDefault();
+    ACCIONES["aceptar"]();
+  }
+});
+
+$dlg.addEventListener("close", function () { alAceptar = null; });
+
+document.getElementById("btn-tema").addEventListener("click", alternarTema);
+document.getElementById("btn-copia").addEventListener("click", dialogoCopia);
+document.getElementById("btn-copia").innerHTML = icono("caja");
+
+/* ---------- arranque ---------- */
+aplicarTema(temaGuardado());
+datos = leer();
+if (!datos) { datos = ejemplo(); guardar(); }
+estado.diaElegido = aTexto(hoyMismo());
+render();
+</script>
+</body>
+</html>
