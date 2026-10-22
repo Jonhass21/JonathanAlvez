@@ -5,69 +5,82 @@
 @font-face{font-family:M;font-weight:300;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-300-normal.woff2)}
 @font-face{font-family:M;font-weight:400;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-400-normal.woff2)}
 :root{
-  --pink:#F837AF; --pink-soft:#FDE3F3; --ink:#2A2A2A; --mute:#8A8A8A; --line:#ECECEC;
-  /* Colores por sector (ajustables) */
-  --c-novedades:#2D9CDB; --c-gastronomia:#F2994A; --c-cultura:#9B51E0;
-  --c-deportes:#27AE60; --c-eventos:#F837AF; --c-sociales:#EB5757;
+  --pink:#F931AD; --pink-soft:#FDE3F3; --ink:#2A2A2A; --mute:#8A8A8A; --line:#ECECEC;
+  /* Colores por sector */
+  --c-eventos:#F931AD; --c-novedades:#4CB19A;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:1080px;height:1920px;overflow:hidden;background:#fff}
 body{font-family:M,sans-serif;font-weight:300;color:var(--ink);position:relative}
 .abs{position:absolute}
 .blob{border-radius:50%;filter:blur(60px);opacity:.55}
-#stage{position:absolute;inset:0;transform-origin:540px 760px}
-#head{left:0;right:0;top:330px;text-align:center}
-#head .kicker{font-size:34px;letter-spacing:10px;color:var(--pink);font-weight:300}
+#stage{position:absolute;inset:0;transform-origin:540px 900px}
+#toplogo{left:50%;width:440px;margin-left:-220px;top:150px}
+#head{left:0;right:0;top:470px;text-align:center}
+#head .kicker{font-size:34px;letter-spacing:10px;color:var(--pink)}
 #head .title{font-size:84px;font-weight:200;line-height:1.1;margin-top:26px}
 #bar{left:90px;width:900px;height:132px;border-radius:66px;background:#fff;
-  box-shadow:0 18px 50px rgba(248,55,175,.16),0 2px 0 rgba(0,0,0,.02);border:2px solid var(--line);
-  display:flex;align-items:center;padding:0 46px;gap:28px}
-#bar svg{flex:none}
-#q{font-size:46px;font-weight:300;white-space:nowrap;color:var(--ink)}
+  box-shadow:0 18px 50px rgba(249,49,173,.16);border:2px solid var(--line);
+  display:flex;align-items:center;padding:0 16px 0 50px;gap:24px}
+#q{font-size:46px;white-space:nowrap}
 #caret{display:inline-block;width:3px;height:52px;background:var(--pink);vertical-align:middle;margin-left:4px}
 #ph{font-size:46px;color:#BDBDBD;font-weight:200}
+#btn{margin-left:auto;width:100px;height:100px;border-radius:50%;background:var(--pink);display:flex;align-items:center;justify-content:center;flex:none;
+  box-shadow:0 10px 26px rgba(249,49,173,.35)}
 #loc{left:0;right:0;text-align:center;font-size:32px;color:var(--mute)}
 #loc b{font-weight:400;color:var(--ink)}
-#results{left:90px;width:900px;top:640px}
+#results{left:90px;width:900px;top:700px}
 .res{border-radius:34px;padding:44px 46px;background:#fff;margin-bottom:34px;border:2px solid var(--line)}
-.res.main{border:3px solid var(--pink);box-shadow:0 30px 80px rgba(248,55,175,.22)}
+.res.main{border:3px solid var(--pink)}
 .site{display:flex;align-items:center;gap:22px}
-.logo{width:76px;height:76px;border-radius:50%;border:4px solid var(--pink);display:flex;align-items:center;justify-content:center;
-  color:var(--pink);font-size:36px;font-weight:300;letter-spacing:-2px;flex:none}
+.fav{width:76px;height:76px;border-radius:50%;border:4px solid var(--pink);display:flex;align-items:center;justify-content:center;
+  color:var(--pink);font-size:36px;letter-spacing:-2px;flex:none}
 .dom{font-size:32px;line-height:1.3}
 .dom small{display:block;font-size:26px;color:var(--mute)}
-.rt{font-size:56px;color:var(--pink);margin-top:26px;font-weight:300}
+.rt{font-size:56px;color:var(--pink);margin-top:26px}
 .rd{font-size:31px;color:#666;line-height:1.5;margin-top:14px}
 .sk{height:26px;border-radius:13px;background:#F3F3F3;margin-top:18px}
 .badge{display:inline-block;font-size:24px;letter-spacing:4px;color:#fff;background:var(--pink);border-radius:30px;padding:12px 26px;margin-bottom:24px}
-#chips{left:90px;width:900px;top:1290px;display:flex;flex-wrap:wrap;gap:22px;justify-content:center}
-.chip{font-size:34px;color:#fff;border-radius:60px;padding:22px 40px;font-weight:300}
+
+/* Zócalos */
+#sec{left:0;right:0;top:420px;height:140px;text-align:center}
+#sec div{position:absolute;left:0;right:0;font-size:108px;font-weight:200}
+#track{left:0;top:600px;height:1100px;display:flex;gap:40px}
+.card{width:580px;flex:none;background:#fff;border-radius:26px;box-shadow:0 16px 50px rgba(0,0,0,.09);overflow:hidden}
+.card img{width:580px;height:580px;object-fit:cover;display:block;border-radius:26px}
+.card .tx{padding:48px 46px 52px}
+.card h3{font-weight:300;font-size:40px;line-height:1.2;letter-spacing:1px;text-transform:uppercase;color:#273238;height:96px}
+.card p{font-size:28px;line-height:1.6;color:#555;margin-top:22px;height:134px;overflow:hidden}
+.card .b{display:inline-block;margin-top:34px;color:#fff;font-size:28px;font-weight:400;padding:16px 40px;border-radius:40px}
+#dots{left:0;right:0;top:1765px;display:flex;justify-content:center;gap:16px}
+#dots i{width:16px;height:16px;border-radius:8px;background:#E2E2E2;display:block}
+
 #end{inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff}
-#end .logo{width:300px;height:300px;border-width:12px;font-size:140px;letter-spacing:-8px}
-#end .n{font-size:92px;font-weight:200;margin-top:70px}
-#end .n span{color:var(--pink)}
-#end .t{font-size:40px;color:var(--mute);margin-top:30px;text-align:center;line-height:1.5}
-#end .url{margin-top:80px;font-size:36px;letter-spacing:3px;color:#fff;background:var(--pink);padding:26px 56px;border-radius:70px}
-#cursor{width:60px;height:60px}
-#ring{width:120px;height:120px;border-radius:50%;border:4px solid var(--pink)}
+#end img{width:860px}
+#end .t{font-size:46px;color:var(--mute);margin-top:80px;text-align:center;line-height:1.5;font-weight:200}
+#end .t span{color:var(--pink);font-weight:300}
+#end .url{margin-top:90px;font-size:38px;letter-spacing:3px;color:#fff;background:var(--pink);padding:28px 60px;border-radius:70px}
+#cursor{width:64px;height:64px}
+#ring{width:140px;height:140px;border-radius:50%;border:4px solid var(--pink)}
 </style></head>
 <body>
 <div id="stage">
   <div class="abs blob" id="b1" style="width:700px;height:700px;background:var(--pink-soft);left:-260px;top:-200px"></div>
   <div class="abs blob" id="b2" style="width:600px;height:600px;background:var(--pink-soft);right:-240px;bottom:-120px"></div>
 
+  <img class="abs" id="toplogo" src="logo.svg">
   <div class="abs" id="head"><div class="kicker">BUSCANDO</div><div class="title">¿Qué hacer<br>en Posadas?</div></div>
 
   <div class="abs" id="bar">
-    <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#F837AF" stroke-width="1.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
-    <div><span id="q"></span><span id="ph">Buscar…</span><span id="caret"></span></div>
+    <div style="white-space:nowrap"><span id="q"></span><span id="ph">Buscar…</span><span id="caret"></span></div>
+    <div id="btn"><svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></div>
   </div>
   <div class="abs" id="loc">⌂ <b>Posadas, Misiones</b></div>
 
   <div class="abs" id="results">
     <div class="res main" id="r1">
       <div class="badge">PRIMER RESULTADO</div>
-      <div class="site"><div class="logo">Ag</div><div class="dom">agendateeventos.com<small>https://agendateeventos.com</small></div></div>
+      <div class="site"><div class="fav">Ag</div><div class="dom">agendateeventos.com<small>https://agendateeventos.com</small></div></div>
       <div class="rt">Agendate eventos</div>
       <div class="rd">Agendate: somos tu agencia de noticias, comunicación, marketing digital y organización de eventos.</div>
     </div>
@@ -75,23 +88,20 @@ body{font-family:M,sans-serif;font-weight:300;color:var(--ink);position:relative
     <div class="res" id="r3"><div class="sk" style="width:38%;margin-top:0"></div><div class="sk" style="width:70%;height:40px"></div><div class="sk" style="width:90%"></div></div>
   </div>
 
-  <div class="abs" id="chips">
-    <div class="chip" style="background:var(--c-novedades)">Novedades</div>
-    <div class="chip" style="background:var(--c-gastronomia)">Gastronomía</div>
-    <div class="chip" style="background:var(--c-eventos)">Eventos</div>
-    <div class="chip" style="background:var(--c-cultura)">Cultura</div>
-    <div class="chip" style="background:var(--c-deportes)">Deportes</div>
-    <div class="chip" style="background:var(--c-sociales)">Sociales</div>
+  <div class="abs" id="sec">
+    <div id="s-ev" style="color:var(--c-eventos)">Eventos</div>
+    <div id="s-no" style="color:var(--c-novedades)">Novedades</div>
   </div>
+  <div class="abs" id="track"></div>
+  <div class="abs" id="dots"></div>
 
   <div class="abs" id="ring"></div>
   <svg class="abs" id="cursor" viewBox="0 0 24 24"><path d="M5 3l14 8-6 1.5L10 19z" fill="#2A2A2A" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/></svg>
 </div>
 
 <div class="abs" id="end">
-  <div class="logo">Ag</div>
-  <div class="n">Agendate <span>eventos</span></div>
-  <div class="t">Tu referente de eventos<br>en Posadas</div>
+  <img src="logo.svg">
+  <div class="t">Tu <span>referente</span> de eventos<br>en Posadas</div>
   <div class="url">agendateeventos.com</div>
 </div>
 
@@ -104,67 +114,104 @@ const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
 const back=x=>{const c=1.5;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
 const lerp=(a,b,x)=>a+(b-a)*x;
 const QUERY='eventos en posadas';
-const chips=[...document.querySelectorAll('.chip')];
+
+const CARDS=[
+  ['ev','dama','La Dama del Alba','Teatro Vocacional Misiones presenta “La Dama del Alba”, de Alejandro Casona, bajo la dirección de…'],
+  ['ev','hott','Hott x Shura','Hott celebra su primer aniversario a lo grande. Con el perreo y Shura por primera vez…'],
+  ['ev','tour','Posadas Tour 7ma edición','Llega la Séptima edición del Posadas Tour al Autódromo Rosamonte. Un evento automotivo que…'],
+  ['no','cerati','Cronología Gustavo Cerati','El domingo 18 de octubre, El Cuarto Soda y Solo Cerati se presentarán juntos en…'],
+  ['no','lupau','Mandioca en el IMAX: «Lu y Pau»','Este miércoles 23 de septiembre a las 20 hs en el IMAX, el cine argentino…'],
+  ['no','fun','Vuelve la Fun Fest','El próximo sábado 17 de octubre en UMMA, los DJs Chappa Enríquez, Aldo Maidana y…'],
+];
+$('track').innerHTML=CARDS.map(([s,img,h,d])=>`<div class="card"><img src="img/${img}.jpg"><div class="tx"><h3>${h}</h3><p>${d}</p>
+  <span class="b" style="background:var(--c-${s==='ev'?'eventos':'novedades'})">${s==='ev'?'+ Detalles':'Leer'}</span></div></div>`).join('');
+$('dots').innerHTML=CARDS.map(()=>'<i></i>').join('');
+const dots=[...document.querySelectorAll('#dots i')];
+const cards=[...document.querySelectorAll('.card')];
+const STEP=620, X0=250; // card 580 + gap 40, primera tarjeta centrada
 
 window.render=function(t){
-  // blobs drift
   $('b1').style.transform=`translate(${Math.sin(t*.6)*40}px,${Math.cos(t*.5)*30}px)`;
   $('b2').style.transform=`translate(${Math.cos(t*.5)*40}px,${Math.sin(t*.6)*30}px)`;
 
-  // intro 0–0.8
+  // intro
   const inA=eo(p(t,0,.8));
-  // search moves up 4.0–4.7
-  const up=eio(p(t,4.0,4.7));
+  const lg=eo(p(t,0,.7));
+  $('toplogo').style.opacity=lg;
+  $('toplogo').style.transform=`translateY(${(1-lg)*-30}px)`;
+  // la barra sube 3.7–4.3
+  const up=eio(p(t,3.7,4.3));
   $('head').style.opacity=inA*(1-up);
   $('head').style.transform=`translateY(${(1-inA)*40 - up*80}px)`;
-  const barTop=lerp(820,340,up);
+  const barTop=lerp(900,440,up);
+  const bIn=eo(p(t,.2,1));
   $('bar').style.top=barTop+'px';
-  $('bar').style.opacity=eo(p(t,.2,1));
-  $('bar').style.transform=`translateY(${(1-eo(p(t,.2,1)))*50}px) scale(${1-up*.06})`;
+  $('bar').style.opacity=bIn;
+  // clic en la lupa 3.2–3.5
+  const press=Math.sin(p(t,3.25,3.55)*Math.PI);
+  $('bar').style.transform=`translateY(${(1-bIn)*50}px)`;
+  $('btn').style.transform=`scale(${1-press*.14})`;
+  $('btn').style.boxShadow=`0 ${10-press*6}px ${26-press*14}px rgba(249,49,173,.35)`;
   $('loc').style.top=(barTop+170)+'px';
   $('loc').style.opacity=eo(p(t,.5,1.2));
 
-  // typing 1.3–3.3
-  const n=Math.round(cl(p(t,1.3,3.3))*QUERY.length);
+  // tipeo 1.0–2.8
+  const n=Math.round(cl(p(t,1.0,2.8))*QUERY.length);
   $('q').textContent=QUERY.slice(0,n);
   $('ph').style.display=n?'none':'inline';
-  $('caret').style.opacity=(t>1.2&&t<3.4)?1:(Math.floor(t*2.5)%2?0:1);
+  $('caret').style.opacity=(t>.9&&t<2.9)?1:(Math.floor(t*2.5)%2?0:1);
 
-  // cursor + click on search 3.4–4.0
-  const cv=p(t,3.3,3.6)*(1-p(t,4.1,4.3));
-  const cm=eio(p(t,3.3,3.8));
-  $('cursor').style.left=lerp(900,880,cm)+'px';
-  $('cursor').style.top=lerp(1150,barTop+50,cm)+'px';
-  $('cursor').style.opacity=cv;
-  const click=p(t,3.85,4.25);
-  $('ring').style.left=(880-30)+'px';$('ring').style.top=(barTop+50-30)+'px';
+  // cursor hacia la lupa
+  const bx=90+900-16-50, by=barTop+66;           // centro del botón
+  const cm=eio(p(t,2.8,3.25));
+  $('cursor').style.left=lerp(820,bx-10,cm)+'px';
+  $('cursor').style.top=lerp(1300,by-10,cm)+'px';
+  $('cursor').style.transform=`scale(${1-press*.15})`;
+  $('cursor').style.opacity=p(t,2.75,3.0)*(1-p(t,3.7,3.9));
+  const click=p(t,3.3,3.8);
+  $('ring').style.left=(bx-70)+'px';$('ring').style.top=(by-70)+'px';
   $('ring').style.opacity=click>0&&click<1?(1-click):0;
-  $('ring').style.transform=`scale(${.3+click*1.2})`;
+  $('ring').style.transform=`scale(${.5+click*.9})`;
 
-  // results 4.6–
-  const r=[ [4.7,'r1'],[5.0,'r2'],[5.15,'r3'] ];
-  r.forEach(([s,id])=>{const k=eo(p(t,s,s+.6));$(id).style.opacity=k;$(id).style.transform=`translateY(${(1-k)*80}px)`;});
-  // focus on first result 6.3–7: others fade, main pulses
-  const foc=eio(p(t,6.2,7.0));
+  // resultados 4.3–
+  [[4.3,'r1'],[4.55,'r2'],[4.7,'r3']].forEach(([s,id])=>{const k=eo(p(t,s,s+.6));$(id).style.opacity=k;$(id).style.transform=`translateY(${(1-k)*80}px)`;});
+  const foc=eio(p(t,5.2,5.7));
   $('r2').style.opacity*=1-foc*.75;$('r3').style.opacity*=1-foc*.75;
-  const pulse=t>5.4&&t<6.4?Math.sin(p(t,5.4,6.4)*Math.PI)*.04:0;
-  $('r1').style.transform+=` scale(${1+pulse+foc*.03})`;
-  $('r1').style.boxShadow=`0 30px ${80+foc*40}px rgba(248,55,175,${.22+foc*.15})`;
+  const pulse=t>5.0&&t<5.9?Math.sin(p(t,5.0,5.9)*Math.PI)*.035:0;
+  $('r1').style.transform+=` scale(${1+pulse})`;
+  $('r1').style.boxShadow=`0 30px ${80+foc*40}px rgba(249,49,173,${.2+foc*.15})`;
 
-  // chips 7.0–9
-  chips.forEach((c,i)=>{const s=7.0+i*.16;const k=p(t,s,s+.5);c.style.opacity=cl(k*2);c.style.transform=`translateY(${(1-back(k))*60}px) scale(${.6+.4*back(k)})`;});
-  $('chips').style.top=lerp(1400,1300,foc)+'px';
-  $('r2').style.visibility=$('r3').style.visibility=t>6.9?'hidden':'visible';
+  // transición a zócalos 6.0–6.6
+  const tr=eio(p(t,6.0,6.6));
+  $('results').style.transform=`translateY(${-tr*260}px)`;
+  $('results').style.opacity=1-tr;
+  $('bar').style.opacity=bIn*(1-tr);
+  $('loc').style.opacity*=1-tr;
+  $('toplogo').style.top=lerp(150,170,tr)+'px';
 
-  // stage zoom out slightly before end, end card 9.6–
-  const e=eio(p(t,9.5,10.3));
-  $('stage').style.transform=`scale(${1+e*.15})`;
+  // carrusel 6.4–9.9: entra, luego avanza tarjeta por tarjeta
+  const enter=eo(p(t,6.3,7.0));
+  let idx=0;
+  for(let i=0;i<5;i++){const s=7.25+i*.5;idx+=eio(p(t,s,s+.32));}
+  $('track').style.transform=`translateX(${X0 - idx*STEP + (1-enter)*700}px)`;
+  $('track').style.opacity=enter;
+  cards.forEach((c,i)=>{const d=Math.abs(i-idx);c.style.transform=`scale(${1-cl(d)*.08})`;c.style.opacity=1-cl(d-.2)*.35;});
+  const sw=eio(cl((idx-2.2)/.8));                 // Eventos -> Novedades
+  const sIn=eo(p(t,6.4,7.0));
+  $('s-ev').style.opacity=sIn*(1-sw);$('s-ev').style.transform=`translateY(${(1-sIn)*40 - sw*40}px)`;
+  $('s-no').style.opacity=sw;$('s-no').style.transform=`translateY(${(1-sw)*40}px)`;
+  $('dots').style.opacity=enter;
+  dots.forEach((d,i)=>{const a=1-cl(Math.abs(i-idx));d.style.width=(16+a*30)+'px';
+    d.style.background=a>.01?`color-mix(in srgb, ${i<3?'#F931AD':'#4CB19A'} ${a*100}%, #E2E2E2)`:'#E2E2E2';});
+
+  // cierre 9.9–
+  const e=eio(p(t,9.9,10.6));
+  $('stage').style.transform=`scale(${1+e*.12})`;
   $('stage').style.opacity=1-e;
   $('end').style.opacity=e;
-  const lk=back(p(t,9.8,10.5));
-  $('end').querySelector('.logo').style.transform=`scale(${.5+.5*lk}) rotate(${(1-lk)*-30}deg)`;
-  const tk=eo(p(t,10.1,10.8)),uk=eo(p(t,10.4,11.1));
-  $('end').querySelector('.n').style.cssText=`opacity:${tk};transform:translateY(${(1-tk)*40}px)`;
+  const lk=back(p(t,10.1,10.8));
+  $('end').querySelector('img').style.transform=`scale(${.6+.4*lk})`;
+  const tk=eo(p(t,10.4,11.0)),uk=eo(p(t,10.7,11.3));
   $('end').querySelector('.t').style.cssText=`opacity:${tk};transform:translateY(${(1-tk)*40}px)`;
   $('end').querySelector('.url').style.cssText=`opacity:${uk};transform:scale(${.85+.15*uk})`;
 };
