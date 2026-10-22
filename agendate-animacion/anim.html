@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:M;font-weight:200;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-200-normal.woff2)}
+@font-face{font-family:M;font-weight:300;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-300-normal.woff2)}
+@font-face{font-family:M;font-weight:400;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-400-normal.woff2)}
+:root{
+  --pink:#F837AF; --pink-soft:#FDE3F3; --ink:#2A2A2A; --mute:#8A8A8A; --line:#ECECEC;
+  /* Colores por sector (ajustables) */
+  --c-novedades:#2D9CDB; --c-gastronomia:#F2994A; --c-cultura:#9B51E0;
+  --c-deportes:#27AE60; --c-eventos:#F837AF; --c-sociales:#EB5757;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#fff}
+body{font-family:M,sans-serif;font-weight:300;color:var(--ink);position:relative}
+.abs{position:absolute}
+.blob{border-radius:50%;filter:blur(60px);opacity:.55}
+#stage{position:absolute;inset:0;transform-origin:540px 760px}
+#head{left:0;right:0;top:330px;text-align:center}
+#head .kicker{font-size:34px;letter-spacing:10px;color:var(--pink);font-weight:300}
+#head .title{font-size:84px;font-weight:200;line-height:1.1;margin-top:26px}
+#bar{left:90px;width:900px;height:132px;border-radius:66px;background:#fff;
+  box-shadow:0 18px 50px rgba(248,55,175,.16),0 2px 0 rgba(0,0,0,.02);border:2px solid var(--line);
+  display:flex;align-items:center;padding:0 46px;gap:28px}
+#bar svg{flex:none}
+#q{font-size:46px;font-weight:300;white-space:nowrap;color:var(--ink)}
+#caret{display:inline-block;width:3px;height:52px;background:var(--pink);vertical-align:middle;margin-left:4px}
+#ph{font-size:46px;color:#BDBDBD;font-weight:200}
+#loc{left:0;right:0;text-align:center;font-size:32px;color:var(--mute)}
+#loc b{font-weight:400;color:var(--ink)}
+#results{left:90px;width:900px;top:640px}
+.res{border-radius:34px;padding:44px 46px;background:#fff;margin-bottom:34px;border:2px solid var(--line)}
+.res.main{border:3px solid var(--pink);box-shadow:0 30px 80px rgba(248,55,175,.22)}
+.site{display:flex;align-items:center;gap:22px}
+.logo{width:76px;height:76px;border-radius:50%;border:4px solid var(--pink);display:flex;align-items:center;justify-content:center;
+  color:var(--pink);font-size:36px;font-weight:300;letter-spacing:-2px;flex:none}
+.dom{font-size:32px;line-height:1.3}
+.dom small{display:block;font-size:26px;color:var(--mute)}
+.rt{font-size:56px;color:var(--pink);margin-top:26px;font-weight:300}
+.rd{font-size:31px;color:#666;line-height:1.5;margin-top:14px}
+.sk{height:26px;border-radius:13px;background:#F3F3F3;margin-top:18px}
+.badge{display:inline-block;font-size:24px;letter-spacing:4px;color:#fff;background:var(--pink);border-radius:30px;padding:12px 26px;margin-bottom:24px}
+#chips{left:90px;width:900px;top:1290px;display:flex;flex-wrap:wrap;gap:22px;justify-content:center}
+.chip{font-size:34px;color:#fff;border-radius:60px;padding:22px 40px;font-weight:300}
+#end{inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff}
+#end .logo{width:300px;height:300px;border-width:12px;font-size:140px;letter-spacing:-8px}
+#end .n{font-size:92px;font-weight:200;margin-top:70px}
+#end .n span{color:var(--pink)}
+#end .t{font-size:40px;color:var(--mute);margin-top:30px;text-align:center;line-height:1.5}
+#end .url{margin-top:80px;font-size:36px;letter-spacing:3px;color:#fff;background:var(--pink);padding:26px 56px;border-radius:70px}
+#cursor{width:60px;height:60px}
+#ring{width:120px;height:120px;border-radius:50%;border:4px solid var(--pink)}
+</style></head>
+<body>
+<div id="stage">
+  <div class="abs blob" id="b1" style="width:700px;height:700px;background:var(--pink-soft);left:-260px;top:-200px"></div>
+  <div class="abs blob" id="b2" style="width:600px;height:600px;background:var(--pink-soft);right:-240px;bottom:-120px"></div>
+
+  <div class="abs" id="head"><div class="kicker">BUSCANDO</div><div class="title">¿Qué hacer<br>en Posadas?</div></div>
+
+  <div class="abs" id="bar">
+    <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#F837AF" stroke-width="1.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+    <div><span id="q"></span><span id="ph">Buscar…</span><span id="caret"></span></div>
+  </div>
+  <div class="abs" id="loc">⌂ <b>Posadas, Misiones</b></div>
+
+  <div class="abs" id="results">
+    <div class="res main" id="r1">
+      <div class="badge">PRIMER RESULTADO</div>
+      <div class="site"><div class="logo">Ag</div><div class="dom">agendateeventos.com<small>https://agendateeventos.com</small></div></div>
+      <div class="rt">Agendate eventos</div>
+      <div class="rd">Agendate: somos tu agencia de noticias, comunicación, marketing digital y organización de eventos.</div>
+    </div>
+    <div class="res" id="r2"><div class="sk" style="width:45%;margin-top:0"></div><div class="sk" style="width:80%;height:40px"></div><div class="sk" style="width:95%"></div><div class="sk" style="width:60%"></div></div>
+    <div class="res" id="r3"><div class="sk" style="width:38%;margin-top:0"></div><div class="sk" style="width:70%;height:40px"></div><div class="sk" style="width:90%"></div></div>
+  </div>
+
+  <div class="abs" id="chips">
+    <div class="chip" style="background:var(--c-novedades)">Novedades</div>
+    <div class="chip" style="background:var(--c-gastronomia)">Gastronomía</div>
+    <div class="chip" style="background:var(--c-eventos)">Eventos</div>
+    <div class="chip" style="background:var(--c-cultura)">Cultura</div>
+    <div class="chip" style="background:var(--c-deportes)">Deportes</div>
+    <div class="chip" style="background:var(--c-sociales)">Sociales</div>
+  </div>
+
+  <div class="abs" id="ring"></div>
+  <svg class="abs" id="cursor" viewBox="0 0 24 24"><path d="M5 3l14 8-6 1.5L10 19z" fill="#2A2A2A" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/></svg>
+</div>
+
+<div class="abs" id="end">
+  <div class="logo">Ag</div>
+  <div class="n">Agendate <span>eventos</span></div>
+  <div class="t">Tu referente de eventos<br>en Posadas</div>
+  <div class="url">agendateeventos.com</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const p=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3);
+const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const back=x=>{const c=1.5;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const lerp=(a,b,x)=>a+(b-a)*x;
+const QUERY='eventos en posadas';
+const chips=[...document.querySelectorAll('.chip')];
+
+window.render=function(t){
+  // blobs drift
+  $('b1').style.transform=`translate(${Math.sin(t*.6)*40}px,${Math.cos(t*.5)*30}px)`;
+  $('b2').style.transform=`translate(${Math.cos(t*.5)*40}px,${Math.sin(t*.6)*30}px)`;
+
+  // intro 0–0.8
+  const inA=eo(p(t,0,.8));
+  // search moves up 4.0–4.7
+  const up=eio(p(t,4.0,4.7));
+  $('head').style.opacity=inA*(1-up);
+  $('head').style.transform=`translateY(${(1-inA)*40 - up*80}px)`;
+  const barTop=lerp(820,340,up);
+  $('bar').style.top=barTop+'px';
+  $('bar').style.opacity=eo(p(t,.2,1));
+  $('bar').style.transform=`translateY(${(1-eo(p(t,.2,1)))*50}px) scale(${1-up*.06})`;
+  $('loc').style.top=(barTop+170)+'px';
+  $('loc').style.opacity=eo(p(t,.5,1.2));
+
+  // typing 1.3–3.3
+  const n=Math.round(cl(p(t,1.3,3.3))*QUERY.length);
+  $('q').textContent=QUERY.slice(0,n);
+  $('ph').style.display=n?'none':'inline';
+  $('caret').style.opacity=(t>1.2&&t<3.4)?1:(Math.floor(t*2.5)%2?0:1);
+
+  // cursor + click on search 3.4–4.0
+  const cv=p(t,3.3,3.6)*(1-p(t,4.1,4.3));
+  const cm=eio(p(t,3.3,3.8));
+  $('cursor').style.left=lerp(900,880,cm)+'px';
+  $('cursor').style.top=lerp(1150,barTop+50,cm)+'px';
+  $('cursor').style.opacity=cv;
+  const click=p(t,3.85,4.25);
+  $('ring').style.left=(880-30)+'px';$('ring').style.top=(barTop+50-30)+'px';
+  $('ring').style.opacity=click>0&&click<1?(1-click):0;
+  $('ring').style.transform=`scale(${.3+click*1.2})`;
+
+  // results 4.6–
+  const r=[ [4.7,'r1'],[5.0,'r2'],[5.15,'r3'] ];
+  r.forEach(([s,id])=>{const k=eo(p(t,s,s+.6));$(id).style.opacity=k;$(id).style.transform=`translateY(${(1-k)*80}px)`;});
+  // focus on first result 6.3–7: others fade, main pulses
+  const foc=eio(p(t,6.2,7.0));
+  $('r2').style.opacity*=1-foc*.75;$('r3').style.opacity*=1-foc*.75;
+  const pulse=t>5.4&&t<6.4?Math.sin(p(t,5.4,6.4)*Math.PI)*.04:0;
+  $('r1').style.transform+=` scale(${1+pulse+foc*.03})`;
+  $('r1').style.boxShadow=`0 30px ${80+foc*40}px rgba(248,55,175,${.22+foc*.15})`;
+
+  // chips 7.0–9
+  chips.forEach((c,i)=>{const s=7.0+i*.16;const k=p(t,s,s+.5);c.style.opacity=cl(k*2);c.style.transform=`translateY(${(1-back(k))*60}px) scale(${.6+.4*back(k)})`;});
+  $('chips').style.top=lerp(1400,1300,foc)+'px';
+  $('r2').style.visibility=$('r3').style.visibility=t>6.9?'hidden':'visible';
+
+  // stage zoom out slightly before end, end card 9.6–
+  const e=eio(p(t,9.5,10.3));
+  $('stage').style.transform=`scale(${1+e*.15})`;
+  $('stage').style.opacity=1-e;
+  $('end').style.opacity=e;
+  const lk=back(p(t,9.8,10.5));
+  $('end').querySelector('.logo').style.transform=`scale(${.5+.5*lk}) rotate(${(1-lk)*-30}deg)`;
+  const tk=eo(p(t,10.1,10.8)),uk=eo(p(t,10.4,11.1));
+  $('end').querySelector('.n').style.cssText=`opacity:${tk};transform:translateY(${(1-tk)*40}px)`;
+  $('end').querySelector('.t').style.cssText=`opacity:${tk};transform:translateY(${(1-tk)*40}px)`;
+  $('end').querySelector('.url').style.cssText=`opacity:${uk};transform:scale(${.85+.15*uk})`;
+};
+render(0);
+</script></body></html>
