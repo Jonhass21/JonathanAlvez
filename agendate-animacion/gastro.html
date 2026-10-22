@@ -20,6 +20,7 @@ body{font-family:M,sans-serif;font-weight:300;color:var(--ink);position:relative
 .msg .ln{display:block}
 #m1{top:700px;font-size:86px}
 #m2{top:740px;font-size:72px}
+#m3{top:840px;font-size:96px}
 .pk{color:var(--pink);font-weight:300}
 .vi{color:var(--c-gastronomia);font-weight:300}
 
@@ -60,6 +61,11 @@ body{font-family:M,sans-serif;font-weight:300;color:var(--ink);position:relative
     <span class="ln">que <span class="pk">recomendamos</span></span>
     <span class="ln">para que disfrutes</span>
     <span class="ln">en Posadas</span>
+  </div>
+
+  <div class="abs msg" id="m3">
+    <span class="ln">Estos y</span>
+    <span class="ln"><span class="vi">muchos más</span>…</span>
   </div>
 
   <div class="abs" id="sec">Gastronomía</div>
@@ -132,7 +138,13 @@ window.render=function(t){
   dots.forEach((d,i)=>{const a=1-cl(Math.abs(i-idx));d.style.width=(16+a*30)+'px';
     d.style.background=`color-mix(in srgb, #9D3AE4 ${a*100}%, #E2E2E2)`;});
 
-  // cierre 9.9–
+  // "Estos y muchos más…" 9.9–11.4
+  const out=eio(p(t,9.9,10.4));
+  ['sec','track','dots'].forEach(id=>$(id).style.opacity*=1-out);
+  lines($('m3'),10.15,99);
+
+  // cierre 11.4– (mismo cierre, corrido 1,5 s)
+  t-=1.5;
   const e=eio(p(t,9.9,10.6));
   $('stage').style.transform=`scale(${1+e*.12})`;
   $('stage').style.opacity=1-e;

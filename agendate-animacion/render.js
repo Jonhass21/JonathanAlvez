@@ -2,7 +2,7 @@ const { chromium } = require('playwright-core');
 const { spawn } = require('child_process');
 const path = require('path');
 const [, , out, stills] = process.argv;
-const FPS = 30, DUR = 12;
+const FPS = 30, DUR = +(process.env.DUR || 12);
 (async () => {
   const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
   const pg = await b.newPage({ viewport: { width: 1080, height: 1920 } });
