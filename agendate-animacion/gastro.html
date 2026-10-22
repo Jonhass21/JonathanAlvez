@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:M;font-weight:200;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-200-normal.woff2)}
+@font-face{font-family:M;font-weight:300;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-300-normal.woff2)}
+@font-face{font-family:M;font-weight:400;src:url(node_modules/@fontsource/montserrat/files/montserrat-latin-400-normal.woff2)}
+:root{
+  --pink:#F931AD; --pink-soft:#FDE3F3; --ink:#2A2A2A; --mute:#8A8A8A;
+  --c-gastronomia:#9D3AE4; --violet-soft:#EFE2FC;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#fff}
+body{font-family:M,sans-serif;font-weight:300;color:var(--ink);position:relative}
+.abs{position:absolute}
+.blob{border-radius:50%;filter:blur(60px);opacity:.55}
+#stage{position:absolute;inset:0;transform-origin:540px 900px}
+#toplogo{left:50%;width:440px;margin-left:-220px;top:150px}
+
+.msg{left:0;right:0;text-align:center;font-weight:200;line-height:1.2}
+.msg .ln{display:block}
+#m1{top:700px;font-size:86px}
+#m2{top:740px;font-size:72px}
+.pk{color:var(--pink);font-weight:300}
+.vi{color:var(--c-gastronomia);font-weight:300}
+
+#sec{left:0;right:0;top:500px;text-align:center;font-size:108px;font-weight:200;color:var(--c-gastronomia)}
+#track{left:0;top:700px;display:flex;gap:40px}
+.card{width:660px;flex:none;background:#fff;border-radius:26px;box-shadow:0 16px 50px rgba(0,0,0,.09);overflow:hidden}
+.ph{position:relative;width:660px;height:432px}
+.ph img{width:100%;height:100%;object-fit:cover;display:block;border-radius:26px 26px 0 0}
+.tag{position:absolute;right:22px;top:22px;height:64px;padding:0 34px;border-radius:32px;background:var(--c-gastronomia);color:#fff;
+  font-size:26px;letter-spacing:2px;display:flex;align-items:center}
+.card .tx{padding:52px 50px 54px}
+.card h3{font-weight:300;font-size:50px;color:#1E1E1E}
+.card p{font-size:31px;line-height:1.6;color:#9A9A9A;margin-top:30px;height:150px;overflow:hidden}
+.card .more{margin-top:34px;padding-top:30px;border-top:2px solid #EEE;color:var(--c-gastronomia);font-size:27px;letter-spacing:3px;font-weight:400}
+#dots{left:0;right:0;top:1690px;display:flex;justify-content:center;gap:16px}
+#dots i{width:16px;height:16px;border-radius:8px;background:#E2E2E2;display:block}
+
+#end{inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff}
+#end img{width:860px}
+#end .t{font-size:46px;color:var(--mute);margin-top:80px;text-align:center;line-height:1.5;font-weight:200}
+#end .url{margin-top:90px;font-size:38px;letter-spacing:3px;color:#fff;background:var(--pink);padding:28px 60px;border-radius:70px}
+</style></head>
+<body>
+<div id="stage">
+  <div class="abs blob" id="b1" style="width:700px;height:700px;background:var(--violet-soft);left:-260px;top:-200px"></div>
+  <div class="abs blob" id="b2" style="width:600px;height:600px;background:var(--pink-soft);right:-240px;bottom:-120px"></div>
+
+  <img class="abs" id="toplogo" src="logo.svg">
+
+  <div class="abs msg" id="m1">
+    <span class="ln">¿Estás buscando</span>
+    <span class="ln">dónde ir a <span class="pk">comer</span></span>
+    <span class="ln">o pasar un</span>
+    <span class="ln"><span class="vi">momento especial</span>?</span>
+  </div>
+  <div class="abs msg" id="m2">
+    <span class="ln">Mirá los lugares</span>
+    <span class="ln">que <span class="pk">recomendamos</span></span>
+    <span class="ln">para que disfrutes</span>
+    <span class="ln">en Posadas</span>
+  </div>
+
+  <div class="abs" id="sec">Gastronomía</div>
+  <div class="abs" id="track"></div>
+  <div class="abs" id="dots"></div>
+</div>
+
+<div class="abs" id="end">
+  <img src="logo.svg">
+  <div class="t">Descubrí todos los locales en</div>
+  <div class="url">agendateeventos.com</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const p=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3);
+const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const back=x=>{const c=1.5;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+
+const CARDS=[
+  ['baguetteria','BAGUET','La Baguetteria','Vení a disfrutar de una propuesta gastronómica que combina panificados, cafetería más el plus de…'],
+  ['tostado','CAFÉ','Tostado Café Club','La franquicia Tostado Café Club llegó a la ciudad, para que disfrutes del lado tostado…'],
+  ['canasta','DELIVERY','A la Canasta','¿Ya pasaste a conocer la esquina más famosa de la ciudad?'],
+  ['espuma','','Espuma','No es solo un lugar, es una estación. Una manera de estar. Espuma llega para…'],
+  ['armonia','','La Armonía','Un rincón de paz que tenés que conocer. Cuando visitás las Cabañas La Armonía quedás…'],
+  ['qatar','','Qatar Resto Bar','Disfrutá de una experiencia única con una amplia carta que incluye desde comidas rápidas hasta…'],
+];
+$('track').innerHTML=CARDS.map(([img,tag,h,d])=>`<div class="card"><div class="ph"><img src="img/${img}.jpg">${tag?`<div class="tag">${tag}</div>`:''}</div>
+  <div class="tx"><h3>${h}</h3><p>${d}</p><div class="more">VER MÁS</div></div></div>`).join('');
+$('dots').innerHTML=CARDS.map(()=>'<i></i>').join('');
+const dots=[...document.querySelectorAll('#dots i')];
+const cards=[...document.querySelectorAll('.card')];
+const STEP=700, X0=210;
+
+// aparece línea por línea y sale hacia arriba
+function lines(el,tin,tout){
+  [...el.querySelectorAll('.ln')].forEach((l,i)=>{
+    const k=eo(p(window.__t,tin+i*.18,tin+i*.18+.6)), o=eio(p(window.__t,tout+i*.06,tout+i*.06+.45));
+    l.style.opacity=k*(1-o);
+    l.style.transform=`translateY(${(1-k)*50 - o*60}px)`;
+    l.style.filter=`blur(${(1-k)*8+o*6}px)`;
+  });
+}
+
+window.render=function(t){
+  window.__t=t;
+  $('b1').style.transform=`translate(${Math.sin(t*.6)*40}px,${Math.cos(t*.5)*30}px)`;
+  $('b2').style.transform=`translate(${Math.cos(t*.5)*40}px,${Math.sin(t*.6)*30}px)`;
+
+  const lg=eo(p(t,0,.7));
+  $('toplogo').style.opacity=lg;
+  $('toplogo').style.transform=`translateY(${(1-lg)*-30}px)`;
+
+  lines($('m1'),.3,2.7);
+  lines($('m2'),3.0,5.0);
+
+  // carrusel 5.3–9.9
+  const sIn=eo(p(t,5.3,5.9));
+  $('sec').style.opacity=sIn;
+  $('sec').style.transform=`translateY(${(1-sIn)*40}px)`;
+  const enter=eo(p(t,5.4,6.1));
+  let idx=0;
+  for(let i=0;i<5;i++){const s=6.45+i*.68;idx+=eio(p(t,s,s+.36));}
+  $('track').style.transform=`translateX(${X0 - idx*STEP + (1-enter)*700}px)`;
+  $('track').style.opacity=enter;
+  cards.forEach((c,i)=>{const d=Math.abs(i-idx);c.style.transform=`scale(${1-cl(d)*.08})`;c.style.opacity=1-cl(d-.2)*.35;});
+  $('dots').style.opacity=enter;
+  dots.forEach((d,i)=>{const a=1-cl(Math.abs(i-idx));d.style.width=(16+a*30)+'px';
+    d.style.background=`color-mix(in srgb, #9D3AE4 ${a*100}%, #E2E2E2)`;});
+
+  // cierre 9.9–
+  const e=eio(p(t,9.9,10.6));
+  $('stage').style.transform=`scale(${1+e*.12})`;
+  $('stage').style.opacity=1-e;
+  $('end').style.opacity=e;
+  const lk=back(p(t,10.1,10.8));
+  $('end').querySelector('img').style.transform=`scale(${.6+.4*lk})`;
+  const tk=eo(p(t,10.4,11.0)),uk=eo(p(t,10.7,11.3));
+  $('end').querySelector('.t').style.cssText=`opacity:${tk};transform:translateY(${(1-tk)*40}px)`;
+  $('end').querySelector('.url').style.cssText=`opacity:${uk};transform:scale(${.85+.15*uk})`;
+};
+render(0);
+</script></body></html>

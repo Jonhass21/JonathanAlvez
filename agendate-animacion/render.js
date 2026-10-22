@@ -6,7 +6,7 @@ const FPS = 30, DUR = 12;
 (async () => {
   const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
   const pg = await b.newPage({ viewport: { width: 1080, height: 1920 } });
-  await pg.goto('file://' + path.join(__dirname, 'anim.html'));
+  await pg.goto('file://' + path.join(__dirname, process.env.HTML || 'anim.html'));
   await pg.evaluate(() => document.fonts.ready); await pg.waitForLoadState('load');
   if (stills) {
     for (const t of stills.split(',')) {
