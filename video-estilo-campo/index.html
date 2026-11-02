@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Estilo Campo – Video promocional</title>
+<style>
+  @font-face { font-family: 'Anton'; src: url(assets/fonts/anton.woff2) format('woff2'); font-weight: 400; }
+  @font-face { font-family: 'Montserrat'; src: url(assets/fonts/montserrat.woff2) format('woff2'); font-weight: 100 900; }
+  @font-face { font-family: 'Inter'; src: url(assets/fonts/inter.woff2) format('woff2'); font-weight: 100 900; }
+
+  :root {
+    --red: #E31E24;
+    --red-dark: #A8121A;
+    --yellow: #FFC600;
+    --black: #111111;
+    --cream: #FFF8EC;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #fff; font-family: 'Montserrat', sans-serif; }
+  .scene { position: absolute; inset: 0; overflow: hidden; visibility: hidden; }
+  .abs { position: absolute; }
+  .center-x { left: 0; right: 0; text-align: center; }
+  .anton { font-family: 'Anton', sans-serif; text-transform: uppercase; line-height: 0.95; letter-spacing: 1px; }
+  .cover { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .tf { transform-origin: 50% 50%; will-change: transform, opacity; }
+
+  /* ---------- S1: buscador ---------- */
+  #s1 { background: #fff; font-family: 'Inter', sans-serif; color: #202124; }
+  #home-mark { top: 360px; display: flex; justify-content: center; align-items: center; gap: 22px; font-weight: 700; font-size: 104px; letter-spacing: -3px; }
+  #home-mark .dot { color: var(--red); }
+  #home-sub { top: 510px; font-size: 36px; color: #70757a; font-weight: 500; }
+  #bar { left: 60px; width: 960px; height: 132px; top: 620px; border-radius: 66px; background: #fff;
+         box-shadow: 0 6px 28px rgba(32,33,36,.18); border: 2px solid #e4e4e4; display: flex; align-items: center; padding: 0 44px; gap: 28px; transform-origin: 50% 50%; }
+  #bar-text { flex: 1; font-size: 46px; white-space: nowrap; overflow: hidden; font-weight: 500; }
+  #caret { display: inline-block; width: 4px; height: 52px; background: var(--red); vertical-align: -9px; margin-left: 3px; }
+  #sugg { left: 60px; width: 960px; top: 770px; background: #fff; border-radius: 36px; box-shadow: 0 10px 34px rgba(32,33,36,.16); padding: 18px 0; }
+  .sg { display: flex; align-items: center; gap: 30px; padding: 22px 48px; font-size: 40px; color: #202124; }
+  .sg b { font-weight: 700; }
+  #loadbar { left: 0; top: 0; height: 10px; background: linear-gradient(90deg, var(--red), var(--yellow)); width: 0; }
+  #res-label { left: 64px; top: 300px; font-size: 32px; color: #70757a; }
+  #res-label b { color: #202124; }
+  #card { left: 44px; width: 992px; top: 370px; background: #fff; border-radius: 40px; border: 4px solid var(--yellow);
+          box-shadow: 0 18px 50px rgba(0,0,0,.16); padding: 40px 44px 44px; }
+  #chip { display: inline-flex; align-items: center; gap: 12px; background: var(--yellow); color: #111; font-weight: 800; font-size: 30px; padding: 10px 26px; border-radius: 30px; font-family: 'Montserrat'; }
+  #card-head { display: flex; align-items: center; gap: 30px; margin-top: 28px; }
+  #thumb { width: 170px; height: 170px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,.12); flex: none; }
+  #thumb img { width: 160px; }
+  #card-title { font-family: 'Montserrat'; font-weight: 800; font-size: 54px; color: var(--red); line-height: 1.08; }
+  #card-url { font-size: 30px; color: #4d5156; margin-top: 8px; }
+  .feat { display: flex; align-items: center; gap: 22px; font-size: 38px; font-weight: 600; margin-top: 26px; color: #202124; }
+  .feat .ic { width: 64px; height: 64px; border-radius: 18px; background: #FFF1C2; display: flex; align-items: center; justify-content: center; flex: none; }
+  .feat b { color: var(--red); }
+  #strip { display: flex; gap: 18px; margin-top: 34px; }
+  #strip .ph { width: 286px; height: 250px; border-radius: 24px; overflow: hidden; }
+  #btns { display: flex; gap: 20px; margin-top: 34px; }
+  .btn { flex: 1; text-align: center; padding: 24px 0; border-radius: 40px; font-weight: 700; font-size: 34px; font-family: 'Montserrat'; }
+  .btn.pri { background: var(--red); color: #fff; }
+  .btn.sec { background: #f1f3f4; color: #202124; }
+  .skel { left: 64px; width: 952px; }
+  .skel div { height: 34px; border-radius: 17px; background: #eceff1; margin-bottom: 20px; }
+  #kb { left: 0; width: 1080px; top: 1210px; height: 710px; background: #D3D6DB; padding: 26px 8px 0; font-family: 'Inter'; }
+  .kr { display: flex; justify-content: center; gap: 11px; margin-bottom: 22px; }
+  .k { width: 95px; height: 128px; border-radius: 14px; background: #fff; box-shadow: 0 3px 0 #8E9196; display: flex; align-items: center; justify-content: center; font-size: 52px; color: #111; }
+  .k.g { background: #AEB3BA; font-size: 34px; }
+  .k.sp { width: 540px; font-size: 34px; color: #555; }
+  .k.go { width: 250px; background: var(--red); color: #fff; font-size: 38px; font-weight: 700; }
+  .k.on { background: #9AA0A8; transform: scale(1.06); }
+  .k.go.on { background: var(--red-dark); }
+  #pointer { left: 0; top: 0; width: 84px; height: 84px; transform-origin: 0 0; z-index: 50; }
+  .ripple { left: 0; top: 0; width: 160px; height: 160px; margin: -80px 0 0 -80px; border-radius: 50%; background: rgba(227,30,36,.35); z-index: 49; }
+
+  /* ---------- S2: logo ---------- */
+  #s2 { background: radial-gradient(circle at 50% 42%, #F2363C 0%, var(--red) 40%, var(--red-dark) 100%); }
+  .rays { left: 50%; top: 42%; width: 3000px; height: 3000px; margin: -1500px 0 0 -1500px;
+          background: repeating-conic-gradient(rgba(255,198,0,.16) 0deg 9deg, rgba(255,198,0,0) 9deg 18deg); border-radius: 50%; }
+  #s2-logo { left: 140px; top: 400px; width: 800px; filter: drop-shadow(0 30px 40px rgba(0,0,0,.35)); }
+  #s2-t1 { top: 1270px; color: #fff; font-weight: 900; font-size: 74px; line-height: 1.1; }
+  #s2-t2 { top: 1470px; display: flex; justify-content: center; }
+  .pill { display: inline-block; background: var(--yellow); color: #111; font-weight: 900; font-size: 44px; padding: 18px 44px; border-radius: 60px; letter-spacing: 3px; }
+
+  /* ---------- S3: efectivo ---------- */
+  #s3 { background: #000; }
+  #s3-img { inset: -60px; }
+  #s3-ov { inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.25) 0%, rgba(0,0,0,.55) 35%, rgba(0,0,0,.85) 100%); }
+  #s3-k { top: 470px; color: var(--yellow); font-weight: 800; font-size: 46px; letter-spacing: 8px; }
+  #s3-a { top: 560px; color: #fff; font-size: 250px; }
+  #s3-b { top: 800px; color: var(--yellow); font-size: 196px; }
+  #s3-tag { left: 90px; width: 900px; top: 1090px; background: var(--red); color: #fff; border-radius: 26px; padding: 34px 30px;
+            display: flex; align-items: center; justify-content: center; gap: 22px; font-weight: 900; font-size: 58px; white-space: nowrap; box-shadow: 0 20px 50px rgba(0,0,0,.45); border: 5px solid #fff; }
+  #s3-sub { top: 1360px; color: #fff; font-weight: 600; font-size: 46px; line-height: 1.35; }
+  #s3-sub b { color: var(--yellow); font-weight: 800; }
+
+  /* ---------- S4: descuentos ---------- */
+  #s4 { background: var(--yellow); }
+  #s4-stripes { inset: -200px; background: repeating-linear-gradient(-35deg, rgba(0,0,0,.045) 0 40px, rgba(0,0,0,0) 40px 80px); }
+  #s4-a { top: 150px; font-weight: 900; font-size: 74px; color: #111; letter-spacing: 2px; }
+  #s4-kg { top: 250px; font-size: 440px; color: #111; }
+  #s4-kg span.u { font-size: 230px; margin-left: 20px; color: var(--red); }
+  #s4-photo { left: 90px; top: 830px; width: 900px; height: 640px; border-radius: 40px; overflow: hidden; border: 10px solid #111; box-shadow: 0 30px 60px rgba(0,0,0,.3); }
+  #s4-stamp { left: 560px; top: 640px; width: 470px; height: 470px; border-radius: 50%; background: var(--red); color: #fff; display: flex; flex-direction: column;
+              align-items: center; justify-content: center; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,.35); border: 10px solid #fff; }
+  #s4-stamp .ring { position: absolute; inset: 16px; border-radius: 50%; border: 5px dashed rgba(255,255,255,.75); }
+  #s4-stamp .l1 { font-family: 'Anton'; font-size: 76px; line-height: 1; letter-spacing: 1px; }
+  #s4-stamp .l2 { font-family: 'Anton'; font-size: 58px; line-height: 1.05; color: var(--yellow); }
+  #s4-stamp .l0 { font-weight: 900; font-size: 34px; letter-spacing: 3px; margin-bottom: 6px; }
+  #s4-sub { top: 1540px; font-weight: 900; font-size: 60px; color: #111; line-height: 1.15; }
+  #s4-sub span { background: #111; color: var(--yellow); padding: 4px 22px; border-radius: 14px; }
+
+  /* ---------- S5: variedad ---------- */
+  #s5 { background: #111; }
+  #s5-h { top: 110px; color: var(--yellow); font-size: 112px; }
+  #s5-line { left: 340px; width: 400px; height: 10px; top: 240px; background: var(--red); border-radius: 5px; transform-origin: 50% 50%; }
+  #s5-frame { left: 60px; width: 960px; top: 310px; height: 1330px; border-radius: 44px; overflow: hidden; background: #222; }
+  .slide { position: absolute; inset: 0; }
+  .slide .im { position: absolute; inset: -40px; }
+  .slide .gr { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,.85) 100%); }
+  .slide .lb { position: absolute; left: 56px; right: 56px; bottom: 60px; color: #fff; }
+  .slide .lb .t { font-family: 'Anton'; font-size: 150px; line-height: .95; text-transform: uppercase; }
+  .slide .lb .s { font-weight: 700; font-size: 44px; margin-top: 18px; color: var(--yellow); }
+  .slide .num { position: absolute; left: 56px; top: 50px; background: var(--red); color: #fff; font-weight: 900; font-size: 36px; padding: 10px 24px; border-radius: 30px; }
+  #s5-dots { top: 1700px; display: flex; justify-content: center; gap: 18px; }
+  #s5-dots i { display: block; width: 26px; height: 26px; border-radius: 13px; background: #444; }
+
+  /* ---------- S6: collage ---------- */
+  #s6 { background: radial-gradient(circle at 50% 30%, #F2363C 0%, var(--red) 45%, var(--red-dark) 100%); }
+  .cl { width: 470px; height: 470px; border-radius: 34px; overflow: hidden; border: 8px solid #fff; box-shadow: 0 20px 40px rgba(0,0,0,.3); }
+  #s6-chips { left: 40px; right: 40px; top: 1180px; display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }
+  .chp { background: var(--yellow); color: #111; font-weight: 900; font-size: 42px; padding: 14px 30px; border-radius: 40px; }
+  #s6-t1 { top: 1400px; color: #fff; font-weight: 800; font-size: 60px; }
+  #s6-t2 { top: 1490px; color: #fff; font-weight: 800; font-size: 60px; }
+  #s6-t3 { top: 1580px; display: flex; justify-content: center; align-items: center; gap: 24px; }
+  #s6-t3 .anton { color: var(--yellow); font-size: 136px; white-space: nowrap; text-shadow: 0 10px 30px rgba(0,0,0,.35); }
+
+  /* ---------- S7: ubicación ---------- */
+  #s7 { background: #141414; }
+  #s7-h { top: 120px; color: #fff; font-size: 116px; }
+  #s7-h span { color: var(--yellow); }
+  #s7-map { left: 50px; top: 300px; width: 980px; height: 900px; border-radius: 44px; overflow: hidden; background: #1f1f1f; border: 4px solid #2c2c2c; }
+  #s7-pin { left: 0; top: 0; width: 150px; height: 190px; transform-origin: 50% 100%; }
+  .pulse { width: 120px; height: 46px; border-radius: 50%; border: 6px solid var(--yellow); margin: -23px 0 0 -60px; }
+  #s7-card { left: 70px; width: 940px; top: 1270px; background: var(--yellow); border-radius: 40px; padding: 46px 50px; box-shadow: 0 20px 50px rgba(0,0,0,.5); }
+  #s7-card .a { font-family: 'Anton'; font-size: 150px; color: #111; line-height: .95; }
+  #s7-card .b { font-weight: 900; font-size: 58px; color: var(--red); margin-top: 18px; }
+  #s7-card .c { font-weight: 700; font-size: 46px; color: #111; margin-top: 10px; }
+
+  /* ---------- S8: CTA ---------- */
+  #s8 { background: radial-gradient(circle at 50% 25%, #F2363C 0%, var(--red) 45%, var(--red-dark) 100%); }
+  #s8-logo { left: 260px; top: 90px; width: 560px; filter: drop-shadow(0 24px 34px rgba(0,0,0,.35)); }
+  #s8-t { top: 690px; color: #fff; font-size: 150px; text-shadow: 0 10px 30px rgba(0,0,0,.3); }
+  .ben { left: 90px; width: 900px; height: 116px; border-radius: 30px; background: rgba(0,0,0,.28); display: flex; align-items: center; gap: 26px; padding: 0 34px; color: #fff; font-weight: 800; font-size: 44px; }
+  .ben .ck { width: 64px; height: 64px; border-radius: 32px; background: var(--yellow); display: flex; align-items: center; justify-content: center; flex: none; }
+  .ben b { color: var(--yellow); }
+  #s8-addr { left: 90px; width: 900px; top: 1160px; background: #fff; border-radius: 30px; padding: 30px 36px; display: flex; align-items: center; gap: 28px; }
+  #s8-addr .x { font-weight: 900; font-size: 44px; white-space: nowrap; color: #111; line-height: 1.1; }
+  #s8-addr .y { font-weight: 700; font-size: 36px; color: var(--red); margin-top: 6px; }
+  #s8-btn { left: 140px; width: 800px; top: 1440px; height: 170px; border-radius: 85px; background: var(--yellow); color: #111; display: flex; align-items: center; justify-content: center;
+            font-family: 'Anton'; font-size: 96px; letter-spacing: 2px; box-shadow: 0 16px 0 #B88B00, 0 30px 50px rgba(0,0,0,.35); }
+  #s8-ig { top: 1700px; display: flex; justify-content: center; align-items: center; gap: 20px; color: #fff; font-weight: 800; font-size: 46px; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- ===================== S1: BUSCADOR ===================== -->
+  <section class="scene" id="s1">
+    <div class="abs" id="loadbar"></div>
+    <div class="abs center-x" id="home-mark">
+      <svg width="104" height="104" viewBox="0 0 24 24" fill="none" stroke="#E31E24" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+      <span>buscá<span class="dot">.</span></span>
+    </div>
+    <div class="abs center-x" id="home-sub">¿Qué querés encontrar hoy?</div>
+
+    <div class="abs" id="bar">
+      <svg id="bar-ic" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#5f6368" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+      <div id="bar-text"><span id="typed"></span><span id="caret"></span></div>
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="#E31E24"><rect x="9" y="2.5" width="6" height="12" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0" fill="none" stroke="#E31E24" stroke-width="2"/><path d="M12 17.5V21" stroke="#E31E24" stroke-width="2"/></svg>
+    </div>
+
+    <div class="abs" id="sugg">
+      <div class="sg"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#9aa0a6" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><span>la mejor carne de posadas</span></div>
+      <div class="sg"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#9aa0a6" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><span>la mejor carne de posadas <b>con buenos precios</b></span></div>
+      <div class="sg"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#9aa0a6" stroke-width="2.4"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><span>carnicería <b>con descuentos</b> en posadas</span></div>
+    </div>
+
+    <div class="abs" id="kb">
+      <div class="kr"><div class="k" data-k="q">q</div><div class="k" data-k="w">w</div><div class="k" data-k="e">e</div><div class="k" data-k="r">r</div><div class="k" data-k="t">t</div><div class="k" data-k="y">y</div><div class="k" data-k="u">u</div><div class="k" data-k="i">i</div><div class="k" data-k="o">o</div><div class="k" data-k="p">p</div></div>
+      <div class="kr"><div class="k" data-k="a">a</div><div class="k" data-k="s">s</div><div class="k" data-k="d">d</div><div class="k" data-k="f">f</div><div class="k" data-k="g">g</div><div class="k" data-k="h">h</div><div class="k" data-k="j">j</div><div class="k" data-k="k">k</div><div class="k" data-k="l">l</div><div class="k" data-k="ñ">ñ</div></div>
+      <div class="kr"><div class="k g" style="width:140px">⇧</div><div class="k" data-k="z">z</div><div class="k" data-k="x">x</div><div class="k" data-k="c">c</div><div class="k" data-k="v">v</div><div class="k" data-k="b">b</div><div class="k" data-k="n">n</div><div class="k" data-k="m">m</div><div class="k g" style="width:140px">⌫</div></div>
+      <div class="kr"><div class="k g" style="width:200px">123</div><div class="k sp" data-k=" ">espacio</div><div class="k go" id="k-go">Buscar</div></div>
+    </div>
+    <div class="abs" id="res-label">Resultados para <b>“la mejor carne de Posadas”</b></div>
+
+    <div class="abs" id="card">
+      <div id="chip"><svg width="28" height="28" viewBox="0 0 24 24" fill="#111"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z"/></svg>MEJOR RESULTADO</div>
+      <div id="card-head" class="cr">
+        <div id="thumb"><img src="assets/logo.png" alt=""></div>
+        <div>
+          <div id="card-title">Carnicería<br>Estilo Campo</div>
+          <div id="card-url">Especialistas en carnes · Posadas, Misiones</div>
+        </div>
+      </div>
+      <div class="feat cr"><div class="ic"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1E8E3E" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 9v.01M18 15v.01" stroke-linecap="round" stroke-width="3"/></svg></div><span>Precios <b>exclusivos</b> en efectivo</span></div>
+      <div class="feat cr"><div class="ic"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#E31E24" stroke-width="2.2" stroke-linejoin="round"><path d="M3 12V3h9l9 9-9 9z"/><circle cx="7.5" cy="7.5" r="1.5" fill="#E31E24"/></svg></div><span>Descuentos llevando <b>+2 kg</b></span></div>
+      <div class="feat cr"><div class="ic"><svg width="40" height="40" viewBox="0 0 24 24" fill="#E31E24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></div><span>Av. Mitre 1299, casi Gral. Paz</span></div>
+      <div id="strip" class="cr">
+        <div class="ph"><img class="cover" src="assets/costillar.webp" alt=""></div>
+        <div class="ph"><img class="cover" src="assets/choricitos.webp" alt=""></div>
+        <div class="ph"><img class="cover" src="assets/milanesas.webp" alt=""></div>
+      </div>
+      <div id="btns" class="cr">
+        <div class="btn pri">Cómo llegar</div>
+        <div class="btn sec">Ver Instagram</div>
+      </div>
+    </div>
+
+    <div class="abs skel" id="skel1" style="top:1560px"><div style="width:42%"></div><div style="width:88%"></div><div style="width:70%"></div></div>
+    <div class="abs skel" id="skel2" style="top:1730px"><div style="width:36%"></div><div style="width:80%"></div></div>
+
+    <div class="abs ripple" id="rip"></div>
+    <svg class="abs" id="pointer" viewBox="0 0 24 24"><path d="M5 2.5v17.2l4.3-4.1 2.9 6.6 3-1.3-2.9-6.5h6z" fill="#111" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+  </section>
+
+  <!-- ===================== S2: LOGO ===================== -->
+  <section class="scene" id="s2">
+    <div class="abs rays" id="s2-rays"></div>
+    <img class="abs tf" id="s2-logo" src="assets/logo.png" alt="">
+    <div class="abs center-x tf" id="s2-t1">¡Encontraste tu<br>carnicería!</div>
+    <div class="abs center-x tf" id="s2-t2"><span class="pill">POSADAS · MISIONES</span></div>
+  </section>
+
+  <!-- ===================== S3: EFECTIVO ===================== -->
+  <section class="scene" id="s3">
+    <div class="abs" id="s3-img"><img class="cover" src="assets/costillar.webp" alt=""></div>
+    <div class="abs" id="s3-ov"></div>
+    <div class="abs center-x tf" id="s3-k">EN ESTILO CAMPO TENÉS</div>
+    <div class="abs center-x anton tf" id="s3-a">Precios</div>
+    <div class="abs center-x anton tf" id="s3-b">Exclusivos</div>
+    <div class="abs tf" id="s3-tag">
+      <svg width="86" height="86" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="2" y="6" width="20" height="12" rx="2" fill="#1E8E3E"/><circle cx="12" cy="12" r="3"/><path d="M5.5 9h.01M18.5 15h.01" stroke-width="3" stroke-linecap="round"/></svg>
+      <span>PAGANDO EN EFECTIVO</span>
+    </div>
+    <div class="abs center-x tf" id="s3-sub">Calidad de campo<br><b>al precio que buscabas</b></div>
+  </section>
+
+  <!-- ===================== S4: DESCUENTOS ===================== -->
+  <section class="scene" id="s4">
+    <div class="abs" id="s4-stripes"></div>
+    <div class="abs center-x tf" id="s4-a">LLEVANDO MÁS DE</div>
+    <div class="abs center-x anton tf" id="s4-kg"><span id="s4-num">2</span><span class="u">KG</span></div>
+    <div class="abs tf" id="s4-photo"><img class="cover" id="s4-img" src="assets/cerdo.webp" alt=""></div>
+    <div class="abs tf" id="s4-stamp"><div class="ring"></div><div class="l0">¡TENÉS</div><div class="l1">DESCUENTOS</div><div class="l2">IMPORTANTES!</div></div>
+    <div class="abs center-x tf" id="s4-sub">Cuanto más llevás,<br><span>más ahorrás</span></div>
+  </section>
+
+  <!-- ===================== S5: VARIEDAD ===================== -->
+  <section class="scene" id="s5">
+    <div class="abs center-x anton tf" id="s5-h">Todo lo que necesitás</div>
+    <div class="abs" id="s5-line"></div>
+    <div class="abs" id="s5-frame">
+      <div class="slide" id="sl0"><div class="im"><img class="cover" src="assets/costillar.webp" alt=""></div><div class="gr"></div><div class="num">01 / 04</div><div class="lb"><div class="t">Cortes<br>vacunos</div><div class="s">Para la parrilla y para la olla</div></div></div>
+      <div class="slide" id="sl1"><div class="im"><img class="cover" src="assets/cerdo.webp" alt=""></div><div class="gr"></div><div class="num">02 / 04</div><div class="lb"><div class="t">Cerdo</div><div class="s">Cortes tiernos y jugosos</div></div></div>
+      <div class="slide" id="sl2"><div class="im"><img class="cover" src="assets/choricitos.webp" alt=""></div><div class="gr"></div><div class="num">03 / 04</div><div class="lb"><div class="t">Choricitos</div><div class="s">Los infaltables del asado</div></div></div>
+      <div class="slide" id="sl3"><div class="im"><img class="cover" src="assets/milanesas.webp" alt=""></div><div class="gr"></div><div class="num">04 / 04</div><div class="lb"><div class="t">Milanesas</div><div class="s">Listas para tu mesa</div></div></div>
+    </div>
+    <div class="abs" id="s5-dots" style="left:0;right:0"><i></i><i></i><i></i><i></i></div>
+  </section>
+
+  <!-- ===================== S6: COLLAGE ===================== -->
+  <section class="scene" id="s6">
+    <div class="abs rays" id="s6-rays" style="top:30%"></div>
+    <div class="abs cl tf" id="c0" style="left:55px;top:150px"><img class="cover" src="assets/costillar.webp" alt=""></div>
+    <div class="abs cl tf" id="c1" style="left:555px;top:150px"><img class="cover" src="assets/cerdo.webp" alt=""></div>
+    <div class="abs cl tf" id="c2" style="left:55px;top:650px"><img class="cover" src="assets/choricitos.webp" alt=""></div>
+    <div class="abs cl tf" id="c3" style="left:555px;top:650px"><img class="cover" src="assets/milanesas.webp" alt=""></div>
+    <div class="abs" id="s6-chips">
+      <span class="chp tf">VACUNO</span><span class="chp tf">CERDO</span><span class="chp tf">POLLO</span><span class="chp tf">MILANESAS</span><span class="chp tf">CHORICITOS</span>
+    </div>
+    <div class="abs center-x tf" id="s6-t1">Para tu día a día en la mesa…</div>
+    <div class="abs center-x tf" id="s6-t2">…y para el</div>
+    <div class="abs center-x tf" id="s6-t3">
+      <span class="anton">Asado del finde</span>
+      <svg id="flame" width="120" height="150" viewBox="0 0 24 30"><path d="M12 1c1 5-5 8-5 15a7 7 0 0 0 14 0c0-4-2-6-3-8 0 3-1 4-2.5 4.5C16 8 14 4 12 1z" fill="#FFC600"/><path d="M12 13c.5 3-3 4.5-3 8a3.5 3.5 0 0 0 7 0c0-2-1-3-1.5-4-.2 1.5-.8 2-1.5 2.3.5-2.5-.2-4.6-1-6.3z" fill="#fff"/></svg>
+    </div>
+  </section>
+
+  <!-- ===================== S7: UBICACIÓN ===================== -->
+  <section class="scene" id="s7">
+    <div class="abs center-x anton tf" id="s7-h">¿Dónde <span>estamos?</span></div>
+    <div class="abs" id="s7-map">
+      <svg width="980" height="900" viewBox="0 0 980 900">
+        <g id="minor" stroke="#343434" stroke-width="14" fill="none" stroke-linecap="round">
+          <path pathLength="1" d="M-20 120 L1000 60"/><path pathLength="1" d="M-20 300 L1000 250"/>
+          <path pathLength="1" d="M-20 640 L1000 600"/><path pathLength="1" d="M-20 810 L1000 780"/>
+          <path pathLength="1" d="M140 -20 L100 920"/><path pathLength="1" d="M330 -20 L300 920"/>
+          <path pathLength="1" d="M720 -20 L740 920"/><path pathLength="1" d="M880 -20 L910 920"/>
+        </g>
+        <rect x="360" y="40" width="110" height="140" rx="10" fill="#26402a" opacity=".9" id="park"/>
+        <rect x="770" y="330" width="80" height="120" rx="10" fill="#26402a" opacity=".9" id="park2"/>
+        <path id="mitre" pathLength="1" d="M-20 480 L1000 430" stroke="#FFC600" stroke-width="34" fill="none" stroke-linecap="round"/>
+        <path id="gpaz" pathLength="1" d="M545 -20 L560 920" stroke="#ffffff" stroke-width="26" fill="none" stroke-linecap="round"/>
+        <g id="lbl-mitre" font-family="Montserrat" font-weight="900" font-size="34" fill="#111"><text x="70" y="486" transform="rotate(-2.8 70 486)">AV. MITRE</text></g>
+        <g id="lbl-gpaz" font-family="Montserrat" font-weight="900" font-size="30" fill="#fff"><text x="590" y="600" transform="rotate(89 590 600)">GRAL. PAZ</text></g>
+      </svg>
+      <div class="abs pulse" id="pul1"></div>
+      <div class="abs pulse" id="pul2"></div>
+      <svg class="abs" id="s7-pin" viewBox="0 0 30 38"><path d="M15 1C7.3 1 1 7.1 1 14.6 1 25 15 37 15 37s14-12 14-22.4C29 7.1 22.7 1 15 1z" fill="#E31E24" stroke="#fff" stroke-width="1.6"/><circle cx="15" cy="14.5" r="8" fill="#fff"/><circle cx="15" cy="14.5" r="4.5" fill="#FFC600"/></svg>
+    </div>
+    <div class="abs tf" id="s7-card">
+      <div class="a">Av. Mitre 1299</div>
+      <div class="b">Casi General Paz</div>
+      <div class="c">Posadas, Misiones</div>
+    </div>
+  </section>
+
+  <!-- ===================== S8: CTA ===================== -->
+  <section class="scene" id="s8">
+    <div class="abs rays" id="s8-rays" style="top:20%"></div>
+    <img class="abs tf" id="s8-logo" src="assets/logo.png" alt="">
+    <div class="abs center-x anton tf" id="s8-t">¡Te esperamos!</div>
+    <div class="abs ben tf" id="b1" style="top:880px"><div class="ck"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><span>Precios <b>exclusivos</b> en efectivo</span></div>
+    <div class="abs ben tf" id="b2" style="top:1016px"><div class="ck"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><span>Descuentos llevando <b>+2 kg</b></span></div>
+    <div class="abs tf" id="s8-addr">
+      <svg width="80" height="80" viewBox="0 0 24 24" fill="#E31E24" style="flex:none"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+      <div><div class="x">Av. Mitre 1299, casi Gral. Paz</div><div class="y">Posadas, Misiones</div></div>
+    </div>
+    <div class="abs tf" id="s8-btn">VENÍ HOY</div>
+    <div class="abs center-x tf" id="s8-ig">
+      <svg width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="#fff" stroke="none"/></svg>
+      <span>@carniceriaestilocampoo</span>
+    </div>
+    <div class="abs ripple" id="rip2"></div>
+    <svg class="abs" id="pointer2" viewBox="0 0 24 24" style="width:84px;height:84px;transform-origin:0 0"><path d="M5 2.5v17.2l4.3-4.1 2.9 6.6 3-1.3-2.9-6.5h6z" fill="#111" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>
+  </section>
+</div>
+
+<script>
+/* ============================================================
+   Motor de animación determinístico: render(t) dibuja el cuadro
+   correspondiente al segundo t. Así cada frame se puede capturar
+   exacto con Playwright (sin depender del reloj del navegador).
+   ============================================================ */
+const DURATION = 36;
+const $ = id => document.getElementById(id);
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const P = (t, s, d) => clamp((t - s) / d);
+const lerp = (a, b, k) => a + (b - a) * k;
+const eOut = x => 1 - Math.pow(1 - x, 3);
+const eOut5 = x => 1 - Math.pow(1 - x, 5);
+const eIn = x => x * x * x;
+const eIO = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const eBack = x => { const c1 = 1.9, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const eElastic = x => x <= 0 ? 0 : x >= 1 ? 1 : Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75) * (2 * Math.PI / 3)) + 1;
+
+function T(el, { x = 0, y = 0, s = 1, r = 0, o = 1, sx = null, sk = 0, blur = 0 } = {}) {
+  if (typeof el === 'string') el = $(el);
+  const scx = sx === null ? s : sx;
+  el.style.transform = `translate(${x}px,${y}px) rotate(${r}deg) skewX(${sk}deg) scale(${scx},${s})`;
+  el.style.opacity = o;
+  el.style.filter = blur > 0.05 ? `blur(${blur}px)` : '';
+}
+// aparición estándar: sube + fade
+function rise(el, t, start, dur = .45, dist = 60) {
+  const k = eOut(P(t, start, dur));
+  T(el, { y: (1 - k) * dist, o: k });
+}
+function pop(el, t, start, dur = .5, from = .4) {
+  const k = P(t, start, dur);
+  T(el, { s: lerp(from, 1, eBack(k)), o: clamp(k * 3) });
+}
+function show(id, on) { $(id).style.visibility = on ? 'visible' : 'hidden'; }
+
+/* ---------------- tiempos clave ---------------- */
+const QUERY = 'la mejor carne de Posadas';
+const TYPE_START = 0.3, TYPE_STEP = 0.092;           // tipeo
+const TAP1 = 3.10;                                     // toque en buscar
+const RES = 3.60;                                      // aparecen resultados
+const TAP2 = 6.05;                                     // toque en el resultado
+const S2 = 6.5, S3 = 10.0, S4 = 14.0, S5 = 18.0, S6 = 24.0, S7 = 27.5, S8 = 31.5;
+window.TIMELINE = { DURATION, QUERY, TYPE_START, TYPE_STEP, TAP1, RES, TAP2, S2, S3, S4, S5, S6, S7, S8 };
+
+/* ---------------- S1: buscador ---------------- */
+function scene1(t) {
+  const n = clamp(Math.floor((t - TYPE_START) / TYPE_STEP) + 1, 0, QUERY.length);
+  $('typed').textContent = t < TYPE_START ? '' : QUERY.slice(0, n);
+  const typing = t >= TYPE_START && n < QUERY.length;
+  $('caret').style.opacity = (typing || Math.floor(t * 2.4) % 2 === 0) && t < RES + .3 ? 1 : 0;
+
+  // intro del home
+  const intro = eOut(P(t, 0, .4));
+  const toTop = eIO(P(t, TAP1 + .1, .5));
+  T('home-mark', { y: (1 - intro) * 40 - toTop * 140, o: intro * (1 - toTop) });
+  T('home-sub', { y: (1 - intro) * 40 - toTop * 140, o: intro * (1 - toTop) });
+
+  // barra: entra, se "presiona" con el tap, sube arriba
+  const press = 1 - 0.035 * Math.sin(Math.PI * P(t, TAP1 - .05, .25));
+  T('bar', { y: (1 - intro) * 60 + lerp(0, -490, toTop), s: press * lerp(1, .94, toTop), o: intro });
+
+  // sugerencias mientras tipea
+  const sIn = eOut(P(t, TYPE_START + TYPE_STEP * 9, .3));
+  const sOut = P(t, TAP1, .2);
+  T('sugg', { y: (1 - sIn) * -20, o: sIn * (1 - sOut) });
+  const sgs = document.querySelectorAll('#sugg .sg');
+  sgs.forEach((el, i) => { const k = eOut(P(t, TYPE_START + TYPE_STEP * (9 + i * 3), .3)); T(el, { x: (1 - k) * 30, o: k }); });
+
+  // teclado: entra con la intro, marca cada tecla, baja al buscar
+  const kbOut = eIO(P(t, TAP1 + .12, .4));
+  T('kb', { y: (1 - eOut(P(t, 0, .35))) * 710 + kbOut * 760, o: 1 });
+  const cur = t >= TYPE_START ? Math.floor((t - TYPE_START) / TYPE_STEP) : -1;
+  const pressed = cur >= 0 && cur < QUERY.length && (t - TYPE_START - cur * TYPE_STEP) < .075 ? QUERY[cur].toLowerCase() : null;
+  document.querySelectorAll('#kb .k[data-k]').forEach(k => k.classList.toggle('on', k.dataset.k === pressed));
+  $('k-go').classList.toggle('on', t > TAP1 - .05 && t < TAP1 + .15);
+
+  // barra de carga
+  $('loadbar').style.width = (eIO(P(t, TAP1 + .1, .55)) * 1080) + 'px';
+  $('loadbar').style.opacity = 1 - P(t, RES + .25, .2);
+
+  // resultados
+  rise($("res-label"), t, RES, .4, 30);
+  const cIn = P(t, RES + .05, .55);
+  T('card', { y: (1 - eOut(cIn)) * 140, s: lerp(.92, 1, eBack(cIn)), o: clamp(cIn * 2.5) });
+  pop($('chip'), t, RES + .35, .45, .3);
+  document.querySelectorAll('#card .cr').forEach((el, i) => rise(el, t, RES + .4 + i * .14, .4, 40));
+  rise($('skel1'), t, RES + 1.2, .4, 40); rise($('skel2'), t, RES + 1.35, .4, 40);
+
+  // brillo del borde del card (glow pulsante)
+  const glow = 0.5 + 0.5 * Math.sin((t - RES) * 6);
+  $('card').style.boxShadow = `0 18px 50px rgba(0,0,0,.16), 0 0 0 ${t > RES + .6 ? 6 + glow * 10 : 0}px rgba(255,198,0,${.25 + glow * .2})`;
+
+  // puntero
+  const thumb = $('thumb').getBoundingClientRect();
+  const go = $('k-go').getBoundingClientRect(); const icon = { left: go.left + 100, top: go.top + 50 };
+  const path = [
+    [2.55, 880, 1500], [TAP1, icon.left + 20, icon.top + 20],
+    [RES + .3, 760, 1300], [TAP2, thumb.left + 110, thumb.top + 110]
+  ];
+  let px = path[0][1], py = path[0][2];
+  for (let i = 0; i < path.length - 1; i++) {
+    const [t0, x0, y0] = path[i], [t1, x1, y1] = path[i + 1];
+    if (t >= t0) { const k = eIO(P(t, t0 + (i === 0 ? 0 : .25), t1 - t0 - (i === 0 ? 0 : .25))); px = lerp(x0, x1, k); py = lerp(y0, y1, k); }
+  }
+  const pIn = P(t, 2.55, .25);
+  const tapS = (t > TAP1 - .08 && t < TAP1 + .15) || (t > TAP2 - .08 && t < TAP2 + .15) ? .82 : 1;
+  T('pointer', { x: px, y: py, s: tapS * (0.6 + 0.4 * eOut(pIn)), o: pIn * (1 - P(t, TAP2 + .25, .15)) });
+
+  // ripple de los taps
+  let rk = -1, rx = 0, ry = 0;
+  if (t >= TAP1 && t < TAP1 + .5) { rk = P(t, TAP1, .5); rx = icon.left + 20; ry = icon.top + 20; }
+  if (t >= TAP2 && t < TAP2 + .5) { rk = P(t, TAP2, .5); rx = thumb.left + 110; ry = thumb.top + 110; }
+  T('rip', { x: rx, y: ry, s: rk < 0 ? 0 : .2 + eOut(rk) * 1.2, o: rk < 0 ? 0 : (1 - rk) });
+}
+
+/* ---------------- S2: logo ---------------- */
+function scene2(t) {
+  const th = $('thumb').getBoundingClientRect();
+  const cx = th.left + th.width / 2, cy = th.top + th.height / 2;
+  const k = eIO(P(t, S2, .55));
+  $('s2').style.clipPath = k < 1 ? `circle(${k * 2300}px at ${cx}px ${cy}px)` : 'none';
+  $('s2-rays').style.transform = `rotate(${t * 14}deg) scale(${lerp(.6, 1, eOut(P(t, S2, 1)))})`;
+  // logo: viaja desde el thumbnail y rebota
+  const lk = P(t, S2 + .05, 1.1);
+  const e = eElastic(lk);
+  const startS = 160 / 800;
+  const lx = lerp(cx - 540, 0, eOut(clamp(lk * 1.6))), ly = lerp(cy - 768, 0, eOut(clamp(lk * 1.6)));
+  const breathe = 1 + 0.02 * Math.sin((t - S2) * 3.2) * P(t, S2 + 1.2, .5);
+  T('s2-logo', { x: lx, y: ly, s: lerp(startS, 1, e) * breathe, r: (1 - eOut(clamp(lk * 1.3))) * -25 });
+  rise($('s2-t1'), t, S2 + .85, .5, 70);
+  pop($('s2-t2'), t, S2 + 1.25, .5, .3);
+  // salida: zoom hacia adentro
+  const out = eIn(P(t, S3 - .35, .35));
+  $('s2').style.transform = `scale(${1 + out * .25})`;
+}
+
+/* ---------------- S3: efectivo ---------------- */
+function scene3(t) {
+  const w = eIO(P(t, S3, .45));
+  const x1 = lerp(1080 + 500, 0, w), x2 = lerp(1080, -500, w);
+  $('s3').style.clipPath = w < 1 ? `polygon(${x1}px 0, 1080px 0, 1080px 1920px, ${x2}px 1920px)` : 'none';
+  const lt = t - S3;
+  $('s3-img').style.transform = `scale(${1.18 - lt * .03}) translate(${-lt * 6}px, ${lt * 4}px)`;
+  rise($('s3-k'), t, S3 + .3, .4, 40);
+  const a = eOut5(P(t, S3 + .4, .5)), b = eOut5(P(t, S3 + .6, .5));
+  T('s3-a', { x: (1 - a) * -1100, sk: (1 - a) * 25, o: clamp(a * 2) });
+  T('s3-b', { x: (1 - b) * 1100, sk: (1 - b) * -25, o: clamp(b * 2) });
+  const g = P(t, S3 + 1.05, .55);
+  const wob = Math.sin((t - S3 - 1.6) * 4) * 1.2 * P(t, S3 + 1.6, .4);
+  T('s3-tag', { s: lerp(.2, 1, eBack(g)), r: lerp(-20, -3, eOut(g)) + wob, o: clamp(g * 3) });
+  rise($('s3-sub'), t, S3 + 1.7, .5, 50);
+}
+
+/* ---------------- S4: descuentos ---------------- */
+function scene4(t) {
+  const k = eIO(P(t, S4, .45));
+  const out = eIO(P(t, S5, .45));
+  // shake al golpe del sello
+  const st = t - (S4 + 1.75);
+  const shake = st > 0 && st < .35 ? Math.sin(st * 90) * 18 * (1 - st / .35) : 0;
+  $('s4').style.transform = `translate(${shake}px, ${(1 - k) * 1920 - out * 1920 + shake * .5}px)`;
+  $('s4-stripes').style.transform = `translateX(${(t - S4) * 40}px)`;
+  rise($('s4-a'), t, S4 + .3, .4, 50);
+  // contador 0 → 2 y golpe
+  const c = P(t, S4 + .45, .55);
+  const num = c < 1 ? (2 * eOut(c)).toFixed(1).replace('.', ',') : '2';
+  $('s4-num').textContent = num;
+  const punch = 1 + 0.18 * Math.sin(Math.PI * P(t, S4 + 1.0, .25));
+  T('s4-kg', { s: lerp(.5, 1, eBack(P(t, S4 + .45, .45))) * punch, o: clamp(c * 4) });
+  const ph = P(t, S4 + .9, .6);
+  T('s4-photo', { y: (1 - eOut(ph)) * 700, r: lerp(12, -2, eOut(ph)), o: clamp(ph * 3) });
+  $('s4-img').style.transform = `scale(${1.15 - (t - S4) * .03})`;
+  const sp = P(t, S4 + 1.5, .25);
+  const spin = (t - S4 - 1.75) * 6;
+  T('s4-stamp', { s: lerp(3.2, 1, eOut(sp)) * (1 + 0.03 * Math.sin((t - S4) * 5) * P(t, S4 + 2, .3)), r: lerp(-40, -10, eOut(sp)) + (sp >= 1 ? Math.sin(spin * .4) * 2 : 0), o: sp });
+  rise($('s4-sub'), t, S4 + 2.2, .45, 60);
+}
+
+/* ---------------- S5: variedad ---------------- */
+function scene5(t) {
+  const k = eIO(P(t, S5, .45));
+  $('s5').style.transform = `translateY(${(1 - k) * 1920}px)`;
+  const out = eIO(P(t, S6 - .3, .3));
+  $('s5').style.opacity = 1 - out;
+  rise($('s5-h'), t, S5 + .25, .45, 50);
+  $('s5-line').style.transform = `scaleX(${eOut(P(t, S5 + .45, .5))})`;
+  const SL = 1.45, base = S5 + .3;
+  for (let i = 0; i < 4; i++) {
+    const st = base + i * SL;
+    const inK = i === 0 ? eOut(P(t, st, .5)) : eIO(P(t, st, .38));
+    const outK = i === 3 ? 0 : eIO(P(t, st + SL, .38));
+    const el = $('sl' + i);
+    const x = (1 - inK) * 1000 - outK * 1000;
+    const moving = (inK > 0 && inK < 1) || (outK > 0 && outK < 1);
+    T(el, { x: i === 0 ? 0 : x, s: i === 0 ? lerp(1.2, 1, inK) : 1, o: i === 0 ? inK : (inK > 0 ? 1 : 0) });
+    el.style.zIndex = i;
+    const lt = Math.max(0, t - st);
+    el.querySelector('.im').style.transform = `scale(${1.12 - lt * .05}) translateX(${(i % 2 ? 1 : -1) * lt * 10}px)`;
+    el.querySelector('.im').style.filter = moving ? 'blur(6px)' : '';
+    const lb = el.querySelector('.lb'), lk = eOut(P(t, st + .25, .4));
+    T(lb, { y: (1 - lk) * 80, o: lk });
+    pop(el.querySelector('.num'), t, st + .3, .4, .3);
+    const dot = document.querySelectorAll('#s5-dots i')[i];
+    const active = t >= st && (i === 3 || t < st + SL);
+    dot.style.background = active ? '#FFC600' : '#444';
+    dot.style.width = (active ? 70 : 26) + 'px';
+  }
+}
+
+/* ---------------- S6: collage ---------------- */
+function scene6(t) {
+  const k = eOut(P(t, S6, .4));
+  $('s6').style.opacity = k;
+  $('s6').style.transform = `scale(${lerp(1.25, 1, k)})`;
+  $('s6-rays').style.transform = `rotate(${t * -12}deg)`;
+  const rots = [-6, 5, 4, -5];
+  for (let i = 0; i < 4; i++) {
+    const c = P(t, S6 + .1 + i * .12, .5);
+    const fl = Math.sin((t - S6) * 2 + i) * 1.5;
+    T('c' + i, { s: lerp(.3, 1, eBack(c)), r: lerp(rots[i] * 4, rots[i] * .4, eOut(c)) + fl * P(t, S6 + .8, .5), o: clamp(c * 3) });
+  }
+  document.querySelectorAll('#s6-chips .chp').forEach((el, i) => pop(el, t, S6 + .7 + i * .1, .4, .2));
+  rise($('s6-t1'), t, S6 + 1.3, .4, 40);
+  rise($('s6-t2'), t, S6 + 1.6, .4, 40);
+  const a = P(t, S6 + 1.85, .45);
+  T('s6-t3', { s: lerp(.4, 1, eBack(a)), o: clamp(a * 3) });
+  const f = $('flame');
+  f.style.transform = `scale(${1 + 0.08 * Math.sin(t * 22)}, ${1 + 0.12 * Math.sin(t * 17 + 1)}) rotate(${Math.sin(t * 13) * 4}deg)`;
+  f.style.transformOrigin = '50% 100%';
+  const out = eIn(P(t, S7 - .3, .3));
+  if (out > 0) $('s6').style.transform = `scale(${1 + out * .15})`;
+}
+
+/* ---------------- S7: ubicación ---------------- */
+function scene7(t) {
+  const k = eIO(P(t, S7, .5));
+  $('s7').style.clipPath = k < 1 ? `inset(0 0 ${(1 - k) * 100}% 0)` : 'none';
+  rise($('s7-h'), t, S7 + .2, .45, 50);
+  document.querySelectorAll('#minor path').forEach((p, i) => { p.style.strokeDasharray = 1; p.style.strokeDashoffset = 1 - eOut(P(t, S7 + .2 + i * .05, .6)); });
+  const m = $('mitre'), g = $('gpaz');
+  m.style.strokeDasharray = 1; m.style.strokeDashoffset = 1 - eIO(P(t, S7 + .45, .7));
+  g.style.strokeDasharray = 1; g.style.strokeDashoffset = 1 - eIO(P(t, S7 + .65, .7));
+  $('park').style.opacity = $('park2').style.opacity = .9 * P(t, S7 + .5, .4);
+  $('lbl-mitre').style.opacity = P(t, S7 + 1.0, .3);
+  $('lbl-gpaz').style.opacity = P(t, S7 + 1.2, .3);
+  // pin en la esquina (casi Gral. Paz, sobre Mitre)
+  const PX = 500, PY = 458;
+  const d = P(t, S7 + 1.15, .5);
+  const bounce = d < 1 ? lerp(-700, 0, eOut5(d)) : 0;
+  const squash = 1 - 0.18 * Math.sin(Math.PI * P(t, S7 + 1.55, .25));
+  const pin = $('s7-pin');
+  pin.style.transform = `translate(${PX - 75}px, ${PY - 190 + bounce}px) scale(${2 - squash}, ${squash})`;
+  pin.style.opacity = clamp(d * 4);
+  [['pul1', 0], ['pul2', .6]].forEach(([id, off]) => {
+    const pk = t > S7 + 1.6 ? ((t - S7 - 1.6 + off) % 1.2) / 1.2 : -1;
+    T(id, { x: PX, y: PY, s: pk < 0 ? 0 : .3 + pk * 2.2, o: pk < 0 ? 0 : 1 - pk });
+  });
+  const c = P(t, S7 + 1.5, .5);
+  T('s7-card', { y: (1 - eOut(c)) * 500, r: lerp(6, -1.5, eOut(c)), o: clamp(c * 3) });
+}
+
+/* ---------------- S8: CTA ---------------- */
+function scene8(t) {
+  const k = eIO(P(t, S8, .55));
+  $('s8').style.clipPath = k < 1 ? `circle(${k * 2300}px at 540px 960px)` : 'none';
+  $('s8-rays').style.transform = `rotate(${t * 10}deg)`;
+  const l = P(t, S8 + .2, 1.0);
+  T('s8-logo', { y: (1 - eOut(clamp(l * 2))) * -300, s: lerp(.3, 1, eElastic(l)) * (1 + .025 * Math.sin((t - S8) * 3)), r: (1 - eOut(l)) * 20 });
+  const tt = P(t, S8 + .55, .45);
+  T('s8-t', { s: lerp(2.2, 1, eOut5(tt)), o: tt });
+  ['b1', 'b2'].forEach((id, i) => { const b = eOut(P(t, S8 + .9 + i * .18, .45)); T(id, { x: (1 - b) * (i ? 1000 : -1000), o: b }); });
+  rise($('s8-addr'), t, S8 + 1.35, .45, 80);
+  const btn = P(t, S8 + 1.65, .5);
+  const tapT = S8 + 3.2;
+  const press = (t > tapT - .05 && t < tapT + .2) ? .93 : 1;
+  const pulse = 1 + .045 * Math.sin((t - S8) * 7) * P(t, S8 + 2.2, .3);
+  T('s8-btn', { s: lerp(.2, 1, eBack(btn)) * pulse * press, o: clamp(btn * 3) });
+  rise($('s8-ig'), t, S8 + 2.0, .45, 50);
+  // puntero que toca "VENÍ HOY"
+  const pin = P(t, S8 + 2.4, .3);
+  const mv = eIO(P(t, S8 + 2.5, .65));
+  const px = lerp(940, 600, mv), py = lerp(1880, 1540, mv);
+  T('pointer2', { x: px, y: py, s: (t > tapT - .08 && t < tapT + .15 ? .82 : 1), o: pin });
+  const rk = t >= tapT && t < tapT + .55 ? P(t, tapT, .55) : -1;
+  T('rip2', { x: 600, y: 1545, s: rk < 0 ? 0 : .2 + eOut(rk) * 1.6, o: rk < 0 ? 0 : (1 - rk) * .9 });
+  // fade a negro final
+  const fin = P(t, DURATION - .45, .45);
+  $('stage').style.filter = fin > 0 ? `brightness(${1 - fin})` : '';
+}
+
+/* ---------------- render ---------------- */
+window.render = function (t) {
+  show('s1', t < S2 + .6);
+  show('s2', t >= S2 && t < S3 + .5);
+  show('s3', t >= S3 && t < S4 + .5);
+  show('s4', t >= S4 && t < S5 + .5);
+  show('s5', t >= S5 && t < S6 + .1);
+  show('s6', t >= S6 && t < S7 + .55);
+  show('s7', t >= S7 && t < S8 + .6);
+  show('s8', t >= S8);
+  if (t < S2 + .6) scene1(t);
+  if (t >= S2 && t < S3 + .5) scene2(t);
+  if (t >= S3 && t < S4 + .5) scene3(t);
+  if (t >= S4 && t < S5 + .5) scene4(t);
+  if (t >= S5 && t < S6 + .1) scene5(t);
+  if (t >= S6 && t < S7 + .55) scene6(t);
+  if (t >= S7 && t < S8 + .6) scene7(t);
+  if (t >= S8) scene8(t);
+};
+
+// vista previa en vivo en el navegador (si no está en modo render)
+if (!location.search.includes('render')) {
+  const t0 = performance.now();
+  (function loop() { window.render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })();
+}
+</script>
+</body>
+</html>
