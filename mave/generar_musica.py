@@ -7,7 +7,7 @@ import sys, wave
 import numpy as np
 
 SR = 48000
-DUR = 12.0
+DUR = 13.0
 N = int(SR * DUR)
 rng = np.random.default_rng(3)
 L = np.zeros(N); R = np.zeros(N)
@@ -17,8 +17,11 @@ def midi(n):
     return 440.0 * 2 ** ((n - 69) / 12)
 
 
+OFFSET = 1.0  # 1 s intro while the phrase appears
+
+
 def add(sig, t, gain=1.0, pan=0.0):
-    i = int(t * SR)
+    i = int((t + OFFSET) * SR)
     if i >= N:
         return
     sig = sig[: N - i] * gain
@@ -145,6 +148,12 @@ for i in range(4):                 # MAVE letters land (logo start 69)
 for i in range(10):                # PASTELERÍA typewriter
     add(tick(), fr(85 + i), 0.18, pan=-0.5 + i * 0.1)
 add(pop(1300, 500), fr(97), 0.25)  # heart
+
+# intro: soft pickup while "Algo dulce / se está horneando…" appears
+add(glock(midi(84), 1.2), -1.0, 0.07, pan=0.4)
+add(glock(midi(88), 1.2), -0.58, 0.07, pan=-0.3)
+add(glock(midi(72)), -0.5, 0.16, pan=0.3)
+add(glock(midi(74)), -0.25, 0.16, pan=0.3)
 
 # ---------------- simple reverb ----------------
 ir_n = int(SR * 1.2)

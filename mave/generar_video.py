@@ -412,12 +412,12 @@ tart = make_tart()
 cookie = make_cookie()
 big, small = logo_letters()
 ital = os.path.join(FONTS, "CormorantItalic.ttf")
-t_hecho = make_text("hecho a mano", ital, 96, BURG)
-t_amor = make_text("con mucho amor", ital, 96, BURG)
+t_hecho = make_text("Algo dulce", ital, 96, BURG)
+t_amor = make_text("se está horneando…", ital, 96, BURG)
 t_tag = make_text("Bienvenidos a nuestro mundo dulce", ital, 64, BURG)
 
 # ---------- timeline ----------
-TOTAL = 12 * 12  # 12 s
+TOTAL = 12 * 13  # 13 s
 CX = W // 2
 
 
@@ -449,13 +449,13 @@ def scene_cake(sh, f, exit_f=None):
             put(frost[0], CX + dx, drop_y(f, 18, fy))
         else:
             put(frost[min((fi - 6) // 2 + 1, 3)], CX + dx, fy)
-    for i, (st, x, rot) in enumerate(((28, -150, -14), (31, 150, 12), (34, -40, -4))):
+    for i, (st, x, rot) in enumerate(((28, -175, -14), (31, 175, 12), (34, -55, -4))):
         y = drop_y(f, st, tops[2] - 110)
         if y is not None:
             put(straws[i], CX + x + dx, y, rot=rot)
-    y = drop_y(f, 38, tops[2] - 175)
+    y = drop_y(f, 38, tops[2] - 118)  # ball rests on the frosting
     if y is not None:
-        put(cherry, CX + 70 + dx, y, rot=8)
+        put(cherry, CX + 60 + dx, y, rot=4)
     # sparkles blink around the finished cake
     if 42 <= f and (exit_f is None or f < exit_f):
         for j, (x, yy) in enumerate(((-430, 880), (430, 800), (-420, 1520), (440, 1420), (-440, 1150))):
@@ -534,16 +534,17 @@ def scene_logo(sh, f, start):
 
 def build(f):
     sh = Shot(f)
-    # 0.0–5.0 s : the cake is built piece by piece
-    if f < 66:
-        scene_cake(sh, f, exit_f=60)
-    # captions over the cake
-    if 44 <= f < 60:
-        text_line(sh, f, 44, t_hecho, 380)
-        text_line(sh, f, 50, t_amor, 490)
-    # 5.75–12 s : logo (first letter lands on the 6 s downbeat)
-    if f >= 69:
-        scene_logo(sh, f, 69)
+    O = 12  # 1 s intro: the phrase comes in first, then the cake
+    # phrase (stays while the cake is built, leaves when the cake leaves)
+    if f < O + 60:
+        text_line(sh, f, 0, t_hecho, 380)
+        text_line(sh, f, 5, t_amor, 490)
+    c = f - O
+    if 0 <= c < 66:
+        scene_cake(sh, c, exit_f=60)
+    # logo (first letter lands on a downbeat)
+    if c >= 69:
+        scene_logo(sh, c, 69)
     return sh.render()
 
 
