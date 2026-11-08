@@ -414,7 +414,7 @@ big, small = logo_letters()
 ital = os.path.join(FONTS, "CormorantItalic.ttf")
 t_hecho = make_text("hecho a mano", ital, 96, BURG)
 t_amor = make_text("con mucho amor", ital, 96, BURG)
-t_tag = make_text("bienvenidos a nuestro mundo dulce", ital, 64, BURG)
+t_tag = make_text("Bienvenidos a nuestro mundo dulce", ital, 64, BURG)
 
 # ---------- timeline ----------
 TOTAL = 12 * 14  # 14 s
