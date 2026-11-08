@@ -417,7 +417,7 @@ t_amor = make_text("con mucho amor", ital, 96, BURG)
 t_tag = make_text("Bienvenidos a nuestro mundo dulce", ital, 64, BURG)
 
 # ---------- timeline ----------
-TOTAL = 12 * 14  # 14 s
+TOTAL = 12 * 12  # 12 s
 CX = W // 2
 
 
@@ -541,12 +541,9 @@ def build(f):
     if 44 <= f < 60:
         text_line(sh, f, 44, t_hecho, 380)
         text_line(sh, f, 50, t_amor, 490)
-    # 5.0–9.0 s : treats pop in, hop, then fly out
-    if 60 <= f < 112:
-        scene_treats(sh, f, 62, 100)
-    # 9.0–14 s : logo
-    if f >= 108:
-        scene_logo(sh, f, 108)
+    # 5.75–12 s : logo (first letter lands on the 6 s downbeat)
+    if f >= 69:
+        scene_logo(sh, f, 69)
     return sh.render()
 
 

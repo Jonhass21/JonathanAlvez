@@ -7,7 +7,7 @@ import sys, wave
 import numpy as np
 
 SR = 48000
-DUR = 14.0
+DUR = 12.0
 N = int(SR * DUR)
 rng = np.random.default_rng(3)
 L = np.zeros(N); R = np.zeros(N)
@@ -93,8 +93,8 @@ def whoosh(dur=0.45):
 BEAT = 0.5
 # chords (midi notes) per bar of 4 beats (2 s)
 F, Am, Bb, C, Dm = [53, 57, 60, 65], [57, 60, 64, 69], [58, 62, 65, 70], [55, 60, 64, 67], [57, 62, 65, 69]
-bars = [F, Am, Bb, C, F, Dm, Bb]
-roots = [41, 45, 46, 48, 41, 38, 46]
+bars = [F, Am, C, F, Bb]
+roots = [41, 45, 48, 41, 46]
 
 for b, (ch, rt) in enumerate(zip(bars, roots)):
     t0 = b * 2.0
@@ -113,30 +113,22 @@ for b, (ch, rt) in enumerate(zip(bars, roots)):
 
 # glockenspiel melody (beat, midi, length-ignored) — original tune
 mel = [
-    # bar 1 (F)
-    (0, 77), (1, 76), (1.5, 77), (2, 81), (3, 79),
-    # bar 2 (Am)
-    (4, 76), (5, 72), (5.5, 74), (6, 76), (7, 79),
-    # bar 3 (Bb)
-    (8, 77), (9, 74), (9.5, 77), (10, 82), (11, 81),
-    # bar 4 (C)
-    (12, 79), (13, 76), (13.5, 77), (14, 79), (15, 72),
-    # bar 5 (F) — logo starts landing
-    (16, 77), (16.5, 79), (17, 81), (18, 84), (19, 81),
-    # bar 6 (Dm)
-    (20, 81), (21, 77), (21.5, 79), (22, 81), (23, 86),
-    # bar 7 (Bb -> F)
-    (24, 84), (25, 82), (25.5, 81), (26, 79), (26.5, 77),
+    (0, 77), (1, 76), (1.5, 77), (2, 81), (3, 79),          # F
+    (4, 76), (5, 72), (5.5, 74), (6, 76), (7, 79),          # Am
+    (8, 79), (9, 76), (9.5, 77), (10, 79), (11, 72),        # C
+    (12, 77), (12.5, 79), (13, 81), (14, 84), (15, 81),     # F  (logo lands)
+    (16, 82), (17, 81), (17.5, 79), (18, 77), (19, 74),     # Bb
+    (20, 77),                                               # F  (end)
 ]
 for beat, n in mel:
     add(glock(midi(n)), beat * BEAT, 0.20, pan=0.3)
 
 # final ending chord: F major add9 strum + chime at 13.0 s
 for k, n in enumerate([53, 57, 60, 65, 67, 69]):
-    add(pluck(midi(n + 12), 2.5), 13.0 + k * 0.03, 0.17, pan=-0.2)
-add(bass(midi(41), 1.5), 13.0, 0.45)
+    add(pluck(midi(n + 12), 2.5), 10.0 + k * 0.03, 0.17, pan=-0.2)
+add(bass(midi(41), 2.0), 10.0, 0.45)
 for k, n in enumerate([89, 93, 96]):
-    add(glock(midi(n), 1.5), 13.0 + k * 0.08, 0.10, pan=0.5)
+    add(glock(midi(n), 1.5), 10.0 + k * 0.08, 0.10, pan=0.5)
 
 # ---------------- foley synced to animation (frames @12 fps) ----------------
 fr = lambda f: f / 12.0
@@ -148,14 +140,11 @@ for f in (31, 34, 37):             # strawberries
     add(pop(700, 240), fr(f), 0.30)
 add(pop(1100, 400), fr(41), 0.30)  # cherry
 add(whoosh(), fr(59), 0.10)        # cake exits
-for i in range(5):                 # treats pop in
-    add(pop(800 + i * 120, 300), fr(63 + i * 3), 0.28, pan=(-0.4, 0.4, -0.4, 0.4, 0)[i])
-add(whoosh(), fr(99), 0.12)        # treats fly out
-for i in range(4):                 # MAVE letters land
-    add(thump(), fr(111 + i * 3), 0.50)
+for i in range(4):                 # MAVE letters land (logo start 69)
+    add(thump(), fr(72 + i * 3), 0.50)
 for i in range(10):                # PASTELERÍA typewriter
-    add(tick(), fr(124 + i), 0.18, pan=-0.5 + i * 0.1)
-add(pop(1300, 500), fr(136), 0.25)  # heart
+    add(tick(), fr(85 + i), 0.18, pan=-0.5 + i * 0.1)
+add(pop(1300, 500), fr(97), 0.25)  # heart
 
 # ---------------- simple reverb ----------------
 ir_n = int(SR * 1.2)
@@ -173,7 +162,7 @@ L = L + 0.22 * conv(L); R = R + 0.22 * conv(R)
 # fade in/out
 env = np.ones(N)
 fi = int(SR * 0.02); env[:fi] = np.linspace(0, 1, fi)
-fo = int(SR * 0.6); env[-fo:] = np.linspace(1, 0, fo) ** 1.5
+fo = int(SR * 0.8); env[-fo:] = np.linspace(1, 0, fo) ** 1.5
 L *= env; R *= env
 peak = max(np.abs(L).max(), np.abs(R).max())
 L = L / peak * 0.89; R = R / peak * 0.89
