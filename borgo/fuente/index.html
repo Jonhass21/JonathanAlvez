@@ -15,7 +15,7 @@ canvas{display:block}
 const W=1080,H=1920;
 const C={ber:'#DB4A2B',esp:'#2E2522',pie:'#B0ABA3',are:'#C9BAA6',lin:'#EFE9DF',hue:'#F3EEE6',topo:'#8C7D70',white:'#FFFFFF'};
 const cv=document.getElementById('c'),ctx=cv.getContext('2d');
-const SC=[0,30,78,126,168,198]; const TOTAL=228;
+const SC=window.SC_OVERRIDE||[0,30,78,126,168,198]; const TOTAL=window.TOTAL_OVERRIDE||228;
 
 // ---------- deterministic randomness ----------
 function rnd(a,b=0,c=0){let h=(a*374761393+b*668265263+c*2147483647)|0;h=(h^(h>>>13))*1274126177|0;h=h^(h>>>16);return ((h>>>0)%100000)/100000;}
@@ -102,15 +102,15 @@ const ease=u=>1-Math.pow(1-Math.max(0,Math.min(1,u)),3);
 function scene0(t,f){
   ctx.fillStyle=C.esp;ctx.fillRect(0,0,W,H);
   logo(540,175,62,C.pie,f,900,5);
-  const F='500 124px Bodoni';
-  if(t>=1)txt('Marketing',540,700,F,C.hue,f,1);
-  if(t>=3)txt('=',540,840,F,C.pie,f,2);
-  if(t>=4)txt('Publicidad',540,990,F,C.hue,f,3);
-  if(t>=6)txt('=',540,1130,F,C.pie,f,4);
-  if(t>=7)txt('Ventas',540,1280,F,C.hue,f,5);
-  if(t>=11)sketch([L(505,862,577,768)],(t-10)/2,{f,seed:6,w:8,color:C.hue});
-  if(t>=13)sketch([L(505,1152,577,1058)],(t-12)/2,{f,seed:7,w:8,color:C.hue});
-  if(t>=16)txt('¿Son lo mismo?',540,1500,'italic 400 84px Bodoni',C.pie,f,8);
+  const F='500 124px Bodoni',K=window.K0||{m:1,p:4,v:7,q:16,no:11};
+  if(t>=K.m)txt('Marketing',540,700,F,C.hue,f,1);
+  if(t>=K.p-1)txt('=',540,840,F,C.pie,f,2);
+  if(t>=K.p)txt('Publicidad',540,990,F,C.hue,f,3);
+  if(t>=K.v-1)txt('=',540,1130,F,C.pie,f,4);
+  if(t>=K.v)txt('Ventas',540,1280,F,C.hue,f,5);
+  if(t>=K.no)sketch([L(505,862,577,768)],(t-K.no+1)/2,{f,seed:6,w:8,color:C.hue});
+  if(t>=K.no+1)sketch([L(505,1152,577,1058)],(t-K.no)/2,{f,seed:7,w:8,color:C.hue});
+  if(t>=K.q)txt('¿Son lo mismo?',540,1500,'italic 400 84px Bodoni',C.pie,f,8);
 }
 function scene1(t,f){
   ctx.fillStyle=C.hue;ctx.fillRect(0,0,W,H);header('01','Marketing',t,f);
@@ -184,16 +184,17 @@ function scene4(t,f){
   });
   if(t>=6)txt('+',380,738,'400 70px Bodoni',C.esp,f,150);
   if(t>=8)txt('+',700,738,'400 70px Bodoni',C.esp,f,151);
-  const J=[540,1140];
-  if(t>=11){
-    sketch([Q([220,950],[220,1100],J),Q([540,950],[540,1050],J),Q([860,950],[860,1100],J)],(t-10)/5,{f,seed:160,w:6});
+  const J=[540,1140],s=window.K4||0;
+  if(t>=11+s){
+    sketch([Q([220,950],[220,1100],J),Q([540,950],[540,1050],J),Q([860,950],[860,1100],J)],(t-10-s)/5,{f,seed:160,w:6});
   }
-  if(t>=16)sketch([L(540,1140,540,1250),P([[505,1212],[540,1252],[575,1212]])],(t-15)/3,{f,seed:161,w:7});
-  const rs={19:68,20:48,21:48,22:48,23:48,24:48,25:120,26:320,27:700,28:1300,29:2300};
-  if(t>=19){
-    ctx.fillStyle=C.ber;ctx.beginPath();const [dx,dy]=wob(f,170,1.4);ctx.arc(540+dx,1340+dy,rs[t]||48,0,7);ctx.fill();
+  if(t>=16+s)sketch([L(540,1140,540,1250),P([[505,1212],[540,1252],[575,1212]])],(t-15-s)/3,{f,seed:161,w:7});
+  const L4=SC[5]-SC[4],ex=t-(L4-5);
+  const rad=ex>=0?[120,320,700,1300,2300][ex]:(t===19+s?68:48);
+  if(t>=19+s){
+    ctx.fillStyle=C.ber;ctx.beginPath();const [dx,dy]=wob(f,170,1.4);ctx.arc(540+dx,1340+dy,rad,0,7);ctx.fill();
   }
-  if(t>=20&&t<=26){
+  if(t>=20+s&&ex<2){
     ctx.font='500 116px Bodoni';const we=ctx.measureText('= ').width;ctx.font='italic 500 116px Bodoni';const wa=ctx.measureText('Acción').width;
     const x0=540-(we+wa)/2;
     txt('=',x0,1560,'500 116px Bodoni',C.esp,f,171,'left');
